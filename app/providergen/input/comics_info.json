@@ -1,0 +1,20 @@
+{
+    "fields": [
+        {
+            "name": "archive_file",
+            "type": "String"
+        },
+        {
+            "name": "archive_file_entry",
+            "type": "String"
+        },
+        {
+            "name": "page",
+            "type": "Integer"
+        },
+        {
+            "name": "page_image",
+            "type": "String"
+        },
+     ]
+}

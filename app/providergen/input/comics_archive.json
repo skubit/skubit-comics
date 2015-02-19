@@ -1,0 +1,20 @@
+{
+    "fields": [
+        {
+            "name": "archive_file",
+            "type": "String"
+        },
+        {
+            "name": "cover_art",
+            "type": "String"
+        },
+        {
+            "name": "story_title",
+            "type": "String"
+        },
+        {      
+            "name": "unarchived_pages",
+            "type": "String"
+        },
+     ]
+}

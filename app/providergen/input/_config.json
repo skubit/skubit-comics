@@ -1,0 +1,14 @@
+{
+    "syntaxVersion":"3",
+    "projectPackageId": "com.skubit.comics",
+    "authority": "com.skubit.comics.provider",
+    "providerJavaPackage": "com.skubit.comics.provider",
+    "providerClassName": "ComicsProvider",
+    "sqliteOpenHelperClassName": "ComicsSQLiteOpenHelper",
+    "sqliteOpenHelperCallbacksClassName": "ComicsSQLiteOpenHelperCallbacks",
+    "sqliteUpgradeHelperClassName": "ComicsSQLiteUpgradeHelper",
+    "databaseFileName": "comics.db",
+     "databaseVersion": 1,
+    "enableForeignKeys": true,
+    "useAnnotations": false
+}

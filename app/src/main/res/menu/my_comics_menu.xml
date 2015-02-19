@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_refresh"
+            android:icon="@drawable/ic_action_refresh"
+            android:orderInCategory="3"
+            android:actionProviderClass="com.skubit.comics.RefreshActionProvider"
+            android:showAsAction="always"
+            android:title="@string/refresh_archives"/>
+    <item
+            android:id="@+id/action_license"
+            android:orderInCategory="4"
+            android:showAsAction="collapseActionView|withText"
+            android:title="@string/license"/>
+</menu>
+
+        <!--
+           android:actionProviderClass="com.skubit.comics.RefreshActionProvider"-->
