@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':skubit-commons'
 project(':app').projectDir = new File('app')

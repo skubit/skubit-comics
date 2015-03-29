@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/comic_viewer"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+    <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
-<android.support.v4.view.ViewPager
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-</android.support.v4.view.ViewPager>
+    <com.skubit.comics.SkubitViewPager
+            android:id="@+id/pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@android:color/transparent"/>
+    <com.gc.materialdesign.views.Slider
+            android:id="@+id/slider"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#1E88E5"
+            materialdesign:min="1"
+            android:layout_alignParentBottom="true"
+            materialdesign:showNumberIndicator="true"/>
+</RelativeLayout>
 

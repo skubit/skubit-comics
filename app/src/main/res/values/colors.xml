@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_text_color">#FFFFFF</color>
+    <color name="primary_color">#03A9F4</color>
+    <color name="secondary_color">#E1F5FE</color>
+
+    <color name="primary_button_color">#1976D2</color>
+    <color name="secondary_button_color">#388E3C</color>
+    <color name="selected_nav">#E1F5FE</color>
+    <color name="nav_header">#90CAF9</color>
+
+    <!--Template-->
+    <!--
+    <color name="myPrimaryColor">#3F51B5</color>
+    <color name="myPrimaryDarkColor">#3F51B5</color>
+    <color name="myAccentColor">#3F51B5</color>
+    <color name="myDrawerBackground">#F2F2F2</color>
+    <color name="myWindowBackground">#DEDEDE</color>
+    <color name="myTextPrimaryColor">#FFFFFF</color>
+    <color name="myNavigationColor">#000000</color>
+-->
+    <color name="selected_gray">#ffdbdbdb</color>
+
+    <!--Detail Page-->
+    <color name="background_tab_pressed">#6633B5E5</color>
+
+
+</resources>

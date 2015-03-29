@@ -19,4 +19,6 @@ import android.view.View;
 public interface ClickComicListener {
 
     void onClick(View v, int position);
+
+    void onClickOption(View v);
 }

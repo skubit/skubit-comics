@@ -4,10 +4,11 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.skubit.BILLING"/>
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_launcher"
             android:label="@string/app_name"
             android:largeHeap="true"
             android:theme="@style/AppTheme"
@@ -22,11 +23,44 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
+        <activity
+                android:name=".activities.AddComicsToCollectionActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.AddToCollectionActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.CollectionFilterActivity"
+                android:label="@string/app_name">
+        </activity>
         <activity
                 android:name=".activities.ComicViewerActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.ComicDetailsActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.ComicFilterActivity"
+                android:label="@string/app_name">
+        </activity>
+        <activity
+                android:name=".activities.CreateCollectionActivity"
                 android:label="@string/app_name"
-                android:theme="@style/ComicViewerTheme">
+                android:theme="@style/PurchaseDialog">
+        </activity>
+        <activity
+                android:name=".activities.DeleteCollectionActivity"
+                android:label="@string/app_name"
+                android:theme="@style/PurchaseDialog">
+        </activity>
+        <activity
+                android:name=".activities.DeleteFromCollectionActivity"
+                android:label="@string/app_name"
+                android:theme="@style/PurchaseDialog">
         </activity>
         <activity
                 android:name=".activities.DisplayLicensesActivity"
@@ -38,6 +72,20 @@
                 android:authorities="com.skubit.comics.provider"
                 android:exported="false"/>
 
+        <receiver android:name="com.skubit.comics.DownloadCompleteHandler">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
+        <service
+                android:name="com.skubit.comics.DownloadService"
+                android:enabled="true"
+                android:process=":download">
+        </service>
+        <service
+                android:name="com.skubit.comics.LockerUpdaterService"
+                android:enabled="true">
+        </service>
     </application>
 
 </manifest>

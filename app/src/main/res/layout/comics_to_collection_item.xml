@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="4dp"
+        card_view:contentPadding="1dp">
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+                android:layout_gravity="top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/coverArt"
+                android:layout_weight=".5"
+                android:padding="10dp"
+                android:src="@drawable/empty_photo"/>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:id="@+id/title"
+                android:gravity="center"
+                android:lines="2"
+                android:ellipsize="end"
+                android:textSize="14sp"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"/>
+    </LinearLayout>
+    <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+</android.support.v7.widget.CardView>

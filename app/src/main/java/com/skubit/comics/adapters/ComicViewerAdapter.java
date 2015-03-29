@@ -14,39 +14,46 @@
  */
 package com.skubit.comics.adapters;
 
+import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.fragments.ComicPageFragment;
-import com.skubit.comics.provider.comicsinfo.ComicsInfoCursor;
+import com.skubit.comics.provider.comicreader.ComicReaderCursor;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.database.Cursor;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import android.text.TextUtils;
 
 /**
  * Adapter creating view fragments of individual comic pages
  */
 public final class ComicViewerAdapter extends FragmentStatePagerAdapter {
 
-    private final ComicsInfoCursor mCursor;
+    private final ComicReaderCursor mCursor;
 
-    public ComicViewerAdapter(FragmentManager fm, ComicsInfoCursor cursor) {
+    private final ComicViewerActivity mActivity;
+
+    private final int mCount;
+
+    public ComicViewerAdapter(ComicViewerActivity activity, FragmentManager fm, Cursor cursor) {
         super(fm);
-        mCursor = cursor;
+        mCursor = new ComicReaderCursor(cursor);
+        mActivity = activity;
+        mCount = mCursor.getCount();
     }
 
     @Override
     public int getCount() {
-        return mCursor.getCount();
+        return mCount;
     }
 
     @Override
     public Fragment getItem(int position) {
         mCursor.moveToPosition(position);
         String pageImage = mCursor.getPageImage();
-        if(TextUtils.isEmpty(pageImage)) {
-            //return page fragment explaining error
-        }
-        return ComicPageFragment
+        ComicPageFragment frag = ComicPageFragment
                 .newInstance(pageImage, position + 1, getCount());
+
+        frag.setPageTapListener(mActivity);
+        return frag;
     }
 }

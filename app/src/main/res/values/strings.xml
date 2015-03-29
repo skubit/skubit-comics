@@ -3,4 +3,16 @@
     <string name="refresh_archives">Refresh</string>
     <string name="license">Open Source Licenses</string>
     <string name="no_archives">No Comic Archives Loaded</string>
+
+    <!--Navigation Drawer-->
+    <string name="title_section1">Catalog</string>
+    <string name="title_section2">My Comics</string>
+    <string name="title_section3">Account</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Navigation Drawer 2-->
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+    <string name="action_settings">Settings</string>
 </resources>

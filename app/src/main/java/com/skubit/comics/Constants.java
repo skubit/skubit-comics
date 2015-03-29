@@ -20,10 +20,18 @@ import java.io.File;
 
 public class Constants {
 
+    public static final String LOCKER_URI = "https://catalog.skubit.net/rest/v1/locker";
+
+    public static final String COMICS_CATALOG_URI = "https://catalog.skubit.net/rest/comicbooks";
+
     public static final File SKUBIT_ARCHIVES = Environment.getExternalStorageDirectory();
 
+    public static final File SKUBIT_ARCHIVES_DOWNLOAD = new File(
+            Environment.getExternalStorageDirectory(),
+            "SkubitComics/archives");
+
     public static final File SKUBIT_UNARCHIVES = new File(Environment.getExternalStorageDirectory(),
-             "SkubitComics/unarchive");
+            "SkubitComics/unarchive");
 
     public static final String ARCHIVE_SCAN_COMPLETE = "com.skubit.comics.ARCHIVE_SCAN_COMPLETE";
 }

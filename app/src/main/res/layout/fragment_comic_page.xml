@@ -10,25 +10,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"/>
-
-    <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent"
-                    android:orientation="vertical">
+    <ScrollView android:id="@+id/scroll" android:layout_width="match_parent"
+                android:layout_height="match_parent">
         <uk.co.senab.photoview.PhotoView
                 android:id="@+id/coverArt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="0/20"
-                android:paddingBottom="5dp"
-                android:paddingRight="15dp"
-                android:gravity="bottom|right"
-                android:id="@+id/pageNum"
-                />
 
-    </RelativeLayout>
-
-
+    </ScrollView>
 </FrameLayout>

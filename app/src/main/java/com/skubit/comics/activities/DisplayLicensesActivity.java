@@ -37,13 +37,13 @@ public class DisplayLicensesActivity extends Activity {
         this.setContentView(R.layout.activity_licenses);
         this.setTitle(getString(R.string.license));
         TextView licensesText = (TextView) this.findViewById(R.id.licenses_text);
-        
+
         AssetManager assetManager = getAssets();
         String text;
         try {
             text = toString(assetManager.open("NOTICE.txt"));
         } catch (IOException e) {
-           return;
+            return;
         }
         licensesText.setText(text);
     }

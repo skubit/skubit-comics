@@ -1,6 +1,14 @@
-<menu>
-
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/action_login"
+            android:orderInCategory="1"
+            app:showAsAction="collapseActionView|withText"
+            android:title="Login"/>
+    <item
+            android:id="@+id/action_license"
+            android:orderInCategory="4"
+            app:showAsAction="collapseActionView|withText"
+            android:title="@string/license"/>
 </menu>
 
-        <!--
-           android:actionProviderClass="com.skubit.comics.RefreshActionProvider"-->

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+            android:id="@+id/publisher_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="PUBLISHER"
+            android:textSize="@dimen/text_small"/>
+
+    <View style="@style/Divider"/>
+
+    <RelativeLayout
+            android:id="@+id/publisher_website_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/row">
+
+        <ImageView
+                android:id="@+id/location_web_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/location_web_site"/>
+
+        <TextView
+                android:id="@+id/publisher_webpage_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/location_web_site"
+                android:text="Visit Webpage"
+                android:textSize="@dimen/text_small"/>
+
+        <TextView
+                android:id="@+id/publisher_webpage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/publisher_webpage_label"
+                android:layout_toRightOf="@+id/location_web_site"
+                android:textSize="@dimen/text_small"/>
+    </RelativeLayout>
+
+    <View style="@style/Divider"/>
+
+    <RelativeLayout
+            android:id="@+id/publisher_email_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/row">
+
+        <ImageView
+                android:id="@+id/contact_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/content_email"/>
+
+        <TextView
+                android:id="@+id/publisher_email_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/contact_email"
+                android:text="Send email"
+                android:textSize="@dimen/text_small"/>
+
+        <TextView
+                android:id="@+id/publisher_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/publisher_email_label"
+                android:layout_toRightOf="@+id/contact_email"
+                android:textSize="@dimen/text_small"/>
+    </RelativeLayout>
+
+    <View style="@style/Divider"/>
+
+</LinearLayout>

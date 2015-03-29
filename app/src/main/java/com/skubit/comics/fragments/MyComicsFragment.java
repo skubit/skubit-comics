@@ -14,38 +14,72 @@
  */
 package com.skubit.comics.fragments;
 
-import com.skubit.comics.ArchiveLoadedCallback;
-import com.skubit.comics.ClickComicListener;
-import com.skubit.comics.ComicView;
+import com.skubit.comics.AdapterListener;
+import com.skubit.comics.ComicGridView;
+import com.skubit.comics.Constants;
 import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
-import com.skubit.comics.RefreshActionProvider;
 import com.skubit.comics.activities.ComicViewerActivity;
-import com.skubit.comics.adapters.MyComicsAdapter;
-import com.skubit.comics.provider.comicsarchive.ComicsArchiveColumns;
-import com.skubit.comics.provider.comicsarchive.ComicsArchiveCursor;
+import com.skubit.comics.activities.DeleteFromCollectionActivity;
+import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
+import com.skubit.comics.adapters.MyCollectionsComicOptionAdapter;
+import com.skubit.comics.archive.ArchiveLoadedCallback;
+import com.skubit.comics.archive.loaders.ArchiveScannerLoader;
+import com.skubit.comics.archive.responses.ArchiveScannerResponse;
+import com.skubit.comics.loaders.MyComicsLoader;
+import com.skubit.comics.provider.comic.ComicCursor;
 
-import android.app.ActivityOptions;
 import android.app.Fragment;
+import android.app.LoaderManager;
+import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public final class MyComicsFragment extends Fragment implements
-        ClickComicListener, ArchiveLoadedCallback {
+        ArchiveLoadedCallback, AdapterListener {
 
     private static final String TAG = "MyComicsFragment";
 
-    private ComicsArchiveCursor mComicsArchiveCursor;
+    private final LoaderManager.LoaderCallbacks<ArchiveScannerResponse> mArchiveScannerCallback
+            = new LoaderManager.LoaderCallbacks<ArchiveScannerResponse>() {
+
+        @Override
+        public Loader<ArchiveScannerResponse> onCreateLoader(int id, Bundle args) {
+            return new ArchiveScannerLoader(getActivity(), Constants.SKUBIT_ARCHIVES, false);
+        }
+
+        @Override
+        public void onLoadFinished(Loader<ArchiveScannerResponse> loader,
+                ArchiveScannerResponse data) {
+            Toast.makeText(getActivity(),
+                    "Load finished - archives found: " + data.comicArchives.size(),
+                    Toast.LENGTH_SHORT).show();
+            archiveLoaded(!data.comicArchives.isEmpty());
+            mSwipe.setRefreshing(false);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<ArchiveScannerResponse> loader) {
+            mSwipe.setRefreshing(false);
+        }
+    };
 
     private TextView mLoadingText;
+
+    private SwipeRefreshLayout mSwipe;
+
+    private CursorRecyclerViewAdapter mAdapter;
+
+    private ComicGridView comicGridView;
 
     public MyComicsFragment() {
     }
@@ -58,59 +92,86 @@ public final class MyComicsFragment extends Fragment implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        final Cursor c = getActivity().getContentResolver()
-                .query(ComicsArchiveColumns.CONTENT_URI, null, null, null, null);
-
-        mComicsArchiveCursor = new ComicsArchiveCursor(c);
     }
 
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_my_comics, container, false);
-        mLoadingText = (TextView) v.findViewById(R.id.no_archives);
-        ComicView comicView = (ComicView) v.findViewById(R.id.list);
-        MyComicsAdapter adapter = new MyComicsAdapter(getActivity(), mComicsArchiveCursor, this);
+        mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
 
-        comicView.setHasFixedSize(true);
-        comicView.setAdapter(adapter);
-        comicView.addItemDecoration(new PaddingItemDecoration(20));
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getLoaderManager().restartLoader(20, null, mArchiveScannerCallback);
+            }
+        });
+
+        mLoadingText = (TextView) v.findViewById(R.id.no_archives);
+        comicGridView = (ComicGridView) v.findViewById(R.id.list);
+        comicGridView.setHasFixedSize(true);
+
+        comicGridView.addItemDecoration(new PaddingItemDecoration(10));
+
+        getLoaderManager().initLoader(6000, null, new MyComicsLoader(getActivity(), this));
         return v;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.my_comics_menu, menu);
-        MenuItem refreshItem = menu.findItem(R.id.action_refresh);
-        RefreshActionProvider refreshProvider = (RefreshActionProvider) refreshItem.getActionProvider();
-        refreshProvider.setLoaderManager(getLoaderManager());
-        if (mComicsArchiveCursor.getCount() == 0) {
-            refreshProvider.startRefresh(this);
+    public void onClickOption(View v, final Bundle data) {
+        final ListPopupWindow listPopupWindow = new ListPopupWindow(getActivity());
+        listPopupWindow.setModal(true);
+        listPopupWindow.setAnchorView(v);
+        listPopupWindow.setContentWidth(400);
+        listPopupWindow.setPromptPosition(ListPopupWindow.POSITION_PROMPT_ABOVE);
+
+        listPopupWindow.setAdapter(new MyCollectionsComicOptionAdapter());
+
+        listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                  //  startActivity(DeleteFromCollectionActivity.newInstance());
+                } else if (position == 1) {
+
+                }
+                listPopupWindow.dismiss();
+            }
+        });
+
+        listPopupWindow.show();
+
+    }
+
+    @Override
+    public void archiveLoaded(boolean foundArchives) {
+        if (foundArchives) {
+            mLoadingText.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void resetAdapter(CursorRecyclerViewAdapter adapter) {
+        mAdapter = adapter;
+        comicGridView.setAdapter(adapter);
+        mSwipe.setRefreshing(false);
+
+        if (adapter.getCursor().getCount() == 0) {
+            getLoaderManager().restartLoader(20, null, mArchiveScannerCallback);
         } else {
             mLoadingText.setVisibility(View.GONE);
         }
     }
 
     @Override
-    public void onClick(View v, int position) {
-        mComicsArchiveCursor.moveToPosition(position);
-        ActivityOptions options =
-                ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
-        startActivity(ComicViewerActivity.newInstance(mComicsArchiveCursor.getArchiveFile()),
-                options.toBundle());
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mComicsArchiveCursor.close();
-    }
-
-    @Override
-    public void archiveLoaded(boolean foundArchives) {
-        if(foundArchives) {
-            mLoadingText.setVisibility(View.GONE);
+    public void onClick(View v, int position, Cursor cursor) {
+        if (cursor != null && position >= 0) {
+            ComicCursor c = new ComicCursor(cursor);
+            c.moveToPosition(position);
+            Intent i = ComicViewerActivity
+                    .newInstance(c.getStoryTitle(), c.getArchiveFile(), c.getLastPageRead());
+            startActivity(i);
+            getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.none);
         }
     }
 }

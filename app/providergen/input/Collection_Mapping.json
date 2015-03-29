@@ -1,0 +1,14 @@
+{
+    "fields": [
+        {
+            "name": "cid",
+            "type": "String",
+            "index": true,
+        },
+        {
+            "name": "cbid",
+            "type": "String",
+            "index": true
+        }
+    ]
+}

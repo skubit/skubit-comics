@@ -1,29 +1,15 @@
-/* Copyright 2015 Skubit
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.skubit.comics.adapters;
 
-import com.skubit.comics.ClickComicListener;
+
 import com.skubit.comics.FontManager;
+import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
-import com.skubit.comics.provider.comicsarchive.ComicsArchiveCursor;
+import com.skubit.comics.provider.comic.ComicCursor;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
-import android.database.ContentObserver;
-import android.net.Uri;
-import android.os.Handler;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -34,77 +20,43 @@ import android.widget.TextView;
 
 import java.io.File;
 
-/**
- * Adapter for displaying of imported comic books
- */
-public final class MyComicsAdapter extends RecyclerView.Adapter<MyComicsAdapter.ComicViewHolder> {
+public class MyComicsAdapter extends CursorRecyclerViewAdapter<MyComicsAdapter.MyComicsHolder> {
 
-    private final ComicsArchiveCursor mArchiveCursor;
+    private final ItemClickListener mItemClickListener;
 
-    private final Context mContext;
+    private final Picasso mPicasso;
 
-    private final ClickComicListener mClickComicListener;
-
-    public MyComicsAdapter(Context context,
-            final ComicsArchiveCursor archiveCursor, ClickComicListener clickComicListener) {
-        mContext = context;
-        mArchiveCursor = archiveCursor;
-        mClickComicListener = clickComicListener;
-
-        archiveCursor.registerContentObserver(new ContentObserver(new Handler()) {
-            @Override
-            public boolean deliverSelfNotifications() {
-                archiveCursor.requery();
-                notifyDataSetChanged();
-                return super.deliverSelfNotifications();
-            }
-
-            @Override
-            public void onChange(boolean selfChange) {
-                archiveCursor.requery();
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChange(boolean selfChange, Uri uri) {
-                archiveCursor.requery();
-                notifyDataSetChanged();
-            }
-        });
+    public MyComicsAdapter(Context context, Cursor cursor, ItemClickListener itemClickListener) {
+        super(context, cursor);
+        mItemClickListener = itemClickListener;
+        mPicasso = Picasso.with(mContext);
     }
 
     @Override
-    public ComicViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        final View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.my_comics_item, parent, false);
-        return new ComicViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(ComicViewHolder holder, int position) {
-        mArchiveCursor.moveToPosition(position);
-        holder.storyTitle.setText(mArchiveCursor.getStoryTitle());
+    public void onBindViewHolder(MyComicsAdapter.MyComicsHolder holder,
+            Cursor cursor) {
+        ComicCursor c = new ComicCursor(cursor);
+        holder.storyTitle.setText(c.getStoryTitle());
         holder.storyTitle.setTypeface(FontManager.REGULAR);
-        holder.position = position;
-        String coverArt = mArchiveCursor.getCoverArt();
+        holder.position = c.getPosition();
+        holder.cbid = c.getCbid();
+        String coverArt = c.getCoverArt();
 
         if (!TextUtils.isEmpty(coverArt)) {
-            Picasso.with(mContext).load(new File(coverArt))
-                    .resize(200, 200).centerInside().into(holder.coverArt);
+            mPicasso.load(new File(coverArt)).resize(280, 0)
+                    .into(holder.coverArt);
         }
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public MyComicsAdapter.MyComicsHolder onCreateViewHolder(ViewGroup parent,
+            int viewType) {
+        final View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.my_comics_item, parent, false);
+        return new MyComicsHolder(view);
     }
 
-    @Override
-    public int getItemCount() {
-        return mArchiveCursor.getCount();
-    }
-
-    public class ComicViewHolder extends RecyclerView.ViewHolder {
+    public class MyComicsHolder extends RecyclerView.ViewHolder {
 
         public final TextView storyTitle;
 
@@ -112,15 +64,44 @@ public final class MyComicsAdapter extends RecyclerView.Adapter<MyComicsAdapter.
 
         public int position;
 
-        public ComicViewHolder(final View view) {
+        public String cbid;
+
+        public MyComicsHolder(final View view) {
             super(view);
             storyTitle = (TextView) view.findViewById(R.id.title);
             coverArt = (ImageView) view.findViewById(R.id.coverArt);
 
-            view.setOnClickListener(new View.OnClickListener() {
+            View bottom = view.findViewById(R.id.button_bottom);
+            /*
+            bottom.setOnClickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
-                    mClickComicListener.onClick(view, position);
+                    Bundle data = new Bundle();
+                    data.putBoolean("isCollectionItem", false);
+                    data.putString("cbid", cbid);
+                    data.putString("title", storyTitle.getText().toString());
+                    mItemClickListener.onClickOption(v, data);
+                }
+            });
+
+            View comicOptions = view.findViewById(R.id.my_comics_options);
+            comicOptions.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Bundle data = new Bundle();
+
+                    data.putString("cbid", cbid);
+                    data.putString("title", storyTitle.getText().toString());
+                    mItemClickListener.onClickOption(v, data);
+                }
+            });
+            */
+             view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mItemClickListener.onClick(v, position, mCursor);
                 }
             });
         }

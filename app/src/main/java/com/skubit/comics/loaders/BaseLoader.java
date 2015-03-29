@@ -14,20 +14,42 @@
  */
 package com.skubit.comics.loaders;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
+import com.skubit.shared.dto.ErrorMessage;
+
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 import java.io.IOException;
 
+import retrofit.RetrofitError;
+import retrofit.mime.TypedByteArray;
+
 public abstract class BaseLoader<T> extends AsyncTaskLoader<T> {
 
-    protected T mResponse;
-
     protected final Context mContext;
+
+    protected T mResponse;
 
     public BaseLoader(Context context) {
         super(context);
         mContext = context;
+    }
+
+    public static ErrorMessage readRetrofitError(Exception e) {
+        RetrofitError error = (RetrofitError) e;
+        if (error.getResponse() != null) {
+            String json = new String(((TypedByteArray) error.getResponse().getBody())
+                    .getBytes());
+            try {
+                return new Gson().fromJson(json, ErrorMessage.class);
+            } catch (JsonSyntaxException e1) {
+            }
+        }
+
+        return null;
     }
 
     protected abstract void closeStream() throws IOException;

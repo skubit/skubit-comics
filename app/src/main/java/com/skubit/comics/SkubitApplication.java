@@ -16,6 +16,9 @@ package com.skubit.comics;
 
 import android.app.Application;
 
+import java.io.File;
+import java.io.IOException;
+
 public final class SkubitApplication extends Application {
 
     @Override
@@ -23,12 +26,25 @@ public final class SkubitApplication extends Application {
         super.onCreate();
         new FontManager(this);
 
-        if(!Constants.SKUBIT_ARCHIVES.exists()) {
+        if (!Constants.SKUBIT_ARCHIVES.exists()) {
             Constants.SKUBIT_ARCHIVES.mkdirs();
         }
 
-        if(!Constants.SKUBIT_UNARCHIVES.exists()) {
+        if (!Constants.SKUBIT_UNARCHIVES.exists()) {
             Constants.SKUBIT_UNARCHIVES.mkdirs();
+            File nomedia = new File(Constants.SKUBIT_UNARCHIVES, ".nomedia");
+            try {
+                nomedia.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        File nomedia = new File(Constants.SKUBIT_UNARCHIVES, ".nomedia");
+        try {
+            nomedia.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

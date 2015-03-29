@@ -1,8 +1,0 @@
-{
-    "fields": [
-        {
-            "name": "archive_root",
-            "type": "String"
-        }
-    ]
-}

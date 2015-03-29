@@ -14,9 +14,10 @@
  */
 package com.skubit.comics.fragments;
 
+import com.skubit.comics.PageTapListener;
 import com.skubit.comics.R;
-import com.squareup.picasso.Picasso;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -24,10 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.io.File;
+
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public final class ComicPageFragment extends Fragment {
 
@@ -47,6 +49,8 @@ public final class ComicPageFragment extends Fragment {
 
     private int mLongestDim;
 
+    private PageTapListener mListener;
+
     public ComicPageFragment() {
     }
 
@@ -64,7 +68,6 @@ public final class ComicPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle args = getArguments();
         if (args != null) {
             mCoverArtUrl = args.getString(COVER_ART_URL_EXTRA);
@@ -80,19 +83,44 @@ public final class ComicPageFragment extends Fragment {
         mLongestDim = (height > width ? height : width) - 50;
     }
 
+    public void setPageTapListener(PageTapListener listener) {
+        mListener = listener;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         mComicPageView = inflater.inflate(R.layout.fragment_comic_page, null);
-        ImageView coverArt = (ImageView) mComicPageView.findViewById(R.id.coverArt);
-        TextView pageNumberView = (TextView) mComicPageView.findViewById(R.id.pageNum);
-        pageNumberView.setText(mPageNum + "/" + mTotalPages);
+        final PhotoView coverArt = (PhotoView) mComicPageView.findViewById(R.id.coverArt);
+        //  TextView pageNumberView = (TextView) mComicPageView.findViewById(R.id.pageNum);
+        //  pageNumberView.setText(mPageNum + "/" + mTotalPages);
+        if (mListener != null) {
+            mListener.setTotalPages(mTotalPages);
+        }
 
-        Picasso.with(getActivity()).load(new File(mCoverArtUrl))
-                .resize(mLongestDim, mLongestDim).centerInside().into(coverArt);
+        coverArt.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            @Override
+            public void onPhotoTap(View view, float v, float v2) {
+                if (mListener != null) {
+                    mListener.toggleView();
+                }
+
+            }
+        });
+
+        if (mListener != null && mListener.getPicasso() != null) {
+            mListener.getPicasso().load(new File(mCoverArtUrl))
+                    .resize(mLongestDim, mLongestDim).centerInside().into(coverArt);
+        }
+
         return mComicPageView;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mListener = (PageTapListener) activity;
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
