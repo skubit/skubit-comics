@@ -285,8 +285,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
         } else if (requestCode == PURCHASE_CODE) {
             mBuyBtn.setText("Purchased");
             mBuyBtn.setEnabled(false);
-            getLoaderManager().restartLoader(LoaderId.COMIC_DETAILS_LOADER, null,
-                    mComicDetailsCallback);
             getLoaderManager().initLoader(mComicData.getCbid().hashCode(), null, mDownloadCallback);
         } else if (requestCode == Utils.AUTHORIZATION_CODE && data != null && !TextUtils
                 .isEmpty(data.getStringExtra("response"))) {
