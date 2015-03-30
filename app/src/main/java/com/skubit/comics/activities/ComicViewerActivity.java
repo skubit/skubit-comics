@@ -59,7 +59,8 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
 
         @Override
         public void onLoadFinished(Loader<CbzResponse> loader, CbzResponse data) {
-            createViewer();
+            getLoaderManager().restartLoader(7000, null, new ComicViewerLoader(ComicViewerActivity.this,
+                    getFragmentManager(), mArchiveFile));
         }
 
         @Override
