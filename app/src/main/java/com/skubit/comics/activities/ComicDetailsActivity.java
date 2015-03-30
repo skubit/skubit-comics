@@ -124,9 +124,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(View v) {
-                    getLoaderManager()
-                            .initLoader(mComicData.getCbid().hashCode(), null, mDownloadCallback);
-
                     try {
                         String userId = AccountSettings.get(ComicDetailsActivity.this)
                                 .retrieveBitId();
