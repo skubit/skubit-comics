@@ -82,8 +82,7 @@
         </receiver>
         <service
                 android:name="com.skubit.comics.DownloadService"
-                android:enabled="true"
-                android:process=":download">
+                android:enabled="true">
         </service>
         <service
                 android:name="com.skubit.comics.LockerUpdaterService"
