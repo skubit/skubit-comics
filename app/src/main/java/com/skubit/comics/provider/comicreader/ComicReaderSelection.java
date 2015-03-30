@@ -1,16 +1,17 @@
 package com.skubit.comics.provider.comicreader;
 
-import com.skubit.comics.provider.base.AbstractSelection;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.skubit.comics.provider.base.AbstractSelection;
+
 /**
  * Selection for the {@code comic_reader} table.
  */
 public class ComicReaderSelection extends AbstractSelection<ComicReaderSelection> {
-
     @Override
     protected Uri baseUri() {
         return ComicReaderColumns.CONTENT_URI;
@@ -20,20 +21,14 @@ public class ComicReaderSelection extends AbstractSelection<ComicReaderSelection
      * Query the given content resolver using this selection.
      *
      * @param contentResolver The content resolver to query.
-     * @param projection      A list of which columns to return. Passing null will return all
-     *                        columns, which is inefficient.
-     * @param sortOrder       How to order the rows, formatted as an SQL ORDER BY clause (excluding
-     *                        the ORDER BY itself). Passing null will use the default sort
-     *                        order, which may be unordered.
-     * @return A {@code ComicReaderCursor} object, which is positioned before the first entry, or
-     * null.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code ComicReaderCursor} object, which is positioned before the first entry, or null.
      */
-    public ComicReaderCursor query(ContentResolver contentResolver, String[] projection,
-            String sortOrder) {
+    public ComicReaderCursor query(ContentResolver contentResolver, String[] projection, String sortOrder) {
         Cursor cursor = contentResolver.query(uri(), projection, sel(), args(), sortOrder);
-        if (cursor == null) {
-            return null;
-        }
+        if (cursor == null) return null;
         return new ComicReaderCursor(cursor);
     }
 

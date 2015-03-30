@@ -32,7 +32,7 @@ public class CatalogLoader extends BaseLoader<ComicBookListDto> {
     public ComicBookListDto loadInBackground() {
         try {
             return mComicService.getRestService().getAllComics(25, mWebCursor,
-                    Utils.isExplicitCatalog());
+                    Utils.isExplicitCatalog(), true, BuildConfig.APPLICATION_ID);
         } catch (Exception e) {
             e.printStackTrace();
             return new ComicBookListDto();

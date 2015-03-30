@@ -1,15 +1,16 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.base.AbstractContentValues;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.net.Uri;
+
+import com.skubit.comics.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code comic} table.
  */
 public class ComicContentValues extends AbstractContentValues {
-
     @Override
     public Uri uri() {
         return ComicColumns.CONTENT_URI;
@@ -19,11 +20,10 @@ public class ComicContentValues extends AbstractContentValues {
      * Update row(s) using the values stored by this object and the given selection.
      *
      * @param contentResolver The content resolver to use.
-     * @param where           The selection to use (can be {@code null}).
+     * @param where The selection to use (can be {@code null}).
      */
-    public int update(ContentResolver contentResolver, ComicSelection where) {
-        return contentResolver.update(uri(), values(), where == null ? null : where.sel(),
-                where == null ? null : where.args());
+    public int update(ContentResolver contentResolver,  ComicSelection where) {
+        return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
     public ComicContentValues putCbid(String value) {

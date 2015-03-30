@@ -1,16 +1,17 @@
 package com.skubit.comics.provider.collectionmapping;
 
-import com.skubit.comics.provider.base.AbstractSelection;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.skubit.comics.provider.base.AbstractSelection;
+
 /**
  * Selection for the {@code collection_mapping} table.
  */
 public class CollectionMappingSelection extends AbstractSelection<CollectionMappingSelection> {
-
     @Override
     protected Uri baseUri() {
         return CollectionMappingColumns.CONTENT_URI;
@@ -20,20 +21,14 @@ public class CollectionMappingSelection extends AbstractSelection<CollectionMapp
      * Query the given content resolver using this selection.
      *
      * @param contentResolver The content resolver to query.
-     * @param projection      A list of which columns to return. Passing null will return all
-     *                        columns, which is inefficient.
-     * @param sortOrder       How to order the rows, formatted as an SQL ORDER BY clause (excluding
-     *                        the ORDER BY itself). Passing null will use the default sort
-     *                        order, which may be unordered.
-     * @return A {@code CollectionMappingCursor} object, which is positioned before the first entry,
-     * or null.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code CollectionMappingCursor} object, which is positioned before the first entry, or null.
      */
-    public CollectionMappingCursor query(ContentResolver contentResolver, String[] projection,
-            String sortOrder) {
+    public CollectionMappingCursor query(ContentResolver contentResolver, String[] projection, String sortOrder) {
         Cursor cursor = contentResolver.query(uri(), projection, sel(), args(), sortOrder);
-        if (cursor == null) {
-            return null;
-        }
+        if (cursor == null) return null;
         return new CollectionMappingCursor(cursor);
     }
 

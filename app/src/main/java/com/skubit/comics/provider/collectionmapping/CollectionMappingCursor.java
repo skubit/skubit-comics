@@ -1,14 +1,15 @@
 package com.skubit.comics.provider.collectionmapping;
 
-import com.skubit.comics.provider.base.AbstractCursor;
+import java.util.Date;
 
 import android.database.Cursor;
+
+import com.skubit.comics.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code collection_mapping} table.
  */
 public class CollectionMappingCursor extends AbstractCursor implements CollectionMappingModel {
-
     public CollectionMappingCursor(Cursor cursor) {
         super(cursor);
     }

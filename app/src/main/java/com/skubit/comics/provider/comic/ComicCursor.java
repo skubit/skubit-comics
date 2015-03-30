@@ -1,14 +1,15 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.base.AbstractCursor;
+import java.util.Date;
 
 import android.database.Cursor;
+
+import com.skubit.comics.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code comic} table.
  */
 public class ComicCursor extends AbstractCursor implements ComicModel {
-
     public ComicCursor(Cursor cursor) {
         super(cursor);
     }

@@ -1,26 +1,26 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.ComicsProvider;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.skubit.comics.provider.ComicsProvider;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 
 /**
  * Columns for the {@code comic} table.
  */
 public class ComicColumns implements BaseColumns {
-
     public static final String TABLE_NAME = "comic";
-
-    public static final Uri CONTENT_URI = Uri
-            .parse(ComicsProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
+    public static final Uri CONTENT_URI = Uri.parse(ComicsProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
     /**
      * Primary key.
      */
     public static final String _ID = BaseColumns._ID;
-
-    public static final String DEFAULT_ORDER = TABLE_NAME + "." + _ID;
 
     public static final String CBID = "cbid";
 
@@ -42,8 +42,11 @@ public class ComicColumns implements BaseColumns {
 
     public static final String LAST_PAGE_READ = "last_page_read";
 
+
+    public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
+
     // @formatter:off
-    public static final String[] ALL_COLUMNS = new String[]{
+    public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             CBID,
             STORY_TITLE,
@@ -59,40 +62,18 @@ public class ComicColumns implements BaseColumns {
     // @formatter:on
 
     public static boolean hasColumns(String[] projection) {
-        if (projection == null) {
-            return true;
-        }
+        if (projection == null) return true;
         for (String c : projection) {
-            if (c == CBID || c.contains("." + CBID)) {
-                return true;
-            }
-            if (c == STORY_TITLE || c.contains("." + STORY_TITLE)) {
-                return true;
-            }
-            if (c == COVER_ART || c.contains("." + COVER_ART)) {
-                return true;
-            }
-            if (c == PUBLISHER || c.contains("." + PUBLISHER)) {
-                return true;
-            }
-            if (c == SERIES || c.contains("." + SERIES)) {
-                return true;
-            }
-            if (c == ISSUE || c.contains("." + ISSUE)) {
-                return true;
-            }
-            if (c == ARCHIVE_FILE || c.contains("." + ARCHIVE_FILE)) {
-                return true;
-            }
-            if (c == IMAGE_DIRECTORY || c.contains("." + IMAGE_DIRECTORY)) {
-                return true;
-            }
-            if (c == IS_DELETED || c.contains("." + IS_DELETED)) {
-                return true;
-            }
-            if (c == LAST_PAGE_READ || c.contains("." + LAST_PAGE_READ)) {
-                return true;
-            }
+            if (c == CBID || c.contains("." + CBID)) return true;
+            if (c == STORY_TITLE || c.contains("." + STORY_TITLE)) return true;
+            if (c == COVER_ART || c.contains("." + COVER_ART)) return true;
+            if (c == PUBLISHER || c.contains("." + PUBLISHER)) return true;
+            if (c == SERIES || c.contains("." + SERIES)) return true;
+            if (c == ISSUE || c.contains("." + ISSUE)) return true;
+            if (c == ARCHIVE_FILE || c.contains("." + ARCHIVE_FILE)) return true;
+            if (c == IMAGE_DIRECTORY || c.contains("." + IMAGE_DIRECTORY)) return true;
+            if (c == IS_DELETED || c.contains("." + IS_DELETED)) return true;
+            if (c == LAST_PAGE_READ || c.contains("." + LAST_PAGE_READ)) return true;
         }
         return false;
     }

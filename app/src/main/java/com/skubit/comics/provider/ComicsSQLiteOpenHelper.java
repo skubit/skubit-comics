@@ -1,12 +1,5 @@
 package com.skubit.comics.provider;
 
-import com.skubit.comics.BuildConfig;
-import com.skubit.comics.provider.accounts.AccountsColumns;
-import com.skubit.comics.provider.collection.CollectionColumns;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
-import com.skubit.comics.provider.comic.ComicColumns;
-import com.skubit.comics.provider.comicreader.ComicReaderColumns;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -16,9 +9,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
-public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
+import com.skubit.comics.BuildConfig;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 
-    public static final String DATABASE_FILE_NAME = "comics.db";
+public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
+    private static final String TAG = ComicsSQLiteOpenHelper.class.getSimpleName();
+
+    public static final String DATABASE_FILE_NAME = "skubitcomics.db";
+    private static final int DATABASE_VERSION = 1;
+    private static ComicsSQLiteOpenHelper sInstance;
+    private final Context mContext;
+    private final ComicsSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
     public static final String SQL_CREATE_TABLE_ACCOUNTS = "CREATE TABLE IF NOT EXISTS "
@@ -45,15 +50,11 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_INDEX_COLLECTION_CID = "CREATE INDEX IDX_COLLECTION_CID "
             + " ON " + CollectionColumns.TABLE_NAME + " ( " + CollectionColumns.CID + " );";
 
-    public static final String SQL_CREATE_INDEX_COLLECTION_NAME =
-            "CREATE INDEX IDX_COLLECTION_NAME "
-                    + " ON " + CollectionColumns.TABLE_NAME + " ( " + CollectionColumns.NAME
-                    + " );";
+    public static final String SQL_CREATE_INDEX_COLLECTION_NAME = "CREATE INDEX IDX_COLLECTION_NAME "
+            + " ON " + CollectionColumns.TABLE_NAME + " ( " + CollectionColumns.NAME + " );";
 
-    public static final String SQL_CREATE_INDEX_COLLECTION_TYPE =
-            "CREATE INDEX IDX_COLLECTION_TYPE "
-                    + " ON " + CollectionColumns.TABLE_NAME + " ( " + CollectionColumns.TYPE
-                    + " );";
+    public static final String SQL_CREATE_INDEX_COLLECTION_TYPE = "CREATE INDEX IDX_COLLECTION_TYPE "
+            + " ON " + CollectionColumns.TABLE_NAME + " ( " + CollectionColumns.TYPE + " );";
 
     public static final String SQL_CREATE_TABLE_COLLECTION_MAPPING = "CREATE TABLE IF NOT EXISTS "
             + CollectionMappingColumns.TABLE_NAME + " ( "
@@ -62,15 +63,11 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
             + CollectionMappingColumns.CBID + " TEXT "
             + " );";
 
-    public static final String SQL_CREATE_INDEX_COLLECTION_MAPPING_CID =
-            "CREATE INDEX IDX_COLLECTION_MAPPING_CID "
-                    + " ON " + CollectionMappingColumns.TABLE_NAME + " ( "
-                    + CollectionMappingColumns.CID + " );";
+    public static final String SQL_CREATE_INDEX_COLLECTION_MAPPING_CID = "CREATE INDEX IDX_COLLECTION_MAPPING_CID "
+            + " ON " + CollectionMappingColumns.TABLE_NAME + " ( " + CollectionMappingColumns.CID + " );";
 
-    public static final String SQL_CREATE_INDEX_COLLECTION_MAPPING_CBID =
-            "CREATE INDEX IDX_COLLECTION_MAPPING_CBID "
-                    + " ON " + CollectionMappingColumns.TABLE_NAME + " ( "
-                    + CollectionMappingColumns.CBID + " );";
+    public static final String SQL_CREATE_INDEX_COLLECTION_MAPPING_CBID = "CREATE INDEX IDX_COLLECTION_MAPPING_CBID "
+            + " ON " + CollectionMappingColumns.TABLE_NAME + " ( " + CollectionMappingColumns.CBID + " );";
 
     public static final String SQL_CREATE_TABLE_COMIC = "CREATE TABLE IF NOT EXISTS "
             + ComicColumns.TABLE_NAME + " ( "
@@ -90,9 +87,8 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_INDEX_COMIC_CBID = "CREATE INDEX IDX_COMIC_CBID "
             + " ON " + ComicColumns.TABLE_NAME + " ( " + ComicColumns.CBID + " );";
 
-    public static final String SQL_CREATE_INDEX_COMIC_ARCHIVE_FILE =
-            "CREATE INDEX IDX_COMIC_ARCHIVE_FILE "
-                    + " ON " + ComicColumns.TABLE_NAME + " ( " + ComicColumns.ARCHIVE_FILE + " );";
+    public static final String SQL_CREATE_INDEX_COMIC_ARCHIVE_FILE = "CREATE INDEX IDX_COMIC_ARCHIVE_FILE "
+            + " ON " + ComicColumns.TABLE_NAME + " ( " + ComicColumns.ARCHIVE_FILE + " );";
 
     public static final String SQL_CREATE_TABLE_COMIC_READER = "CREATE TABLE IF NOT EXISTS "
             + ComicReaderColumns.TABLE_NAME + " ( "
@@ -103,40 +99,13 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
             + ComicReaderColumns.PAGE_IMAGE + " TEXT "
             + " );";
 
-    public static final String SQL_CREATE_INDEX_COMIC_READER_CBID =
-            "CREATE INDEX IDX_COMIC_READER_CBID "
-                    + " ON " + ComicReaderColumns.TABLE_NAME + " ( " + ComicReaderColumns.CBID
-                    + " );";
+    public static final String SQL_CREATE_INDEX_COMIC_READER_CBID = "CREATE INDEX IDX_COMIC_READER_CBID "
+            + " ON " + ComicReaderColumns.TABLE_NAME + " ( " + ComicReaderColumns.CBID + " );";
 
-    public static final String SQL_CREATE_INDEX_COMIC_READER_ARCHIVE_FILE =
-            "CREATE INDEX IDX_COMIC_READER_ARCHIVE_FILE "
-                    + " ON " + ComicReaderColumns.TABLE_NAME + " ( "
-                    + ComicReaderColumns.ARCHIVE_FILE + " );";
-
-    private static final String TAG = ComicsSQLiteOpenHelper.class.getSimpleName();
-
-    private static final int DATABASE_VERSION = 1;
-
-    private static ComicsSQLiteOpenHelper sInstance;
-
-    private final Context mContext;
-
-    private final ComicsSQLiteOpenHelperCallbacks mOpenHelperCallbacks;
+    public static final String SQL_CREATE_INDEX_COMIC_READER_ARCHIVE_FILE = "CREATE INDEX IDX_COMIC_READER_ARCHIVE_FILE "
+            + " ON " + ComicReaderColumns.TABLE_NAME + " ( " + ComicReaderColumns.ARCHIVE_FILE + " );";
 
     // @formatter:on
-
-    private ComicsSQLiteOpenHelper(Context context) {
-        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION);
-        mContext = context;
-        mOpenHelperCallbacks = new ComicsSQLiteOpenHelperCallbacks();
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private ComicsSQLiteOpenHelper(Context context, DatabaseErrorHandler errorHandler) {
-        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION, errorHandler);
-        mContext = context;
-        mOpenHelperCallbacks = new ComicsSQLiteOpenHelperCallbacks();
-    }
 
     public static ComicsSQLiteOpenHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
@@ -155,12 +124,20 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
         return newInstancePostHoneycomb(context);
     }
 
+
     /*
      * Pre Honeycomb.
      */
     private static ComicsSQLiteOpenHelper newInstancePreHoneycomb(Context context) {
         return new ComicsSQLiteOpenHelper(context);
     }
+
+    private ComicsSQLiteOpenHelper(Context context) {
+        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION);
+        mContext = context;
+        mOpenHelperCallbacks = new ComicsSQLiteOpenHelperCallbacks();
+    }
+
 
     /*
      * Post Honeycomb.
@@ -170,11 +147,17 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
         return new ComicsSQLiteOpenHelper(context, new DefaultDatabaseErrorHandler());
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private ComicsSQLiteOpenHelper(Context context, DatabaseErrorHandler errorHandler) {
+        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION, errorHandler);
+        mContext = context;
+        mOpenHelperCallbacks = new ComicsSQLiteOpenHelperCallbacks();
+    }
+
+
     @Override
     public void onCreate(SQLiteDatabase db) {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "onCreate");
-        }
+        if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
         db.execSQL(SQL_CREATE_TABLE_ACCOUNTS);
         db.execSQL(SQL_CREATE_INDEX_ACCOUNTS_BITID);

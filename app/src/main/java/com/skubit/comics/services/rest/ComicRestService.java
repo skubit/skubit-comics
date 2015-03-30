@@ -32,7 +32,9 @@ public interface ComicRestService {
     ComicBookListDto getAllComics(
             @Query("limit") int limit,
             @Query("cursor") String cursor,
-            @Query("isExplicit") boolean isExplicit);
+            @Query("isExplicit") boolean isExplicit,
+            @Query("isReduced") boolean isReduced,
+            @Query("packageName") String packageName);
 
     @GET(baseUri + PathParameter.COMIC_BOOK)
     ComicBookDto getComicBook(@Path("cbid") String cbid);
