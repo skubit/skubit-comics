@@ -15,7 +15,9 @@
 package com.skubit.comics.activities;
 
 import com.skubit.android.billing.IBillingService;
+import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
+import com.skubit.comics.Constants;
 import com.skubit.comics.ControllerCallback;
 import com.skubit.comics.R;
 import com.skubit.comics.UiState;
@@ -75,9 +77,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         R.id.fragment_drawer);
         mNavigationDrawerFragment
                 .setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
-        //TODO: Bind mainnet/testnet
-        bindService(new Intent(
-                        "com.skubit.android.billing.IBillingService.BIND"),
+
+        String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
+                : Constants.IAB_PROD;
+        bindService(new Intent(serviceName + ".billing.IBillingService.BIND"),
                 mServiceConn, Context.BIND_AUTO_CREATE);
 
     }
@@ -153,7 +156,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                     .commit();
             setTitle("Locker");
         } else if (position == 4) {
-            Intent i = new Intent("com.skubit.iab.MAIN");//TODO: Run against test
+            String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
+                    : Constants.IAB_PROD;
+            Intent i = new Intent(serviceName + ".MAIN");
             startActivity(i);
 
         }

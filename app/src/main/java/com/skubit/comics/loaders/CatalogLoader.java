@@ -1,6 +1,8 @@
 package com.skubit.comics.loaders;
 
 import com.skubit.AccountSettings;
+import com.skubit.comics.BuildConfig;
+import com.skubit.comics.Utils;
 import com.skubit.comics.services.ComicService;
 import com.skubit.shared.dto.ComicBookListDto;
 
@@ -29,7 +31,8 @@ public class CatalogLoader extends BaseLoader<ComicBookListDto> {
     @Override
     public ComicBookListDto loadInBackground() {
         try {
-            return mComicService.getRestService().getAllComics(5, mWebCursor, false);
+            return mComicService.getRestService().getAllComics(25, mWebCursor,
+                    Utils.isExplicitCatalog());
         } catch (Exception e) {
             e.printStackTrace();
             return new ComicBookListDto();

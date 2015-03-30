@@ -142,11 +142,6 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
         ArrayList<ComicArchiveInfo> comics = getComicArchives(mRoot);
         for (ComicArchiveInfo info : comics) {
-            /*
-            CoverArtLoader loader = new CoverArtLoader(getBaseContext(), parent, true);
-            loader.registerListener(fileName.hashCode(), this);
-            loader.startLoading();
-            */
             final File archive = new File(info.archiveFile);
 
             File destDir = new File(Constants.SKUBIT_UNARCHIVES, archive.getName());

@@ -63,6 +63,10 @@ public class Utils {
 
     }
 
+    public static boolean isExplicitCatalog() {
+        return "devX".equals(BuildConfig.FLAVOR) || "prodX".equals(BuildConfig.FLAVOR);
+    }
+
     public static boolean doesDownloadExist(String cbid) {
         File downloadDir = new File(Constants.SKUBIT_ARCHIVES_DOWNLOAD, cbid);
         return downloadDir.exists() && downloadDir.listFiles().length > 0 &&

@@ -15,6 +15,7 @@
  */
 package com.skubit.comics.services;
 
+import com.skubit.comics.BuildConfig;
 import com.skubit.comics.Constants;
 import com.skubit.comics.services.rest.ComicRestService;
 
@@ -33,6 +34,11 @@ public class ComicService extends BaseService<ComicRestService> {
 
     @Override
     public String getEndpoint() {
-        return Constants.COMICS_CATALOG_URI;
+        if (BuildConfig.FLAVOR.startsWith("prod")) {
+            return Constants.COMICS_CATALOG_URI_PROD;
+        } else if (BuildConfig.FLAVOR.startsWith("dev")) {
+            return Constants.COMICS_CATALOG_URI_TEST;
+        }
+        return null;
     }
 }

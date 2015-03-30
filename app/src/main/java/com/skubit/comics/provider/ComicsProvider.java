@@ -19,7 +19,7 @@ import java.util.Arrays;
 
 public class ComicsProvider extends BaseContentProvider {
 
-    public static final String AUTHORITY = "com.skubit.comics.provider";
+    public static final String AUTHORITY = BuildConfig.APPLICATION_ID  + ".provider";
 
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 

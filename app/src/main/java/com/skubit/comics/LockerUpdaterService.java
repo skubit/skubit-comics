@@ -26,8 +26,6 @@ public class LockerUpdaterService extends IntentService {
 
     private int count = 0;
 
-    //  private final ComicService mComicService;
-
     public LockerUpdaterService() {
         super("LockerUpdaterService");
     }
@@ -43,9 +41,10 @@ public class LockerUpdaterService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         for (int i = 0; i < 100; i++) {
             LockerItemListDto dto = mLockerService.getRestService()
-                    .getLockerItems("com.skubit.comics", 0, 500, null);
+                    .getLockerItems(BuildConfig.APPLICATION_ID, 0, 500, null, Utils.isExplicitCatalog());
             ArrayList<LockerItemDto> items = dto.getItems();
             if (i == 0) {
                 count = items.size();

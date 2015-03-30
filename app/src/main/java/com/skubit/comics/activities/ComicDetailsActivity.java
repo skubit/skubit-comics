@@ -21,6 +21,7 @@ import com.skubit.android.billing.IBillingService;
 import com.skubit.comics.BillingResponseCodes;
 import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
+import com.skubit.comics.Constants;
 import com.skubit.comics.LockerUpdaterService;
 import com.skubit.comics.R;
 import com.skubit.comics.Utils;
@@ -239,9 +240,10 @@ public class ComicDetailsActivity extends ActionBarActivity {
                     .into(mCoverArt);//350,500
         }
         refreshButtonState();
-        //TODO: bind mainnet/testnet
-        bindService(new Intent(
-                        "com.skubit.android.billing.IBillingService.BIND"),
+
+        String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
+                : Constants.IAB_PROD;
+        bindService(new Intent(serviceName + ".billing.IBillingService.BIND"),
                 mServiceConn, Context.BIND_AUTO_CREATE);
 
         getLoaderManager().initLoader(LoaderId.COMIC_DETAILS_LOADER, null, mComicDetailsCallback);

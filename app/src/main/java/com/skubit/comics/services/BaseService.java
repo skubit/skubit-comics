@@ -29,26 +29,24 @@ public abstract class BaseService<T> {
     private T mRestService;
 
     public BaseService(String account, Context context) {
+        RestAdapter.Builder builder = new RestAdapter.Builder();
+
         CookieInterceptor interceptor = new CookieInterceptor(
                 account, context);
-
-        JacksonConverter jc;
+        builder.setRequestInterceptor(interceptor);
 
         if (BuildConfig.DEBUG) {
+            builder.setLogLevel(RestAdapter.LogLevel.FULL)
+                    .setConverter(new JacksonConverter());
+        } else {
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            jc = new JacksonConverter(mapper);
-        } else {
-            jc = new JacksonConverter();
+            builder.setConverter(new JacksonConverter(mapper));
         }
 
-        final RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getEndpoint())
-                .setConverter(jc)
-                .setRequestInterceptor(interceptor).build();
+        builder.setEndpoint(getEndpoint());
 
-        restAdapter.setLogLevel(RestAdapter.LogLevel.FULL);
-        mRestService = restAdapter.create(getClazz());
+        mRestService = builder.build().create(getClazz());
     }
 
     public abstract Class<T> getClazz();

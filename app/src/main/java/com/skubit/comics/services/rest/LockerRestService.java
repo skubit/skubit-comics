@@ -31,6 +31,7 @@ public interface LockerRestService {
             @Path("application") String application,
             @Query("offset") int offset,
             @Query("limit") int limit,
-            @Query("cursor") String cursor);
+            @Query("cursor") String cursor,
+            @Query("isExplicit") boolean isExplicit);
 
 }

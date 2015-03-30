@@ -20,9 +20,17 @@ import java.io.File;
 
 public class Constants {
 
-    public static final String LOCKER_URI = "https://catalog.skubit.net/rest/v1/locker";
+    public static final String LOCKER_URI_TEST = "https://catalog.skubit.net/rest/v1/locker";
 
-    public static final String COMICS_CATALOG_URI = "https://catalog.skubit.net/rest/comicbooks";
+    public static final String COMICS_CATALOG_URI_TEST = "https://catalog.skubit.net/rest/comicbooks";
+
+    public static final String LOCKER_URI_PROD = "https://catalog.skubit.com/rest/v1/locker";
+
+    public static final String COMICS_CATALOG_URI_PROD = "https://catalog.skubit.com/rest/comicbooks";
+
+    public static final String IAB_PROD = "com.skubit.iab";
+
+    public static final String IAB_TEST = "net.skubit.iab";
 
     public static final File SKUBIT_ARCHIVES = Environment.getExternalStorageDirectory();
 
@@ -33,5 +41,4 @@ public class Constants {
     public static final File SKUBIT_UNARCHIVES = new File(Environment.getExternalStorageDirectory(),
             "SkubitComics/unarchive");
 
-    public static final String ARCHIVE_SCAN_COMPLETE = "com.skubit.comics.ARCHIVE_SCAN_COMPLETE";
 }

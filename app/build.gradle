@@ -11,6 +11,27 @@ android {
         versionCode 2
         versionName "1.1"
     }
+
+    productFlavors {
+        prod {
+            applicationId "com.skubit.comics"
+            versionName="1.1"
+        }
+        dev {
+            applicationId "net.skubit.comics"
+            versionName="1.1-TestNet"
+        }
+
+        prodX {
+            applicationId "com.skubit.comix"
+            versionName="1.1"
+        }
+        devX {
+            applicationId "net.skubit.comix"
+            versionName="1.1-TestNet"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
