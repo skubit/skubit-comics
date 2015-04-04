@@ -33,6 +33,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.widget.DrawerLayout;
@@ -54,6 +55,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
             mService = IBillingService.Stub.asInterface(service);
+            if(doLogin) {
+                doLogin = false;
+                Utils.startAuthorization(MainActivity.this, mService);
+            }
         }
 
         @Override
@@ -78,10 +83,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         mNavigationDrawerFragment
                 .setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
 
-        String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
-                : Constants.IAB_PROD;
-        bindService(new Intent(serviceName + ".billing.IBillingService.BIND"),
-                mServiceConn, Context.BIND_AUTO_CREATE);
+        bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -96,7 +98,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     public boolean onOptionsItemSelected(MenuItem item) {
         int order = item.getOrder();
         if (order == 1) {
-            Utils.startAuthorization(this, mService);
+            if(mService != null) {
+                Utils.startAuthorization(this, mService);
+            } else {
+                if(!Utils.isIabInstalled(getPackageManager())) {
+                    startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
+                }
+            }
         } else if (order == 4) {
             Intent i = new Intent();
             i.setClass(this, DisplayLicensesActivity.class);
@@ -106,12 +114,17 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean doLogin;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Utils.AUTHORIZATION_CODE && data != null && !TextUtils
                 .isEmpty(data.getStringExtra("response"))) {
             Utils.createNewAccount(this, data);
+        } else if(requestCode == Utils.PLAY_CODE) {
+            doLogin = true;
+            bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
         }
     }
 

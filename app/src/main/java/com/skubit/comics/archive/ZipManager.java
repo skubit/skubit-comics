@@ -35,7 +35,7 @@ public final class ZipManager {
 
     private static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 
-    private static final String[] ACCEPTS = new String[]{"jpeg", "jpg", "png"};
+    private static final String[] ACCEPTS = new String[]{"jpeg", "jpg", "png", "webp"};
 
     private static ZipManager sInstance = null;
 

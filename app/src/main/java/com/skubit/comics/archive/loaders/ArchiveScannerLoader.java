@@ -41,7 +41,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
     private static final String[] ACCEPTS = new String[]{"cbz"};
 
-    private static final String[] ACCEPTS_MEDIA = new String[]{"jpeg", "jpg", "png"};
+    private static final String[] ACCEPTS_MEDIA = new String[]{"jpeg", "jpg", "png", "webp"};
 
     private final File mRoot;
 
@@ -94,9 +94,11 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
         try {
             zipfile = new ZipFile(archive);
             for (Enumeration<?> e = zipfile.entries(); e.hasMoreElements(); ) {
-
                 ZipEntry entry = (ZipEntry) e.nextElement();
-                if (!entry.getName().contains("META-INF") && hasExtension(entry.getName())) {
+                if (!entry.getName().contains("META-INF") && !entry.getName().contains("MACOSX")
+                        && entry.getCompressedSize() > 20000
+                        && hasExtension(entry.getName())) {
+
                     compressionEntries.put(entry.getName(), entry);
                 }
             }

@@ -74,7 +74,8 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
             for (Enumeration<?> e = zipfile.entries(); e.hasMoreElements(); ) {
 
                 ZipEntry entry = (ZipEntry) e.nextElement();
-                if (!entry.getName().contains("META-INF") && hasExtension(entry.getName())) {
+                if (!entry.getName().contains("META-INF") && !entry.getName().contains("MACOSX")
+                        && entry.getCompressedSize() > 20000 && hasExtension(entry.getName())) {
                     compressionEntries.put(entry.getName(), entry);
                 }
             }

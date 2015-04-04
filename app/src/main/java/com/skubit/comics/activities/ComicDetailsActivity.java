@@ -58,7 +58,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
     private static final String COMIC_ID = "com.skubit.comics.COMIC_ID";
 
-    private static final int PURCHASE_CODE = 101;
+    private static final int PURCHASE_CODE = 102;
 
     private ComicData mComicData;
 
@@ -78,8 +78,10 @@ public class ComicDetailsActivity extends ActionBarActivity {
         public void onLoadFinished(Loader<LoaderResult<UrlDto>> loader,
                 final LoaderResult<UrlDto> data) {
             if (!TextUtils.isEmpty(data.errorMessage)) {
-                Toast.makeText(getBaseContext(), data.errorMessage, Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getBaseContext(), data.errorMessage, Toast.LENGTH_SHORT).show();
             } else {
+                mBuyBtn.setText("Purchased");
+                mBuyBtn.setEnabled(false);
                 Utils.download(data.result.getUrl(), mComicBookDto, mDownloadManager);
             }
         }
@@ -128,7 +130,12 @@ public class ComicDetailsActivity extends ActionBarActivity {
                         String userId = AccountSettings.get(ComicDetailsActivity.this)
                                 .retrieveBitId();
                         if (TextUtils.isEmpty(userId)) {
-                            Utils.startAuthorization(ComicDetailsActivity.this, mService);
+                            if(!Utils.isIabInstalled(getPackageManager())) {
+                                startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
+                            } else {
+                                //TODO: prompt to install and then we need to restart service
+                                Utils.startAuthorization(ComicDetailsActivity.this, mService);
+                            }
                             return;
                         }
                         purchase();
@@ -174,21 +181,36 @@ public class ComicDetailsActivity extends ActionBarActivity {
     private void purchase() throws IntentSender.SendIntentException, RemoteException {
         String userId = AccountSettings.get(ComicDetailsActivity.this)
                 .retrieveBitId();
-        //TODO: NPE: If reinstall IAB
-        Bundle bundle = mService
-                .getBuyIntent(1, userId, BuildConfig.APPLICATION_ID, mComicBookDto.getCbid(),
-                        "inapp",
-                        "payload");
-        int code = bundle.getInt("RESPONSE_CODE");
-        if (code == BillingResponseCodes.RESULT_OK) {
-            PendingIntent pendingIntent = bundle.getParcelable("BUY_INTENT");
-            startIntentSenderForResult(pendingIntent.getIntentSender(),
-                    PURCHASE_CODE, null, 0, 0, 0);
-        } else if (code == BillingResponseCodes.RESULT_USER_ACCESS) {
-            Utils.startAuthorization(this, mService);
+
+        if(mService != null) {
+            if(TextUtils.isEmpty(userId)) {
+                Utils.startAuthorization(this, mService);
+                return;
+            }
+            Bundle bundle = mService
+                    .getBuyIntent(1, userId, BuildConfig.APPLICATION_ID, mComicBookDto.getCbid(),
+                            "inapp",
+                            "payload");
+            int code = bundle.getInt("RESPONSE_CODE");
+            if (code == BillingResponseCodes.RESULT_OK) {
+                PendingIntent pendingIntent = bundle.getParcelable("BUY_INTENT");
+                startIntentSenderForResult(pendingIntent.getIntentSender(),
+                        PURCHASE_CODE, null, 0, 0, 0);
+            } else if (code == BillingResponseCodes.RESULT_USER_ACCESS) {
+                Utils.startAuthorization(this, mService);
+            }
+        } else {
+            if(!Utils.isIabInstalled(getPackageManager())) {
+                startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
+            }
+            //TODO: prompt to install and then we need to restart service
         }
+
     }
 
+    private void startBillingService() {
+        bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,6 +231,16 @@ public class ComicDetailsActivity extends ActionBarActivity {
             @Override
             public void onServiceConnected(ComponentName className, IBinder service) {
                 mService = IBillingService.Stub.asInterface(service);
+                if(doPurchase) {
+                    doPurchase = false;
+                    try {
+                        purchase();
+                    } catch (IntentSender.SendIntentException e) {
+                        e.printStackTrace();
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
 
@@ -238,10 +270,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
         }
         refreshButtonState();
 
-        String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
-                : Constants.IAB_PROD;
-        bindService(new Intent(serviceName + ".billing.IBillingService.BIND"),
-                mServiceConn, Context.BIND_AUTO_CREATE);
+        startBillingService();
 
         getLoaderManager().initLoader(LoaderId.COMIC_DETAILS_LOADER, null, mComicDetailsCallback);
     }
@@ -260,31 +289,11 @@ public class ComicDetailsActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            int status = data.getIntExtra("RESPONSE_CODE", -1);
-            String message = "";
-            switch (status) {
-                case -1:
-                    message = "There was a problem with the request";
-                case BillingResponseCodes.RESULT_USER_CANCELED:
-                    message = "You canceled your purchase";
-                case BillingResponseCodes.RESULT_BILLING_UNAVAILABLE:
-                    message
-                            = "Your version of the billing library is not supported. Try upgrading Skubit IAB.";
-                case BillingResponseCodes.RESULT_DEVELOPER_ERROR:
-                    message
-                            = "There was a developer error in the request. Try contacting developer for support";
-                case BillingResponseCodes.RESULT_USER_ACCESS:
-
-            }
-        }
         if (resultCode == BillingResponseCodes.RESULT_ORDER_INITIATED) {
             Intent intent = new Intent();
             intent.setClass(this, LockerUpdaterService.class);
             startService(intent);
         } else if (requestCode == PURCHASE_CODE) {
-            mBuyBtn.setText("Purchased");
-            mBuyBtn.setEnabled(false);
             getLoaderManager().initLoader(mComicData.getCbid().hashCode(), null, mDownloadCallback);
         } else if (requestCode == Utils.AUTHORIZATION_CODE && data != null && !TextUtils
                 .isEmpty(data.getStringExtra("response"))) {
@@ -298,8 +307,13 @@ public class ComicDetailsActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
+        } else if(requestCode == Utils.PLAY_CODE) {
+            doPurchase = true;
+            startBillingService();
         }
     }
+
+    private boolean doPurchase;
 
     @Override
     public void onDestroy() {

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_text_color">#FFFFFF</color>
+    <color name="primary_color">#F44336</color>
+    <color name="secondary_color">#FFEBEE</color>
+
+    <color name="primary_button_color">#1976D2</color>
+    <color name="secondary_button_color">#388E3C</color>
+    <color name="selected_nav">#FFEBEE</color>
+    <color name="nav_header">#EF9A9A</color>
+
+    <color name="selected_gray">#ffdbdbdb</color>
+
+    <!--Detail Page-->
+    <color name="background_tab_pressed">#6633B5E5</color>
+
+</resources>

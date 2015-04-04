@@ -163,7 +163,7 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
     @Override
     protected void onStart() {
         super.onStart();
-        mPicasso = new Picasso.Builder(getBaseContext()).loggingEnabled(true).build();
+        mPicasso = new Picasso.Builder(getBaseContext()).build();
 
         final View decorView = getWindow().getDecorView();
         final int uiOptions = View.SYSTEM_UI_FLAG_LOW_PROFILE

@@ -155,7 +155,7 @@ public class DownloadService extends IntentService implements
                         @Override
                         public void onLoadComplete(Loader<ComicBookDto> loader, ComicBookDto data) {
                             updateComicInfo(data, archive);
-                            addToPublisherCollection(data);
+                         //   addToPublisherCollection(data);
                             loadBitmap(data.getCoverArtUrlSmall(), data, archive.getAbsolutePath());
                         }
                     });

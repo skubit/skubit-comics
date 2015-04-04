@@ -17,14 +17,15 @@
             android:paddingBottom="2dp">
 
         <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Title"
                 android:id="@+id/title"
                 android:gravity="center_vertical"
                 android:lines="1"
                 android:ellipsize="end"
-                android:textSize="18sp"/>
+                android:textSize="16sp"
+                android:paddingRight="24dp"/>
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
