@@ -14,7 +14,6 @@
             android:textSize="@dimen/text_small"/>
 
     <View style="@style/Divider"/>
-
     <RelativeLayout
             android:id="@+id/publisher_website_row"
             android:layout_width="match_parent"

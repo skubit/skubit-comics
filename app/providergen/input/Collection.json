@@ -1,27 +1,27 @@
 {
-    "fields": [
-               {
-               "name": "cid",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "name",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "tags",
-               "type": "String"
-               },
-               {
-               "name": "coverArt",
-               "type": "String"
-               },
-               {
-               "name": "type",
-               "type": "String",
-               "index": true,
-               }
-               ]
+  "fields": [
+    {
+      "name": "cid",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "tags",
+      "type": "String"
+    },
+    {
+      "name": "coverArt",
+      "type": "String"
+    },
+    {
+      "name": "type",
+      "type": "String",
+      "index": true,
+    }
+  ]
 }

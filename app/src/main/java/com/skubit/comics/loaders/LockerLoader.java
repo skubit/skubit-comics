@@ -1,7 +1,6 @@
 package com.skubit.comics.loaders;
 
 import com.skubit.AccountSettings;
-import com.skubit.comics.Utils;
 import com.skubit.comics.services.LockerService;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.shared.dto.ErrorMessage;
@@ -36,7 +35,7 @@ public class LockerLoader extends BaseLoader<LoaderResult<LockerItemListDto>> {
         LoaderResult result = new LoaderResult();
         try {
             result.result = mLockerService.getRestService()
-                    .getLockerItems(mApplication, 0, 500, null, Utils.isExplicitCatalog());
+                    .getLockerItems(mApplication, 0, 500, null);
             return result;
         } catch (Exception e) {
             e.printStackTrace();

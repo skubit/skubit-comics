@@ -1,6 +1,12 @@
 package com.skubit.comics.provider;
 
-import java.util.Arrays;
+import com.skubit.comics.BuildConfig;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.base.BaseContentProvider;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 
 import android.content.ContentValues;
 import android.content.UriMatcher;
@@ -9,13 +15,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.util.Log;
 
-import com.skubit.comics.BuildConfig;
-import com.skubit.comics.provider.base.BaseContentProvider;
-import com.skubit.comics.provider.accounts.AccountsColumns;
-import com.skubit.comics.provider.collection.CollectionColumns;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
-import com.skubit.comics.provider.comic.ComicColumns;
-import com.skubit.comics.provider.comicreader.ComicReaderColumns;
+import java.util.Arrays;
 
 public class ComicsProvider extends BaseContentProvider {
     private static final String TAG = ComicsProvider.class.getSimpleName();

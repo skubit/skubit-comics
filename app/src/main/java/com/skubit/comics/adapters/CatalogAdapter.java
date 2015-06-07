@@ -16,10 +16,12 @@ package com.skubit.comics.adapters;
 
 import com.skubit.comics.ClickComicListener;
 import com.skubit.comics.FontManager;
+import com.skubit.comics.ICatalogAdapter;
 import com.skubit.comics.R;
 import com.skubit.currencies.Bitcoin;
 import com.skubit.currencies.Satoshi;
 import com.skubit.shared.dto.ComicBookDto;
+import com.skubit.shared.dto.IssueFormat;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -36,7 +38,9 @@ import java.util.ArrayList;
 /**
  * Adapter for displaying of comic books
  */
-public final class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ComicViewHolder> {
+public final class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ComicViewHolder>
+        implements
+        ICatalogAdapter<ComicBookDto> {
 
     private final Context mContext;
 
@@ -71,21 +75,54 @@ public final class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.Co
     public void onBindViewHolder(final ComicViewHolder holder, int position) {
         ComicBookDto comicBookDto = mComicBookDtos.get(position);
 
-        holder.storyTitle.setText(comicBookDto.getStoryTitle());
+        if (IssueFormat.GraphicNovel.equals(comicBookDto.getIssueFormat())) {
+            holder.storyTitle.setText(comicBookDto.getStoryTitle() + " GN");
+        } else {
+            boolean noVol = "0".equals(comicBookDto.getVolume());
+            boolean noIssue = 0 == comicBookDto.getIssueNumber();
+
+            String issue = null;
+            if (noVol && noIssue) {
+                issue = "";
+            } else if (noVol && !noIssue) {
+                issue = " #" + comicBookDto.getIssueNumber();
+            } else if (!noVol && noIssue) {
+                issue = " Vol " + comicBookDto.getVolume();
+            } else {
+                issue = " Vol " + comicBookDto.getVolume() +
+                        " #"
+                        + comicBookDto.getIssueNumber();
+            }
+
+            holder.storyTitle
+                    .setText(comicBookDto.getStoryTitle() + issue);
+        }
+
         holder.storyTitle.setTypeface(FontManager.REGULAR);
+
         holder.position = position;
         if (comicBookDto.isPurchased()) {
             holder.price.setText("Purchased");
+        } else if (comicBookDto.getSatoshi() == 0 && comicBookDto.getPrice() == 0) {
+            holder.price.setText("Free");
         } else {
-            holder.price.setText(
-                    new Bitcoin(new Satoshi(comicBookDto.getSatoshi())).getDisplay() + " BTC");
+            String currencySymbol = comicBookDto.getCurrencySymbol();
+            if ("USD".equals(currencySymbol)) {
+                holder.price.setText("$" + String.format("%.2f", comicBookDto.getPrice()));
+            } else if ("EUR".equals(currencySymbol)) {
+
+            } else {
+                holder.price.setText(
+                        new Bitcoin(new Satoshi(comicBookDto.getSatoshi())).getDisplay() + " BTC");
+            }
+
         }
 
-        String coverArt = comicBookDto.getCoverArtUrlMedium();
+        String coverArt = comicBookDto.getCoverArtUrl() + "=s300-rw";
 
         if (!TextUtils.isEmpty(coverArt)) {
-            Picasso.with(mContext).load(coverArt)
-                    .resize(280, 0).into(holder.coverArt);//350,500
+            Picasso.with(mContext).load(coverArt).
+                    into(holder.coverArt);//350,500.resize(280, 0).
         }
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <View style="@style/Divider"/>
+    <org.lucasr.twowayview.TwoWayView
+            android:id="@+id/seriesGallery"
+            style="@style/Scroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alwaysDrawnWithCache="true"
+            android:drawingCacheQuality="high"
+            android:orientation="horizontal"
+            android:persistentDrawingCache="scrolling"
+            android:scrollbars="horizontal"/>
+</merge>

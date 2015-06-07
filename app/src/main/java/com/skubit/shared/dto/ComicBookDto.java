@@ -1,9 +1,9 @@
 package com.skubit.shared.dto;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import java.util.Date;
 
 @JsonInclude(Include.NON_NULL)
 public class ComicBookDto implements Dto {
@@ -15,30 +15,26 @@ public class ComicBookDto implements Dto {
 	
 	private boolean approved;
 	
+	private String artist;
+
 	private String cbid;
 
 	private String contactEmail;
 
-	private String coverArtUrlLarge;
-	
-	private String coverArtUrlMedium;
-
-	private String coverArtUrlSmall;
+	private String coverArtUrl;
 
 	private String currencySymbol;//USD/EUR/BTC
 
 	private String description;
-	
-	private String iconUrl;
-	
-	private boolean isExplicit;
+
+	private String genre;
 	
 	private int issueNumber;
-	
+
 	private int numPages;
-	
+
 	private String packageName;
-	
+
 	private double price;
 	
 	private Date publishDate;
@@ -61,38 +57,88 @@ public class ComicBookDto implements Dto {
 	
 	private String vendorId;
 	
+	private String volume;
+	
 	private String website;
+	
+	private String writer;
+	
+	private IssueFormat issueFormat;
+	
+	private Language language;
+	
+	private DeliveryFormat deliveryFormat;
+	
+	private AgeRating ageRating;
+	
+	private IssueFrequency issueFrequency;
+
+	public IssueFormat getIssueFormat() {
+		return issueFormat;
+	}
+
+	public void setIssueFormat(IssueFormat issueFormat) {
+		this.issueFormat = issueFormat;
+	}
+
+	public Language getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(Language language) {
+		this.language = language;
+	}
+
+	public DeliveryFormat getDeliveryFormat() {
+		return deliveryFormat;
+	}
+
+	public void setDeliveryFormat(DeliveryFormat deliveryFormat) {
+		this.deliveryFormat = deliveryFormat;
+	}
+
+	public AgeRating getAgeRating() {
+		return ageRating;
+	}
+
+	public void setAgeRating(AgeRating ageRating) {
+		this.ageRating = ageRating;
+	}
+
+	public IssueFrequency getIssueFrequency() {
+		return issueFrequency;
+	}
+
+	public void setIssueFrequency(IssueFrequency issueFrequency) {
+		this.issueFrequency = issueFrequency;
+	}
+
+	public String getArtist() {
+		return artist;
+	}
 	
 	public String getCbid() {
 		return cbid;
 	}
-
+	
 	public String getContactEmail() {
 		return contactEmail;
 	}
 
-	public String getCoverArtUrlLarge() {
-		return coverArtUrlLarge;
-	}
-
-	public String getCoverArtUrlMedium() {
-		return coverArtUrlMedium;
-	}
-
-	public String getCoverArtUrlSmall() {
-		return coverArtUrlSmall;
+	public String getCoverArtUrl() {
+		return coverArtUrl;
 	}
 
 	public String getCurrencySymbol() {
 		return currencySymbol;
 	}
-
+	
 	public String getDescription() {
 		return description;
 	}
 
-	public String getIconUrl() {
-		return iconUrl;
+	public String getGenre() {
+		return genre;
 	}
 
 	public int getIssueNumber() {
@@ -143,16 +189,20 @@ public class ComicBookDto implements Dto {
 		return vendorId;
 	}
 
+	public String getVolume() {
+		return volume;
+	}
+
 	public String getWebsite() {
 		return website;
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public String getWriter() {
+		return writer;
 	}
 
-	public boolean isExplicit() {
-		return isExplicit;
+	public boolean isApproved() {
+		return approved;
 	}
 
 	public boolean isPublished() {
@@ -167,6 +217,10 @@ public class ComicBookDto implements Dto {
 		this.approved = isApproved;
 	}
 
+	public void setArtist(String artist) {
+		this.artist = artist;
+	}
+
 	public void setCbid(String cbid) {
 		this.cbid = cbid;
 	}
@@ -175,16 +229,8 @@ public class ComicBookDto implements Dto {
 		this.contactEmail = contactEmail;
 	}
 
-	public void setCoverArtUrlLarge(String coverArtUrlLarge) {
-		this.coverArtUrlLarge = coverArtUrlLarge;
-	}
-
-	public void setCoverArtUrlMedium(String coverArtUrlMedium) {
-		this.coverArtUrlMedium = coverArtUrlMedium;
-	}
-
-	public void setCoverArtUrlSmall(String coverArtUrlSmall) {
-		this.coverArtUrlSmall = coverArtUrlSmall;
+	public void setCoverArtUrl(String coverArtUrl) {
+		this.coverArtUrl = coverArtUrl;
 	}
 
 	public void setCurrencySymbol(String currencySymbol) {
@@ -195,12 +241,8 @@ public class ComicBookDto implements Dto {
 		this.description = description;
 	}
 
-	public void setExplicit(boolean isExplicit) {
-		this.isExplicit = isExplicit;
-	}
-
-	public void setIconUrl(String iconUrl) {
-		this.iconUrl = iconUrl;
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 	public void setIssueNumber(int issue) {
@@ -259,7 +301,15 @@ public class ComicBookDto implements Dto {
 		this.vendorId = vendorId;
 	}
 
+	public void setVolume(String volume) {
+		this.volume = volume;
+	}
+
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 }

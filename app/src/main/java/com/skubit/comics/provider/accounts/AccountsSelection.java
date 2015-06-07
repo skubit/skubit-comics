@@ -1,12 +1,10 @@
 package com.skubit.comics.provider.accounts;
 
-import java.util.Date;
+import com.skubit.comics.provider.base.AbstractSelection;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
-
-import com.skubit.comics.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code accounts} table.

@@ -62,7 +62,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         @Override
         public void onReceive(Context context, Intent intent) {
             if (mAccountView != null) {
-
                 mAccountView.displayAccountName(intent.getStringExtra(Intents.ACCOUNT_NAME));
             }
 
@@ -224,6 +223,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         Drawable shop = getResources().getDrawable(R.drawable.ic_shop_black_18dp);
         Drawable publisher = getResources().getDrawable(R.drawable.ic_domain_black_18dp);
         Drawable series = getResources().getDrawable(R.drawable.ic_menu_black_18dp);
+        Drawable genre = getResources().getDrawable(R.drawable.ic_menu_black_18dp);
+        Drawable creator = getResources().getDrawable(R.drawable.ic_create_black_18dp);
         Drawable collections = getResources().getDrawable(R.drawable.ic_view_module_black_18dp);
 
         Drawable myComics = getResources().getDrawable(R.drawable.ic_apps_black_18dp);
@@ -237,11 +238,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         wallet.setAlpha(180);
         publisher.setAlpha(180);
         series.setAlpha(180);
+        genre.setAlpha(180);
+        creator.setAlpha(180);
         collections.setAlpha(180);
 
         items.add(new NavigationItem("Catalog", shop));
-        //   items.add(new NavigationItem("Publisher", publisher));
-        //   items.add(new NavigationItem("Series", series));
+        items.add(new NavigationItem("Publisher", publisher));
+        items.add(new NavigationItem("Series", series));
+        items.add(new NavigationItem("Genre", genre));
+        items.add(new NavigationItem("Creator", creator));
 
         items.add(new NavigationItem("My Comics", myComics));
         items.add(new NavigationItem("My Collections", collections));
@@ -250,7 +255,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return items;
     }
 
-    void selectItem(int position) {
+    public void selectItem(int position) {
         mCurrentSelectedPosition = position;
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
@@ -258,7 +263,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
-        if (position != 4) {//Don't highlight wallet
+        if (position != 8) {//Don't highlight wallet
             ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
         }
 

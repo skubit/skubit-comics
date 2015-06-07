@@ -8,7 +8,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/coverArt"
             android:padding="2dp"
-            android:src="@drawable/empty_photo"/>
+            android:src="@drawable/empty_photo"
+            android:adjustViewBounds="true"/>
 
     <LinearLayout
             android:orientation="vertical"

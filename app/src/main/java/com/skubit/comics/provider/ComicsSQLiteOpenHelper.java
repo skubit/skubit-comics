@@ -1,5 +1,12 @@
 package com.skubit.comics.provider;
 
+import com.skubit.comics.BuildConfig;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -8,13 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
-
-import com.skubit.comics.BuildConfig;
-import com.skubit.comics.provider.accounts.AccountsColumns;
-import com.skubit.comics.provider.collection.CollectionColumns;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
-import com.skubit.comics.provider.comic.ComicColumns;
-import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 
 public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = ComicsSQLiteOpenHelper.class.getSimpleName();

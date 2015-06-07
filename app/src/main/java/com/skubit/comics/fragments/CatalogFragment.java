@@ -16,108 +16,93 @@ package com.skubit.comics.fragments;
 
 import com.skubit.comics.ClickComicListener;
 import com.skubit.comics.ComicData;
+import com.skubit.comics.ComicFilter;
 import com.skubit.comics.ComicGridView;
+import com.skubit.comics.GridRecyclerScrollListener;
 import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
-import com.skubit.comics.RecyclerScrollListener;
 import com.skubit.comics.activities.ComicDetailsActivity;
 import com.skubit.comics.adapters.CatalogAdapter;
 import com.skubit.comics.archive.ArchiveLoadedCallback;
+import com.skubit.comics.loaders.BaseComicServiceLoaderCallbacks;
 import com.skubit.comics.loaders.CatalogLoader;
-import com.skubit.comics.loaders.LoaderId;
 import com.skubit.shared.dto.ComicBookDto;
-import com.skubit.shared.dto.ComicBookListDto;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
-import android.content.Loader;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-public final class CatalogFragment extends Fragment implements
+public final class CatalogFragment extends BaseComicFragment implements
         ClickComicListener, ArchiveLoadedCallback {
 
     private static final String TAG = "CatalogFragment";
 
-    private SwipeRefreshLayout mSwipe;
-
     private CatalogAdapter adapter;
 
-    private String mWebCursor;
-
-    private final LoaderManager.LoaderCallbacks<ComicBookListDto> mCatalogLoader
-            = new LoaderManager.LoaderCallbacks<ComicBookListDto>() {
-
-        @Override
-        public Loader<ComicBookListDto> onCreateLoader(int id, Bundle args) {
-            return new CatalogLoader(getActivity(), mWebCursor);
-        }
-
-        @Override
-        public void onLoadFinished(Loader<ComicBookListDto> loader, ComicBookListDto data) {
-            if (data != null && data.getItems() != null && data.getItems().size() > 0) {
-                mWebCursor = data.getNextWebCursor();
-                adapter.add(data.getItems());
-                adapter.notifyDataSetChanged();
-            }
-            mSwipe.setRefreshing(false);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<ComicBookListDto> loader) {
-            mSwipe.setRefreshing(false);
-        }
-    };
+    private CatalogLoader.Callbacks mCatalogLoader;
 
     public CatalogFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     public static CatalogFragment newInstance() {
         return new CatalogFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        getLoaderManager().restartLoader(LoaderId.CATALOG_LOADER, null, mCatalogLoader);
+    public static CatalogFragment newInstance(ComicFilter filter) {
+        Bundle data = ComicFilter.toBundle(filter);
+
+        CatalogFragment fragment = new CatalogFragment();
+        fragment.setArguments(data);
+        return fragment;
     }
 
     @Override
-    public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_catalog, container, false);
-        mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipe_refresh);
-
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getLoaderManager().restartLoader(LoaderId.CATALOG_LOADER, null, mCatalogLoader);
-            }
-        });
-
-        adapter = new CatalogAdapter(getActivity(), this);
-
-        ComicGridView comicGridView = (ComicGridView) v.findViewById(R.id.list);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ComicGridView comicGridView = (ComicGridView) view.findViewById(R.id.list);
         comicGridView.setHasFixedSize(true);
         comicGridView.setAdapter(adapter);
-        comicGridView.addItemDecoration(new PaddingItemDecoration(20));
+        comicGridView.addItemDecoration(new PaddingItemDecoration(10));
 
         comicGridView
-                .setOnScrollListener(new RecyclerScrollListener(comicGridView.getLayoutManager()) {
-                    @Override
-                    public void onLoadMore() {
-                        if (!TextUtils.isEmpty(mWebCursor)) {
-                            getLoaderManager()
-                                    .restartLoader(LoaderId.CATALOG_LOADER, null, mCatalogLoader);
-                        }
-                    }
-                });
-        return v;
+                .setOnScrollListener(
+                        new GridRecyclerScrollListener(comicGridView.getLayoutManager()) {
+                            @Override
+                            public void onLoadMore() {
+                                if (!TextUtils.isEmpty(mCatalogLoader.mWebCursor)) {
+                                    getLoaderManager()
+                                            .initLoader(mCatalogLoader.mWebCursor.hashCode(), null,
+                                                    mCatalogLoader);
+                                }
+                            }
+                        });
+    }
+
+    @Override
+    public BaseComicServiceLoaderCallbacks getLoaderCallbacks() {
+        return mCatalogLoader;
+    }
+
+    @Override
+    public int getViewResource() {
+        return R.layout.fragment_catalog;
+    }
+
+    @Override
+    public int getLoaderId() {
+        return mComicFilter.hashCode();
+    }
+
+    @Override
+    public void onPostCreate(Bundle savedInstanceState) {
+        adapter = new CatalogAdapter(getActivity(), this);
+        mCatalogLoader = new CatalogLoader.Callbacks(getActivity().getBaseContext(),
+                adapter, mComicFilter);
     }
 
     @Override

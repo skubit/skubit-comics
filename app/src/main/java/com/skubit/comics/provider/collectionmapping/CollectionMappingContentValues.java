@@ -1,11 +1,9 @@
 package com.skubit.comics.provider.collectionmapping;
 
-import java.util.Date;
+import com.skubit.comics.provider.base.AbstractContentValues;
 
 import android.content.ContentResolver;
 import android.net.Uri;
-
-import com.skubit.comics.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code collection_mapping} table.

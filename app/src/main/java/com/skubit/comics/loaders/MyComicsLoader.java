@@ -28,10 +28,10 @@ public class MyComicsLoader extends BaseCursorLoader {
             String selection = args.getString("selection");
             String[] params = args.getStringArray("params");
             return new CursorLoader(mContext, ComicColumns.CONTENT_URI,
-                    null, selection, params, null);
+                    null, selection, params, ComicColumns.DEFAULT_ORDER + " DESC");
         } else {
             return new CursorLoader(mContext, ComicColumns.CONTENT_URI,
-                    null, null, null, null);
+                    null, null, null, ComicColumns.DEFAULT_ORDER + " DESC");
         }
 
     }

@@ -15,8 +15,6 @@
  */
 package com.skubit.comics;
 
-import com.skubit.comics.activities.ComicViewerActivity;
-import com.skubit.comics.activities.MainActivity;
 import com.skubit.comics.archive.loaders.ArchiveScannerLoader;
 import com.skubit.comics.archive.responses.ArchiveScannerResponse;
 import com.skubit.comics.loaders.ComicDetailsLoader;
@@ -29,22 +27,15 @@ import com.skubit.comics.provider.collectionmapping.CollectionMappingContentValu
 import com.skubit.comics.provider.comic.ComicContentValues;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.shared.dto.ComicBookDto;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import android.app.DownloadManager;
 import android.app.IntentService;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -53,8 +44,6 @@ public class DownloadService extends IntentService implements
         Loader.OnLoadCompleteListener<ArchiveScannerResponse> {
 
     private DownloadManager mDownloadManager;
-
-    private Target loadtarget;
 
     public DownloadService() {
         super("DownloadService");
@@ -72,14 +61,27 @@ public class DownloadService extends IntentService implements
         long downloadId = intent.getLongExtra(
                 DownloadManager.EXTRA_DOWNLOAD_ID, 0);
         String fileName = getFileUri(downloadId);
-        if (TextUtils.isEmpty(fileName)) {
+        if (TextUtils.isEmpty(fileName)) {;
             return;
         }
-        File parent = new File(fileName).getParentFile();
+        if (fileName.toLowerCase().endsWith(".cbz")) {
+            File parent = new File(fileName).getParentFile();
+            ArchiveScannerLoader loader = new ArchiveScannerLoader(getBaseContext(), parent, true);
+            loader.registerListener(fileName.hashCode(), this);
+            loader.startLoading();
+        } else if (fileName.toLowerCase().endsWith(".pdf")) {
+            File file = new File(fileName);
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(Uri.fromFile(file), "application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent = Intent.createChooser(target, "Open File");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
 
-        ArchiveScannerLoader loader = new ArchiveScannerLoader(getBaseContext(), parent, true);
-        loader.registerListener(fileName.hashCode(), this);
-        loader.startLoading();
+            }
+        }
     }
 
     private String getFileUri(long downloadId) {
@@ -96,55 +98,10 @@ public class DownloadService extends IntentService implements
         return null;
     }
 
-    public void loadBitmap(String url, final ComicBookDto data, final String archive) {
-        loadtarget = new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(getBaseContext()).setLargeIcon(bitmap)
-                                .setSmallIcon(R.drawable.ic_play_install_white_24dp)
-                                .setContentTitle(data.getStoryTitle())
-                                .setContentText(data.getSummary());
-
-                Intent resultIntent = ComicViewerActivity
-                        .newInstance(data.getStoryTitle(), archive, 0);
-
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
-                stackBuilder.addParentStack(MainActivity.class);
-                stackBuilder.addNextIntent(resultIntent);
-
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                archive.hashCode(),
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
-                mBuilder.setContentIntent(resultPendingIntent);
-                mBuilder.setPriority(Notification.PRIORITY_HIGH);
-                mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
-
-                NotificationManager mNotificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(data.getCbid().hashCode(), mBuilder.build());
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-
-        Picasso.with(getBaseContext()).load(url).into(loadtarget);
-    }
 
     @Override
     public void onLoadComplete(Loader<ArchiveScannerResponse> loader, ArchiveScannerResponse data) {
         if (data != null && data.comicArchives != null && data.comicArchives.size() > 0) {
-
             final File archive = new File(data.comicArchives.get(0).archiveFile);
             String cbid = archive.getParentFile().getName();
 
@@ -155,8 +112,8 @@ public class DownloadService extends IntentService implements
                         @Override
                         public void onLoadComplete(Loader<ComicBookDto> loader, ComicBookDto data) {
                             updateComicInfo(data, archive);
-                         //   addToPublisherCollection(data);
-                            loadBitmap(data.getCoverArtUrlSmall(), data, archive.getAbsolutePath());
+                            //   addToPublisherCollection(data);
+                            Utils.doDownloadNotification(getBaseContext(), data);
                         }
                     });
             comicLoader.startLoading();

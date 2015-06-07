@@ -1,48 +1,48 @@
 {
-    "fields": [
-               {
-               "name": "cbid",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "story_title",
-               "type": "String"
-               },
-               {
-               "name": "cover_art",
-               "type": "String"
-               },
-               {
-               "name": "publisher",
-               "type": "String"
-               },
-               {
-               "name": "series",
-               "type": "String"
-               },
-               {
-               "name": "issue",
-               "type": "Integer"
-               },
-               {
-               "name": "archive_file",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "image_directory",
-               "type": "String"
-               },
-               {
-               "name": "is_deleted",
-               "type": "Boolean"
-               },
-               {
-               "name": "last_page_read",
-               "type": "Integer",
-               "defaultValue": "0"
-               }
+  "fields": [
+    {
+      "name": "cbid",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "story_title",
+      "type": "String"
+    },
+    {
+      "name": "cover_art",
+      "type": "String"
+    },
+    {
+      "name": "publisher",
+      "type": "String"
+    },
+    {
+      "name": "series",
+      "type": "String"
+    },
+    {
+      "name": "issue",
+      "type": "Integer"
+    },
+    {
+      "name": "archive_file",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "image_directory",
+      "type": "String"
+    },
+    {
+      "name": "is_deleted",
+      "type": "Boolean"
+    },
+    {
+      "name": "last_page_read",
+      "type": "Integer",
+      "defaultValue": "0"
+    }
 
-               ]
+  ]
 }

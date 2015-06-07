@@ -1,7 +1,6 @@
 package com.skubit.comics.activities;
 
 import com.skubit.comics.BuildConfig;
-import com.skubit.comics.fragments.DeleteCollectionsFragment;
 import com.skubit.comics.fragments.DeleteFromCollectionFragment;
 import com.skubit.comics.provider.collectionmapping.CollectionMappingSelection;
 import com.skubit.dialog.ProgressActivity;
@@ -31,7 +30,6 @@ public class DeleteFromCollectionActivity extends ProgressActivity<Bundle> {
             replaceFragment(new DeleteFromCollectionFragment(),
                     "DeleteFromCollection");
         }
-
     }
 
     @Override

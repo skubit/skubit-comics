@@ -6,13 +6,13 @@
     <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:id="@+id/coverArt"
             android:padding="2dp"
             android:src="@drawable/empty_photo"/>
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
+    <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="2dp">
 
@@ -22,29 +22,22 @@
                 android:text="Title"
                 android:id="@+id/title"
                 android:gravity="center_vertical"
-                android:lines="1"
+                android:lines="2"
                 android:ellipsize="end"
                 android:textSize="16sp"
-                android:paddingRight="24dp"/>
-        <TextView
-                android:layout_width="match_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="55dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignLeft="@+id/locker_options"/>
+
+        <ImageButton
+                android:id="@+id/locker_options"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:text="Date"
-                android:id="@+id/orderDate"
-                android:lines="1"
-                android:textSize="14sp"/>
-    </LinearLayout>
-    <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-    <ImageButton
-            android:id="@+id/locker_options"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_more_vert_black_18dp"
-            android:background="?android:selectableItemBackground"
-            android:paddingRight="10dp"/>
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_more_vert_black_18dp"
+                android:background="?android:selectableItemBackground"
+                android:paddingRight="10dp"
+                android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 </LinearLayout>

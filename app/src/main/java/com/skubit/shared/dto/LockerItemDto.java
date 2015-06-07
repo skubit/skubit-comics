@@ -8,100 +8,120 @@ import java.util.Date;
 @JsonInclude(Include.NON_NULL)
 public class LockerItemDto implements Dto {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -3559846565234314372L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3559846565234314372L;
+	
+	private String title;
+	
+	private String coverArt;
+	
+	private String userId;
+	
+	private String vendorId;
+	
+	private Date orderDate;
+	
+	private long satoshi;
+	
+	private String productId;
 
-    private String title;
+	private String orderId;
 
-    private String coverArt;
+	private String application;
+	
+	private String volume;
+	
+	private int issue;
+	
+	public String getVolume() {
+		return volume;
+	}
 
-    private String userId;
+	public void setVolume(String volume) {
+		this.volume = volume;
+	}
 
-    private String vendorId;
+	public int getIssue() {
+		return issue;
+	}
 
-    private Date orderDate;
+	public void setIssue(int issue) {
+		this.issue = issue;
+	}
 
-    private long satoshi;
+	public String getProductId() {
+		return productId;
+	}
 
-    private String productId;
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 
-    private String orderId;
+	public String getOrderId() {
+		return orderId;
+	}
 
-    private String application;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
 
-    public String getProductId() {
-        return productId;
-    }
+	public String getApplication() {
+		return application;
+	}
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
+	public void setApplication(String application) {
+		this.application = application;
+	}
 
-    public String getOrderId() {
-        return orderId;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public String getApplication() {
-        return application;
-    }
+	public String getCoverArt() {
+		return coverArt;
+	}
 
-    public void setApplication(String application) {
-        this.application = application;
-    }
+	public void setCoverArt(String coverArt) {
+		this.coverArt = coverArt;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getCoverArt() {
-        return coverArt;
-    }
+	public String getVendorId() {
+		return vendorId;
+	}
 
-    public void setCoverArt(String coverArt) {
-        this.coverArt = coverArt;
-    }
+	public void setVendorId(String vendorId) {
+		this.vendorId = vendorId;
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public Date getOrderDate() {
+		return orderDate;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
 
-    public String getVendorId() {
-        return vendorId;
-    }
+	public long getSatoshi() {
+		return satoshi;
+	}
 
-    public void setVendorId(String vendorId) {
-        this.vendorId = vendorId;
-    }
-
-    public Date getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
-
-    public long getSatoshi() {
-        return satoshi;
-    }
-
-    public void setSatoshi(long satoshi) {
-        this.satoshi = satoshi;
-    }
-
-
+	public void setSatoshi(long satoshi) {
+		this.satoshi = satoshi;
+	}
+	
+	
 }

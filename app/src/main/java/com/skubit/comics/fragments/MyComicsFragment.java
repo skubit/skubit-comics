@@ -20,7 +20,6 @@ import com.skubit.comics.Constants;
 import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
 import com.skubit.comics.activities.ComicViewerActivity;
-import com.skubit.comics.activities.DeleteFromCollectionActivity;
 import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
 import com.skubit.comics.adapters.MyCollectionsComicOptionAdapter;
 import com.skubit.comics.archive.ArchiveLoadedCallback;

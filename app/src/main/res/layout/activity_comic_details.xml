@@ -12,7 +12,8 @@
     <ScrollView
             android:id="@+id/scrollView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -27,25 +28,35 @@
                     layout="@layout/details_summary"/>
             <View
                     android:id="@+id/view1"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:background="@color/primary_color"/>
 
             <View style="@style/Divider"/>
-
             <include
                     android:id="@+id/details_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     layout="@layout/details_text"/>
 
             <View style="@style/Divider"/>
-
-            <include
-                    android:id="@+id/details_publisher"
+            <org.lucasr.twowayview.TwoWayView
+                    android:id="@+id/gridview"
+                    style="@style/Scroll"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    layout="@layout/details_publisher"/>
+                    android:alwaysDrawnWithCache="true"
+                    android:drawingCacheQuality="high"
+                    android:orientation="horizontal"
+                    android:persistentDrawingCache="scrolling"
+                    android:scrollbars="horizontal"/>
+
+            <include
+                    android:id="@+id/similar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    layout="@layout/details_similar"/>
+
         </LinearLayout>
     </ScrollView>
 

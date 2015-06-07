@@ -11,14 +11,16 @@
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/coverArt"
                 android:layout_weight="1"
                 android:padding="5dp"
-                android:src="@drawable/empty_photo"/>
+                android:src="@drawable/empty_photo"
+                android:adjustViewBounds="true"/>
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:id="@+id/button_bottom"
@@ -31,10 +33,11 @@
                     android:layout_height="wrap_content"
                     android:text="Title"
                     android:id="@+id/title"
-                    android:lines="2"
+                    android:lines="3"
                     android:ellipsize="end"
                     android:textSize="14sp"
                     android:layout_weight=".7"
+                    android:paddingBottom="5dp"
                     />
             <ImageButton
                     android:id="@+id/my_comics_options"

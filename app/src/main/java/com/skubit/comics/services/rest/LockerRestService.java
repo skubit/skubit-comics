@@ -26,12 +26,14 @@ public interface LockerRestService {
 
     public static final String baseUri = "/";
 
+    @GET(baseUri + PathParameter.LOCKER_ITEM_EXIST)
+    Boolean itemExists(@Path("cbid") String cbid);
+
     @GET(baseUri + PathParameter.LOCKER_ITEMS)
     LockerItemListDto getLockerItems(
             @Path("application") String application,
             @Query("offset") int offset,
             @Query("limit") int limit,
-            @Query("cursor") String cursor,
-            @Query("isExplicit") boolean isExplicit);
+            @Query("cursor") String cursor);
 
 }

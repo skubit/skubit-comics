@@ -14,7 +14,6 @@
  */
 package com.skubit.comics.fragments;
 
-import com.bumptech.glide.Glide;
 import com.skubit.comics.PageTapListener;
 import com.skubit.comics.R;
 
@@ -110,7 +109,6 @@ public final class ComicPageFragment extends Fragment {
         });
 
         if (mListener != null && mListener.getPicasso() != null) {
-          //  Glide.with(this).load(new File(mCoverArtUrl)).fitCenter().into(coverArt);
             mListener.getPicasso().load(new File(mCoverArtUrl))
                     .resize(mLongestDim, mLongestDim).centerInside().into(coverArt);
         }

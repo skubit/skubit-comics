@@ -4,6 +4,7 @@ import com.skubit.AccountSettings;
 import com.skubit.comics.Constants;
 import com.skubit.comics.services.ComicService;
 import com.skubit.dialog.LoaderResult;
+import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ErrorMessage;
 import com.skubit.shared.dto.UrlDto;
 
@@ -20,9 +21,17 @@ public class DownloadComicLoader extends BaseLoader<LoaderResult<UrlDto>> {
 
     private final String mCbid;
 
-    public DownloadComicLoader(Context context, String cbid) {
+    private final boolean mIsSample;
+
+    private final ArchiveFormat mArchiveFormat;
+
+    public DownloadComicLoader(Context context, String cbid, boolean isSample,
+            ArchiveFormat format) {
         super(context);
         mCbid = cbid;
+        mIsSample = isSample;
+        mArchiveFormat = format;
+
         String account = AccountSettings.get(context).retrieveBitId();
         mComicService = new ComicService(account, context);
     }
@@ -37,7 +46,9 @@ public class DownloadComicLoader extends BaseLoader<LoaderResult<UrlDto>> {
 
         LoaderResult result = new LoaderResult();
         try {
-            result.result = mComicService.getRestService().getDownloadUrl(mCbid);
+            result.result = mIsSample ? mComicService.getRestService()
+                    .getSampleDownload(mCbid, mArchiveFormat) :
+                    mComicService.getRestService().getDownloadUrl(mCbid, mArchiveFormat);
 
             File rootDir = new File(Constants.SKUBIT_ARCHIVES_DOWNLOAD,
                     mCbid);

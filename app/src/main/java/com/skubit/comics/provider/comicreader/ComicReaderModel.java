@@ -2,8 +2,6 @@ package com.skubit.comics.provider.comicreader;
 
 import com.skubit.comics.provider.base.BaseModel;
 
-import java.util.Date;
-
 /**
  * Data model for the {@code comic_reader} table.
  */

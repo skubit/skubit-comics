@@ -16,26 +16,21 @@
 package com.skubit.comics.fragments;
 
 import com.skubit.comics.BuildConfig;
-import com.skubit.comics.Constants;
 import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
-import com.skubit.comics.Utils;
 import com.skubit.comics.activities.ComicViewerActivity;
+import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.adapters.LockerAdapter;
 import com.skubit.comics.adapters.LockerOptionAdapter;
-import com.skubit.comics.loaders.DownloadComicLoader;
 import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.LockerLoader;
 import com.skubit.comics.provider.comic.ComicCursor;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.shared.dto.LockerItemListDto;
-import com.skubit.shared.dto.UrlDto;
 
-import android.app.DownloadManager;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -49,12 +44,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
-
-import java.io.File;
 
 public class LockerFragment extends Fragment implements ItemClickListener {
-
+/*
     private final LoaderManager.LoaderCallbacks<LoaderResult<UrlDto>> mDownloadCallback
             = new LoaderManager.LoaderCallbacks<LoaderResult<UrlDto>>() {
 
@@ -67,7 +59,7 @@ public class LockerFragment extends Fragment implements ItemClickListener {
             mCbid = args.getString("cbid");
             mTitle = args.getString("title");
 
-            return new DownloadComicLoader(getActivity().getBaseContext(), mCbid);
+            return new DownloadComicLoader(getActivity().getBaseContext(), mCbid, false, null);
         }
 
         @Override
@@ -79,7 +71,7 @@ public class LockerFragment extends Fragment implements ItemClickListener {
                 Toast.makeText(getActivity().getBaseContext(), data.errorMessage,
                         Toast.LENGTH_SHORT).show();
             } else {
-                Utils.download(data.result.getUrl(), mCbid, mTitle, null, mDownloadManager);
+                Utils.download(data.result.getUrl(), mCbid, mTitle, null, ArchiveFormat.CBZ, mDownloadManager);
             }
         }
 
@@ -88,7 +80,7 @@ public class LockerFragment extends Fragment implements ItemClickListener {
 
         }
     };
-
+*/
     private final LoaderManager.LoaderCallbacks<LoaderResult<LockerItemListDto>> mCatalogLoader
             = new LoaderManager.LoaderCallbacks<LoaderResult<LockerItemListDto>>() {
 
@@ -119,10 +111,6 @@ public class LockerFragment extends Fragment implements ItemClickListener {
     private SwipeRefreshLayout mSwipe;
 
     private LockerAdapter adapter;
-
-    private File getDownloadFile(String cbid) {
-        return new File(Constants.SKUBIT_ARCHIVES_DOWNLOAD, cbid).listFiles()[0];
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -179,7 +167,10 @@ public class LockerFragment extends Fragment implements ItemClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {//Download
-                    getLoaderManager().initLoader(cbid.hashCode(), bundle, mDownloadCallback);
+                    startActivity(DownloadDialogActivity
+                            .newInstance(cbid, bundle.getString("title"), false));
+
+                //    getLoaderManager().initLoader(cbid.hashCode(), bundle, mDownloadCallback);
                 } else if (position == 1) {//Open
                     if (c != null && c.getCount() > 0) {
                         c.moveToFirst();

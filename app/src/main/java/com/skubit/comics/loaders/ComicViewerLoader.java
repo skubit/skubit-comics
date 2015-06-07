@@ -21,7 +21,7 @@ public class ComicViewerLoader implements LoaderManager.LoaderCallbacks<Cursor> 
 
     private FragmentManager mFragmentManager;
 
-    private ComicViewerAdapter mAdapter;
+    private ComicViewerAdapter mComicViewerActivity;
 
     public ComicViewerLoader(ComicViewerActivity activity, FragmentManager fragmentManager,
             String archiveFile) {
@@ -39,18 +39,18 @@ public class ComicViewerLoader implements LoaderManager.LoaderCallbacks<Cursor> 
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-            mContext.resetAdapter(mAdapter);
+        if (mComicViewerActivity != null) {
+            mComicViewerActivity.notifyDataSetChanged();
+            mContext.resetAdapter(mComicViewerActivity);
         } else {
-            mAdapter = new ComicViewerAdapter(mContext, mFragmentManager, data);
-            mContext.resetAdapter(mAdapter);
+            mComicViewerActivity = new ComicViewerAdapter(mContext, mFragmentManager, data);
+            mContext.resetAdapter(mComicViewerActivity);
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mAdapter = null;
+        mComicViewerActivity = null;
         mContext = null;
         mFragmentManager = null;
     }

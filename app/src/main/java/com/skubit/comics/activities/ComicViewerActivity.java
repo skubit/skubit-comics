@@ -25,6 +25,7 @@ import com.skubit.comics.archive.responses.CbzResponse;
 import com.skubit.comics.loaders.ComicViewerLoader;
 import com.skubit.comics.loaders.UpdateCurrentPageLoader;
 import com.squareup.picasso.Picasso;
+import com.xgc1986.parallaxPagerTransformer.ParallaxPagerTransformer;
 
 import android.app.LoaderManager;
 import android.content.Intent;
@@ -137,6 +138,8 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
         mPager = (ViewPager) findViewById(R.id.pager);
         mPager.setPageMargin((int) getResources().getDimension(R.dimen.horizontal_page_margin));
         mPager.setOffscreenPageLimit(2);
+        mPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.coverArt));
+
 
         mSlider = (Slider) findViewById(R.id.slider);
 

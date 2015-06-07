@@ -22,11 +22,11 @@ public class Constants {
 
     public static final String LOCKER_URI_TEST = "https://catalog.skubit.net/rest/v1/locker";
 
-    public static final String COMICS_CATALOG_URI_TEST = "https://catalog.skubit.net/rest/comicbooks";
+    public static final String COMICS_CATALOG_URI_TEST = "https://catalog.skubit.net/rest/v1/comics";
 
     public static final String LOCKER_URI_PROD = "https://catalog.skubit.com/rest/v1/locker";
 
-    public static final String COMICS_CATALOG_URI_PROD = "https://catalog.skubit.com/rest/comicbooks";
+    public static final String COMICS_CATALOG_URI_PROD = "https://catalog.skubit.com/rest/v1/comics";
 
     public static final String IAB_PROD = "com.skubit.iab";
 

@@ -20,8 +20,8 @@ public class DeleteFromCollectionFragment extends DefaultFragment {
             Bundle savedInstanceState) {
         View v = View.inflate(getActivity(), R.layout.fragment_delete_from_collection, null);
 
-       mDeleteBtn = (ButtonFlat) v.findViewById(R.id.deleteBtn);
-       mDeleteBtn.setOnClickListener(new View.OnClickListener() {
+        mDeleteBtn = (ButtonFlat) v.findViewById(R.id.deleteBtn);
+        mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCallbacks.load(new Bundle());

@@ -1,22 +1,22 @@
 {
-    "fields": [
-               {
-               "name": "cbid",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "archive_file",
-               "type": "String",
-               "index": true,
-               },
-               {
-               "name": "page",
-               "type": "Integer"
-               },
-               {
-               "name": "page_image",
-               "type": "String"
-               },
-               ]
+  "fields": [
+    {
+      "name": "cbid",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "archive_file",
+      "type": "String",
+      "index": true,
+    },
+    {
+      "name": "page",
+      "type": "Integer"
+    },
+    {
+      "name": "page_image",
+      "type": "String"
+    },
+  ]
 }

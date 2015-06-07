@@ -42,11 +42,12 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
     public void onBindViewHolder(LockerItemViewHolder holder, int position) {
         LockerItemDto lockerItemDto = mLockerItemsDtos.get(position);
 
-        holder.storyTitle.setText(lockerItemDto.getTitle());
+        holder.storyTitle.setText(lockerItemDto.getTitle()
+                + " Vol." + lockerItemDto.getVolume() + " #" + lockerItemDto.getIssue());
         holder.storyTitle.setTypeface(FontManager.REGULAR);
         holder.cbid = lockerItemDto.getProductId();
 
-        String coverArt = lockerItemDto.getCoverArt();
+        String coverArt = lockerItemDto.getCoverArt() +"=-rw";
 
         if (!TextUtils.isEmpty(coverArt)) {
             Picasso.with(mContext).load(coverArt)
@@ -60,7 +61,7 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
     }
 
     public void add(ArrayList<LockerItemDto> lockerItemsDtos) {
-        mLockerItemsDtos = lockerItemsDtos;
+        mLockerItemsDtos.addAll(lockerItemsDtos);
     }
 
     public class LockerItemViewHolder extends RecyclerView.ViewHolder {
@@ -79,10 +80,11 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle data = new Bundle();
-                    data.putString("cbid", cbid);
-                    data.putString("title", storyTitle.getText().toString());
-                    mItemClickListener.onClickOption(v, data);
+
+              //      Bundle data = new Bundle();
+              //      data.putString("cbid", cbid);
+              //      data.putString("title", storyTitle.getText().toString());
+              //      mItemClickListener.onClickOption(v, data);
                 }
             });
 

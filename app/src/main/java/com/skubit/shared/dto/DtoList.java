@@ -1,7 +1,10 @@
 package com.skubit.shared.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class DtoList<T> implements Dto {
 
     /**

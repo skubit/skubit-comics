@@ -30,7 +30,6 @@ public class DeleteCollectionsFragment extends DefaultFragment {
        mDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
                 mCallbacks.load(getArguments());
             }
         });
