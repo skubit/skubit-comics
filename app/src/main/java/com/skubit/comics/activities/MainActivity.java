@@ -19,6 +19,7 @@ import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
 import com.skubit.comics.Constants;
 import com.skubit.comics.ControllerCallback;
+import com.skubit.comics.OrderReceiver;
 import com.skubit.comics.R;
 import com.skubit.comics.UiState;
 import com.skubit.comics.Utils;
@@ -40,6 +41,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -78,6 +80,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     private int mCurrentPosition;
 
+    private OrderReceiver mOrderReceiver;
+
+    private IntentFilter mIntentFilter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +102,25 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
         if("com.skubit.comics.MY_COMICS".equals(getIntent().getAction())) {
             mNavigationDrawerFragment.selectItem(5);
+            getIntent().setAction(null);
+        } else if("com.skubit.comics.MY_LOCKER".equals(getIntent().getAction())) {
+            mNavigationDrawerFragment.selectItem(7);
+            getIntent().setAction(null);
         }
+
+        mOrderReceiver = new OrderReceiver();
+        mIntentFilter = new IntentFilter(OrderReceiver.ACTION);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mOrderReceiver, mIntentFilter);
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mOrderReceiver);
     }
 
     @Override
@@ -208,6 +232,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         return getFragmentManager().findFragmentByTag(tag) != null;
     }
 
+    
     private void showFragment(Fragment targetFragment, String tag, int position) {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction().setTransition(
@@ -217,17 +242,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         Fragment f = fragments[position];
 
         if(f == null) {
-            System.out.println("foo - f is null: " + position + ", " + tag);
             addFragmentToCache(targetFragment, tag, position);
             if(isFragmentInCache(tag)) {
-                System.out.println("foo - show in cache: " + position + ", " + tag);
                 transaction.show(fragments[position]);
             } else {
-                System.out.println("foo - add: " + position + ", " + tag);
                 transaction.add(R.id.container, fragments[position], tag);
             }
         } else {
-            System.out.println("foo - frag - show: " + position + ", " + tag);
             transaction.show(fragments[position]);
         }
 
@@ -238,12 +259,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         for(int i = 0; i < fragments.length; i++) {
             if(i != visPosition) {
                 if(fragments[i] != null) {
-                    System.out.println("foo - found frag1 - hide" + i + ", " + fragments[i].getTag());
                     transaction.hide(fragments[i]);
                 } else {
                     Fragment fragment = getFragmentManager().findFragmentByTag(fragmentTags[i]);
                     if(fragment != null) {
-                        System.out.println("foo - found frag2 - hide" + i);
                         transaction.hide(fragment);
                     }
                 }

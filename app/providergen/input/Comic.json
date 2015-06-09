@@ -10,12 +10,51 @@
       "type": "String"
     },
     {
+      "name": "archive_format",
+      "type": "String",
+      "index": true,
+    },
+    {
+       "name": "is_sample",
+       "type": "Boolean",
+       "index": true,
+    },
+    {
+       "name": "download_date",
+       "type": "Date",
+       "index": true,
+    },
+    {
+       "name": "age_rating",
+       "type": "String",
+       "index": true,
+     },
+     {
+       "name": "genre",
+       "type": "String",
+       "index": true,
+     },
+     {
+       "name": "language",
+       "type": "String",
+       "index": true,
+    },
+    {
+       "name": "access_date",
+       "type": "Date",
+       "index": true,
+    },
+    {
       "name": "cover_art",
       "type": "String"
     },
     {
       "name": "publisher",
       "type": "String"
+    },
+    {
+       "name": "volume",
+       "type": "String"
     },
     {
       "name": "series",
@@ -36,7 +75,8 @@
     },
     {
       "name": "is_deleted",
-      "type": "Boolean"
+      "type": "Boolean",
+      "index": true,
     },
     {
       "name": "last_page_read",

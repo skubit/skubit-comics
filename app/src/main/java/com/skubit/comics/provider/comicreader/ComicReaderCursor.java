@@ -16,7 +16,10 @@ public class ComicReaderCursor extends AbstractCursor implements ComicReaderMode
      * Primary key.
      */
     public long getId() {
-        return getLongOrNull(ComicReaderColumns._ID);
+        Long res = getLongOrNull(ComicReaderColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
@@ -24,7 +27,8 @@ public class ComicReaderCursor extends AbstractCursor implements ComicReaderMode
      * Can be {@code null}.
      */
     public String getCbid() {
-        return getStringOrNull(ComicReaderColumns.CBID);
+        String res = getStringOrNull(ComicReaderColumns.CBID);
+        return res;
     }
 
     /**
@@ -32,7 +36,8 @@ public class ComicReaderCursor extends AbstractCursor implements ComicReaderMode
      * Can be {@code null}.
      */
     public String getArchiveFile() {
-        return getStringOrNull(ComicReaderColumns.ARCHIVE_FILE);
+        String res = getStringOrNull(ComicReaderColumns.ARCHIVE_FILE);
+        return res;
     }
 
     /**
@@ -40,7 +45,8 @@ public class ComicReaderCursor extends AbstractCursor implements ComicReaderMode
      * Can be {@code null}.
      */
     public Integer getPage() {
-        return getIntegerOrNull(ComicReaderColumns.PAGE);
+        Integer res = getIntegerOrNull(ComicReaderColumns.PAGE);
+        return res;
     }
 
     /**
@@ -48,6 +54,7 @@ public class ComicReaderCursor extends AbstractCursor implements ComicReaderMode
      * Can be {@code null}.
      */
     public String getPageImage() {
-        return getStringOrNull(ComicReaderColumns.PAGE_IMAGE);
+        String res = getStringOrNull(ComicReaderColumns.PAGE_IMAGE);
+        return res;
     }
 }

@@ -1,6 +1,5 @@
 package com.skubit.comics.adapters;
 
-import com.skubit.comics.activities.ScreenshotsActivity;
 import com.skubit.shared.dto.UrlDto;
 import com.squareup.picasso.Picasso;
 

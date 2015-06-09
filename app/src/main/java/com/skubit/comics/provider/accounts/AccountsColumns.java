@@ -38,9 +38,9 @@ public class AccountsColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == BITID || c.contains("." + BITID)) return true;
-            if (c == TOKEN || c.contains("." + TOKEN)) return true;
-            if (c == DATE || c.contains("." + DATE)) return true;
+            if (c.equals(BITID) || c.contains("." + BITID)) return true;
+            if (c.equals(TOKEN) || c.contains("." + TOKEN)) return true;
+            if (c.equals(DATE) || c.contains("." + DATE)) return true;
         }
         return false;
     }

@@ -7,10 +7,8 @@ import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
 import com.skubit.comics.SeriesFilter;
 import com.skubit.comics.activities.CatalogActivity;
-import com.skubit.comics.adapters.CatalogAdapter;
 import com.skubit.comics.adapters.SeriesAdapter;
 import com.skubit.comics.loaders.BaseComicServiceLoaderCallbacks;
-import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.SeriesLoader;
 import com.skubit.shared.dto.SeriesDto;
 

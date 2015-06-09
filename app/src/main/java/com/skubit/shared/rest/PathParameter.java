@@ -19,6 +19,8 @@ public class PathParameter {
 
     public static final String COMIC_FILTER = "issues/filter";
 
+    public static final String COMICS_OPEN_ORDERS = "orders";
+
     public static final String LOCKER_ITEMS = "items/{application}";
 
     public static final String LOCKER_ITEM_EXIST = "item/{cbid}/exist";

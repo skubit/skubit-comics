@@ -7,7 +7,6 @@ import com.skubit.comics.R;
 import com.skubit.comics.SimilarView;
 import com.skubit.comics.activities.ComicDetailsActivity;
 import com.skubit.comics.adapters.CatalogAdapter;
-import com.skubit.comics.loaders.SearchLoader;
 import com.skubit.comics.loaders.SimilarLoader;
 import com.skubit.shared.dto.ComicBookDto;
 import com.skubit.shared.dto.ComicBookListDto;

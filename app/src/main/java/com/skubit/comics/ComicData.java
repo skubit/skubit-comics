@@ -210,6 +210,26 @@ public class ComicData implements Parcelable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        ComicData comicData = (ComicData) o;
+
+        return cbid.equals(comicData.cbid);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return cbid.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "ComicData{" +
                 "ageRating='" + ageRating + '\'' +

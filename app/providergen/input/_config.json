@@ -7,7 +7,7 @@
   "sqliteOpenHelperClassName": "ComicsSQLiteOpenHelper",
   "sqliteOpenHelperCallbacksClassName": "ComicsSQLiteOpenHelperCallbacks",
   "sqliteUpgradeHelperClassName": "ComicsSQLiteUpgradeHelper",
-  "databaseFileName": "skubitcomics.db",
+  "databaseFileName": "skubitreader.db",
   "databaseVersion": 1,
   "enableForeignKeys": true,
   "useAnnotations": false

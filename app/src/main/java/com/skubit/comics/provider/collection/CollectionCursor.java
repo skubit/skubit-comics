@@ -16,7 +16,10 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Primary key.
      */
     public long getId() {
-        return getLongOrNull(CollectionColumns._ID);
+        Long res = getLongOrNull(CollectionColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
@@ -24,7 +27,8 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Can be {@code null}.
      */
     public String getCid() {
-        return getStringOrNull(CollectionColumns.CID);
+        String res = getStringOrNull(CollectionColumns.CID);
+        return res;
     }
 
     /**
@@ -32,7 +36,8 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Can be {@code null}.
      */
     public String getName() {
-        return getStringOrNull(CollectionColumns.NAME);
+        String res = getStringOrNull(CollectionColumns.NAME);
+        return res;
     }
 
     /**
@@ -40,7 +45,8 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Can be {@code null}.
      */
     public String getTags() {
-        return getStringOrNull(CollectionColumns.TAGS);
+        String res = getStringOrNull(CollectionColumns.TAGS);
+        return res;
     }
 
     /**
@@ -48,7 +54,8 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Can be {@code null}.
      */
     public String getCoverart() {
-        return getStringOrNull(CollectionColumns.COVERART);
+        String res = getStringOrNull(CollectionColumns.COVERART);
+        return res;
     }
 
     /**
@@ -56,6 +63,7 @@ public class CollectionCursor extends AbstractCursor implements CollectionModel 
      * Can be {@code null}.
      */
     public String getType() {
-        return getStringOrNull(CollectionColumns.TYPE);
+        String res = getStringOrNull(CollectionColumns.TYPE);
+        return res;
     }
 }

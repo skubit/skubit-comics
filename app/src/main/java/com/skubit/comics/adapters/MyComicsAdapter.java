@@ -35,10 +35,17 @@ public class MyComicsAdapter extends CursorRecyclerViewAdapter<MyComicsAdapter.M
     public void onBindViewHolder(MyComicsAdapter.MyComicsHolder holder,
             Cursor cursor) {
         ComicCursor c = new ComicCursor(cursor);
+
         holder.storyTitle.setText(c.getStoryTitle());
         holder.storyTitle.setTypeface(FontManager.REGULAR);
         holder.position = c.getPosition();
         holder.cbid = c.getCbid();
+
+        if(c.getIsSample() != null && c.getIsSample()) {
+            holder.showSample();
+        } else {
+            holder.hideSample();
+        }
         String coverArt = c.getCoverArt();
 
         if (!TextUtils.isEmpty(coverArt)) {
@@ -61,15 +68,25 @@ public class MyComicsAdapter extends CursorRecyclerViewAdapter<MyComicsAdapter.M
 
         public final ImageView coverArt;
 
+        private final TextView sampleLabel;
+
         public int position;
 
         public String cbid;
+
+        public void showSample() {
+            sampleLabel.setVisibility(View.VISIBLE);
+        }
+
+        public void hideSample() {
+            sampleLabel.setVisibility(View.INVISIBLE);
+        }
 
         public MyComicsHolder(final View view) {
             super(view);
             storyTitle = (TextView) view.findViewById(R.id.title);
             coverArt = (ImageView) view.findViewById(R.id.coverArt);
-
+            sampleLabel = (TextView) view.findViewById(R.id.sampleLabel);
             View bottom = view.findViewById(R.id.button_bottom);
             /*
             bottom.setOnClickListener(new View.OnClickListener() {

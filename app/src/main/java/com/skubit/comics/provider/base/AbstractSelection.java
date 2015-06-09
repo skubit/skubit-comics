@@ -1,6 +1,7 @@
 package com.skubit.comics.provider.base;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 
 import java.util.ArrayList;
@@ -293,6 +294,16 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
      */
     public int delete(ContentResolver contentResolver) {
         return contentResolver.delete(uri(), sel(), args());
+    }
+
+    /**
+     * Deletes row(s) specified by this selection.
+     *
+     * @param Context the context to use.
+     * @return The number of rows deleted.
+     */
+    public int delete(Context context) {
+        return context.getContentResolver().delete(uri(), sel(), args());
     }
 
     @SuppressWarnings("unchecked")

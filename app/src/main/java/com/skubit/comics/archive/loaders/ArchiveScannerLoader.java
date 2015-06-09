@@ -24,6 +24,7 @@ import com.skubit.comics.archive.responses.ArchiveScannerResponse;
 import com.skubit.comics.loaders.BaseLoader;
 import com.skubit.comics.provider.comic.ComicContentValues;
 import com.skubit.comics.provider.comic.ComicSelection;
+import com.skubit.shared.dto.ArchiveFormat;
 
 import android.content.Context;
 
@@ -31,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -156,9 +158,21 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             ccv.putArchiveFile(info.archiveFile);
             ccv.putStoryTitle(info.storyTitle);
             ccv.putCoverArt(coverArt.getAbsolutePath());
+            ccv.putAccessDate(new Date());
+            ccv.putDownloadDate(new Date());
+
+            String fileName = info.archiveFile.toLowerCase();
+
+            if(fileName.contains("sample")) {
+               ccv.putIsSample(true);
+            }
+
+            if (fileName.endsWith(".cbz")) {
+                ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
+            }
 
             if (ccv.update(mContext.getContentResolver(), ks) != 1) {
-                ccv.putCbid(CodeGenerator.generateCode(6));
+                ccv.putCbid(CodeGenerator.generateCode(10));
                 ccv.insert(mContext.getContentResolver());
             }
         }

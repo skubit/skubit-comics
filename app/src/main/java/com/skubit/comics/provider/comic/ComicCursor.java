@@ -4,6 +4,8 @@ import com.skubit.comics.provider.base.AbstractCursor;
 
 import android.database.Cursor;
 
+import java.util.Date;
+
 /**
  * Cursor wrapper for the {@code comic} table.
  */
@@ -16,7 +18,10 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Primary key.
      */
     public long getId() {
-        return getLongOrNull(ComicColumns._ID);
+        Long res = getLongOrNull(ComicColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
@@ -24,7 +29,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getCbid() {
-        return getStringOrNull(ComicColumns.CBID);
+        String res = getStringOrNull(ComicColumns.CBID);
+        return res;
     }
 
     /**
@@ -32,7 +38,71 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getStoryTitle() {
-        return getStringOrNull(ComicColumns.STORY_TITLE);
+        String res = getStringOrNull(ComicColumns.STORY_TITLE);
+        return res;
+    }
+
+    /**
+     * Get the {@code archive_format} value.
+     * Can be {@code null}.
+     */
+    public String getArchiveFormat() {
+        String res = getStringOrNull(ComicColumns.ARCHIVE_FORMAT);
+        return res;
+    }
+
+    /**
+     * Get the {@code is_sample} value.
+     * Can be {@code null}.
+     */
+    public Boolean getIsSample() {
+        Boolean res = getBooleanOrNull(ComicColumns.IS_SAMPLE);
+        return res;
+    }
+
+    /**
+     * Get the {@code download_date} value.
+     * Can be {@code null}.
+     */
+    public Date getDownloadDate() {
+        Date res = getDateOrNull(ComicColumns.DOWNLOAD_DATE);
+        return res;
+    }
+
+    /**
+     * Get the {@code age_rating} value.
+     * Can be {@code null}.
+     */
+    public String getAgeRating() {
+        String res = getStringOrNull(ComicColumns.AGE_RATING);
+        return res;
+    }
+
+    /**
+     * Get the {@code genre} value.
+     * Can be {@code null}.
+     */
+    public String getGenre() {
+        String res = getStringOrNull(ComicColumns.GENRE);
+        return res;
+    }
+
+    /**
+     * Get the {@code language} value.
+     * Can be {@code null}.
+     */
+    public String getLanguage() {
+        String res = getStringOrNull(ComicColumns.LANGUAGE);
+        return res;
+    }
+
+    /**
+     * Get the {@code access_date} value.
+     * Can be {@code null}.
+     */
+    public Date getAccessDate() {
+        Date res = getDateOrNull(ComicColumns.ACCESS_DATE);
+        return res;
     }
 
     /**
@@ -40,7 +110,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getCoverArt() {
-        return getStringOrNull(ComicColumns.COVER_ART);
+        String res = getStringOrNull(ComicColumns.COVER_ART);
+        return res;
     }
 
     /**
@@ -48,7 +119,17 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getPublisher() {
-        return getStringOrNull(ComicColumns.PUBLISHER);
+        String res = getStringOrNull(ComicColumns.PUBLISHER);
+        return res;
+    }
+
+    /**
+     * Get the {@code volume} value.
+     * Can be {@code null}.
+     */
+    public String getVolume() {
+        String res = getStringOrNull(ComicColumns.VOLUME);
+        return res;
     }
 
     /**
@@ -56,7 +137,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getSeries() {
-        return getStringOrNull(ComicColumns.SERIES);
+        String res = getStringOrNull(ComicColumns.SERIES);
+        return res;
     }
 
     /**
@@ -64,7 +146,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public Integer getIssue() {
-        return getIntegerOrNull(ComicColumns.ISSUE);
+        Integer res = getIntegerOrNull(ComicColumns.ISSUE);
+        return res;
     }
 
     /**
@@ -72,7 +155,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getArchiveFile() {
-        return getStringOrNull(ComicColumns.ARCHIVE_FILE);
+        String res = getStringOrNull(ComicColumns.ARCHIVE_FILE);
+        return res;
     }
 
     /**
@@ -80,7 +164,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public String getImageDirectory() {
-        return getStringOrNull(ComicColumns.IMAGE_DIRECTORY);
+        String res = getStringOrNull(ComicColumns.IMAGE_DIRECTORY);
+        return res;
     }
 
     /**
@@ -88,7 +173,8 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public Boolean getIsDeleted() {
-        return getBooleanOrNull(ComicColumns.IS_DELETED);
+        Boolean res = getBooleanOrNull(ComicColumns.IS_DELETED);
+        return res;
     }
 
     /**
@@ -96,6 +182,7 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      * Can be {@code null}.
      */
     public Integer getLastPageRead() {
-        return getIntegerOrNull(ComicColumns.LAST_PAGE_READ);
+        Integer res = getIntegerOrNull(ComicColumns.LAST_PAGE_READ);
+        return res;
     }
 }

@@ -21,17 +21,16 @@ import com.skubit.android.billing.IBillingService;
 import com.skubit.comics.BillingResponseCodes;
 import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
-import com.skubit.comics.LockerUpdaterService;
+import com.skubit.comics.OrderReceiver;
+import com.skubit.comics.OrderService;
 import com.skubit.comics.R;
 import com.skubit.comics.Utils;
 import com.skubit.comics.adapters.ScreenshotAdapter2;
-import com.skubit.comics.adapters.SimilarAdapter;
 import com.skubit.comics.fragments.SimilarFragment;
 import com.skubit.comics.loaders.ComicDetailsLoader;
 import com.skubit.comics.loaders.DownloadComicLoader;
 import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.ScreenshotsLoader;
-import com.skubit.comics.loaders.SimilarLoader;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.shared.dto.ComicBookDto;
 import com.skubit.shared.dto.IssueFormat;
@@ -47,6 +46,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.Loader;
 import android.content.ServiceConnection;
@@ -202,6 +202,10 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
     private ButtonRectangle mSampleBtn;
 
+    private IntentFilter mIntentFilter;
+
+    private OrderReceiver mOrderReceiver;
+
     public static Intent newInstance(ComicData comicData) {
         Intent i = new Intent();
         i.putExtra(ComicData.EXTRA_NAME, comicData);
@@ -334,7 +338,8 @@ public class ComicDetailsActivity extends ActionBarActivity {
         getLoaderManager().initLoader(LoaderId.COMIC_DETAILS_LOADER, null, mComicDetailsCallback);
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.similar_container, SimilarFragment.newInstance(mComicData.getTitle()), "SIM_CONTAINER")
+                .replace(R.id.similar_container, SimilarFragment.newInstance(mComicData.getTitle()),
+                        "SIM_CONTAINER")
                 .commit();
 
         mSampleBtn.setOnClickListener(new View.OnClickListener() {
@@ -366,6 +371,9 @@ public class ComicDetailsActivity extends ActionBarActivity {
                 startActivity(SearchActivity.newInstance(mComicData.getTitle()));
             }
         });
+
+        mOrderReceiver = new OrderReceiver(); 
+        mIntentFilter = new IntentFilter(OrderReceiver.ACTION);
     }
 
     private void refreshButtonState() {
@@ -393,16 +401,22 @@ public class ComicDetailsActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("foo: code = " + resultCode);
-        if (resultCode == BillingResponseCodes.RESULT_ORDER_INITIATED || resultCode == 0) {
-            System.out.println("foo: startingLockerUpdaterService ");
+        if(resultCode == BillingResponseCodes.RESULT_OK && data != null
+                && (data.getIntExtra("RESPONSE_CODE", -1) == 0)) {
             Intent intent = new Intent();
-            intent.setClass(this, LockerUpdaterService.class);
+            intent.setClass(this, OrderService.class);
+            intent.putExtra(ComicData.EXTRA_NAME, mComicData);
+            startService(intent);
+        }
+        else if (resultCode == BillingResponseCodes.RESULT_ORDER_INITIATED) {
+            //TODO: this requires coming back to app
+            Intent intent = new Intent();
+            intent.setClass(this, OrderService.class);
             intent.putExtra(ComicData.EXTRA_NAME, mComicData);
             startService(intent);
 
             Toast.makeText(getBaseContext(),
-                    "Ordering your comic. Notification will display when processed...",
+                    "Ordering comic. Notification will display when processed...",
                     Toast.LENGTH_LONG).show();
 
         } else if (requestCode == PURCHASE_CODE) {
@@ -450,5 +464,17 @@ public class ComicDetailsActivity extends ActionBarActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.none, R.anim.push_out_right);
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(mOrderReceiver, mIntentFilter);
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mOrderReceiver);
     }
 }

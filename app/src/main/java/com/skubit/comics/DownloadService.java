@@ -18,14 +18,9 @@ package com.skubit.comics;
 import com.skubit.comics.archive.loaders.ArchiveScannerLoader;
 import com.skubit.comics.archive.responses.ArchiveScannerResponse;
 import com.skubit.comics.loaders.ComicDetailsLoader;
-import com.skubit.comics.provider.collection.CollectionColumns;
-import com.skubit.comics.provider.collection.CollectionContentValues;
-import com.skubit.comics.provider.collection.CollectionCursor;
-import com.skubit.comics.provider.collection.CollectionSelection;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingContentValues;
 import com.skubit.comics.provider.comic.ComicContentValues;
 import com.skubit.comics.provider.comic.ComicSelection;
+import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ComicBookDto;
 
 import android.app.DownloadManager;
@@ -39,6 +34,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import java.io.File;
+import java.util.Date;
 
 public class DownloadService extends IntentService implements
         Loader.OnLoadCompleteListener<ArchiveScannerResponse> {
@@ -112,79 +108,11 @@ public class DownloadService extends IntentService implements
                         @Override
                         public void onLoadComplete(Loader<ComicBookDto> loader, ComicBookDto data) {
                             updateComicInfo(data, archive);
-                            //   addToPublisherCollection(data);
-                            Utils.doDownloadNotification(getBaseContext(), data);
+                            Utils.doDownloadedNotification(getBaseContext(), data);
                         }
                     });
             comicLoader.startLoading();
         }
-    }
-
-    private void addToSeriesCollection(ComicBookDto comicBookDto) {
-        if (!TextUtils.isEmpty(comicBookDto.getSummary())) {//TODO: change to series
-            CollectionSelection where = new CollectionSelection();
-            where = where.name(comicBookDto.getPublisher());
-            Cursor c = getBaseContext().getContentResolver().query(
-                    CollectionColumns.CONTENT_URI, null, where.sel(), where.args(), null);
-            if (c.getCount() == 0) {
-                CollectionContentValues cocv = new CollectionContentValues();
-                cocv.putName(comicBookDto.getPublisher());
-                cocv.putName(comicBookDto.getStoryTitle());
-                cocv.putType("series");
-                String cid = CodeGenerator.generateCode(6);
-                cocv.putCid(cid);
-
-                getBaseContext()
-                        .getContentResolver()
-                        .insert(CollectionColumns.CONTENT_URI, cocv.values());
-                addMapping(comicBookDto, cid);
-
-            } else {
-                //TODO: put comic into existing collection
-                CollectionCursor collectionCursor = new CollectionCursor(c);
-                collectionCursor.moveToFirst();
-                addMapping(comicBookDto, collectionCursor.getCid());
-            }
-
-        }
-    }
-
-    private void addToPublisherCollection(ComicBookDto comicBookDto) {
-        if (!TextUtils.isEmpty(comicBookDto.getPublisher())) {
-            CollectionSelection where = new CollectionSelection();
-            where = where.name(comicBookDto.getPublisher());
-            Cursor c = getBaseContext().getContentResolver().query(
-                    CollectionColumns.CONTENT_URI, null, where.sel(), where.args(), null);
-            if (c.getCount() == 0) {
-                CollectionContentValues cocv = new CollectionContentValues();
-                cocv.putName(comicBookDto.getPublisher());
-                cocv.putName(comicBookDto.getStoryTitle());
-                cocv.putType("publisher");
-                String cid = CodeGenerator.generateCode(6);
-                cocv.putCid(cid);
-
-                getBaseContext()
-                        .getContentResolver()
-                        .insert(CollectionColumns.CONTENT_URI, cocv.values());
-                addMapping(comicBookDto, cid);
-
-            } else {
-                //TODO: put comic into existing collection
-                CollectionCursor collectionCursor = new CollectionCursor(c);
-                collectionCursor.moveToFirst();
-                addMapping(comicBookDto, collectionCursor.getCid());
-            }
-
-        }
-    }
-
-    private void addMapping(ComicBookDto comicBookDto, String cid) {
-        CollectionMappingContentValues map = new CollectionMappingContentValues();
-        map.putCbid(comicBookDto.getCbid());
-        map.putCid(cid);
-        getBaseContext()
-                .getContentResolver()
-                .insert(CollectionMappingColumns.CONTENT_URI, map.values());
     }
 
     private void updateComicInfo(ComicBookDto data, File archive) {
@@ -195,8 +123,38 @@ public class DownloadService extends IntentService implements
         ccv.putCbid(data.getCbid());
         ccv.putIssue(data.getIssueNumber());
         ccv.putPublisher(data.getPublisher());
-        // ccv.putSeries(data.get)
         ccv.putArchiveFile(archive.getAbsolutePath());
+        ccv.putDownloadDate(new Date());
+        ccv.putAccessDate(new Date());
+
+        if(!TextUtils.isEmpty(data.getGenre())) {
+            ccv.putGenre(data.getGenre());
+        }
+
+        if(data.getAgeRating() != null) {
+            ccv.putAgeRating(data.getAgeRating().name());
+        }
+
+        if(!TextUtils.isEmpty(data.getLanguage().name())) {
+            ccv.putLanguage(data.getLanguage().name());
+        }
+
+        if(!TextUtils.isEmpty(data.getSeries())) {
+            ccv.putSeries(data.getSeries());
+        }
+
+        if(!TextUtils.isEmpty(data.getVolume())) {
+            ccv.putVolume(data.getVolume());
+        }
+
+        String fileName = archive.getName().toLowerCase();
+        ccv.putIsSample(fileName.contains("sample"));
+
+        if (fileName.endsWith(".cbz")) {
+            ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
+        } else if(fileName.endsWith(".pdf")) {
+            ccv.putArchiveFormat(ArchiveFormat.PDF.name());
+        }
 
         if (ccv.update(getBaseContext().getContentResolver(), ks) != 1) {
             ccv.insert(getBaseContext().getContentResolver());

@@ -115,15 +115,85 @@ public class Utils {
 
     }
 
-    public static void doDownloadNotification(Context context, ComicBookDto data) {
-        doDownloadNotification(context, data.getCbid(), data.getStoryTitle(), data.getSummary());
+    public static void doDownloadedNotification(Context context, ComicBookDto data) {
+        doDownloadedNotification(context, data.getCbid(), data.getStoryTitle());
+    }
+
+    public static void downloadFailedNotification(Context context,
+            String cbid, String storyTitle) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_play_install_white_24dp);
+        Intent resultIntent = new Intent("com.skubit.comics.MY_LOCKER");
+        resultIntent.setClass(context, MainActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(ComicViewerActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        storyTitle.hashCode(),
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        mBuilder.setPriority(Notification.PRIORITY_HIGH);
+        mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
+        mBuilder.setAutoCancel(true);
+        mBuilder.setContentTitle("Download failed: Click to try from locker");
+        mBuilder.setContentText(storyTitle);
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(cbid.hashCode(), mBuilder.build());
+
     }
 
     public static void endOrderNotification(Context context,
-            String cbid, String storyTitle, NotificationCompat.Builder mBuilder) {
+            String cbid, String storyTitle, boolean showDownloadDialog) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_play_install_white_24dp);
+
+        mBuilder.setProgress(100, 100, false);
+        mBuilder.setPriority(Notification.PRIORITY_HIGH);
+        mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
+        mBuilder.setAutoCancel(true);
+        mBuilder.setContentTitle(context.getString(R.string.end_order_message));
+        mBuilder.setContentText(storyTitle);
+
+        if(showDownloadDialog) {
+            Intent resultIntent = DownloadDialogActivity.newInstance(cbid, storyTitle, false);
+
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(ComicViewerActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            storyTitle.hashCode(),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+        }
+
+        NotificationManager mNotificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        mNotificationManager.notify(cbid.hashCode(), mBuilder.build());
+    }
+
+    public static void cancelOrderNotification(Context context,
+            String cbid, String storyTitle) {
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.drawable.ic_play_install_white_24dp);
+
         mBuilder.setProgress(100, 100, false);
         mBuilder.setAutoCancel(true);
-        mBuilder.setContentTitle("Finished processing your order");
+        mBuilder.setContentTitle(context.getString(R.string.order_timeout_notif));
+        mBuilder.setContentText(storyTitle);
 
         Intent resultIntent = DownloadDialogActivity.newInstance(cbid, storyTitle, false);
 
@@ -149,13 +219,12 @@ public class Utils {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_play_install_white_24dp)
-                        .setContentTitle("Processing your order ")
+                        .setContentTitle(context.getString(R.string.processing_order))
                         .setContentText(storyTitle);
 
         mBuilder.setProgress(0, 0, true);
         mBuilder.setPriority(Notification.PRIORITY_HIGH);
         mBuilder.setDefaults(Notification.DEFAULT_LIGHTS);
-
 
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -164,13 +233,12 @@ public class Utils {
         return mBuilder;
     }
 
-    public static void doDownloadNotification(Context context, String cbid, String storyTitle,
-            String summary) {
+    public static void doDownloadedNotification(Context context, String cbid, String storyTitle) {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.drawable.ic_play_install_white_24dp)
-                        .setContentTitle(storyTitle)
-                        .setContentText(summary);
+                        .setContentTitle("Downloaded comic")
+                        .setContentText("Touch to open: " + storyTitle);
 
         Intent resultIntent = new Intent("com.skubit.comics.MY_COMICS");
         resultIntent.setClass(context, MainActivity.class);
@@ -196,7 +264,7 @@ public class Utils {
     }
 
     public static void download(Context context, String uri, String md5, String cbid,
-            String storyTitle, String summary,
+            String storyTitle,
             ArchiveFormat format,
             DownloadManager downloadManager) {
 
@@ -211,8 +279,7 @@ public class Utils {
 
         if (file.exists()) {
             if (doesHashMatch(file, md5)) {
-                System.out.println("foo: md5  matches");
-                doDownloadNotification(context, cbid, storyTitle, summary);
+                doDownloadedNotification(context, cbid, storyTitle);
                 return;
             }
         }
@@ -220,10 +287,9 @@ public class Utils {
         request.setDestinationUri(
                 Uri.fromFile(file));
 
-        if (summary != null) {
-            request.setDescription(summary);
-        }
-        request.setTitle(storyTitle);
+        request.setDescription(storyTitle);
+        request.setTitle(context.getString(R.string.downloading_comic_notif));
+
         downloadManager.enqueue(request);
     }
 
@@ -234,7 +300,6 @@ public class Utils {
                     .toString());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("foo: " + e.getLocalizedMessage());
             return false;
         }
     }
@@ -243,7 +308,15 @@ public class Utils {
             DownloadManager downloadManager) {
         String title = comicBookDto.getStoryTitle() + " Vol."
                 + comicBookDto.getVolume() + " #" + comicBookDto.getIssueNumber();
-        download(context, uri, md5, comicBookDto.getCbid(), title,
-                comicBookDto.getSummary(), ArchiveFormat.CBZ, downloadManager);//TODO: PDF?
+        download(context, uri, md5, comicBookDto.getCbid(), title, ArchiveFormat.CBZ,
+                downloadManager);//TODO: PDF?
+    }
+
+    public static void download(Context context, String uri, String md5, ComicData comicData,
+            DownloadManager downloadManager) {
+        String title = comicData.getTitle() + " Vol."
+                + comicData.getVolume() + " #" + comicData.getIssueNumber();
+        download(context, uri, md5, comicData.getCbid(), title,
+                ArchiveFormat.CBZ, downloadManager);//TODO: PDF?
     }
 }

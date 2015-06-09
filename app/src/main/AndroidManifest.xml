@@ -124,7 +124,7 @@
                 android:enabled="true">
         </service>
         <service
-                android:name="com.skubit.comics.LockerUpdaterService"
+                android:name="com.skubit.comics.OrderService"
                 android:enabled="true">
         </service>
     </application>

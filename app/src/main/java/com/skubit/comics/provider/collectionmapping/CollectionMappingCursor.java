@@ -16,7 +16,10 @@ public class CollectionMappingCursor extends AbstractCursor implements Collectio
      * Primary key.
      */
     public long getId() {
-        return getLongOrNull(CollectionMappingColumns._ID);
+        Long res = getLongOrNull(CollectionMappingColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
@@ -24,7 +27,8 @@ public class CollectionMappingCursor extends AbstractCursor implements Collectio
      * Can be {@code null}.
      */
     public String getCid() {
-        return getStringOrNull(CollectionMappingColumns.CID);
+        String res = getStringOrNull(CollectionMappingColumns.CID);
+        return res;
     }
 
     /**
@@ -32,6 +36,7 @@ public class CollectionMappingCursor extends AbstractCursor implements Collectio
      * Can be {@code null}.
      */
     public String getCbid() {
-        return getStringOrNull(CollectionMappingColumns.CBID);
+        String res = getStringOrNull(CollectionMappingColumns.CBID);
+        return res;
     }
 }

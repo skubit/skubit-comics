@@ -41,10 +41,10 @@ public class ComicReaderColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == CBID || c.contains("." + CBID)) return true;
-            if (c == ARCHIVE_FILE || c.contains("." + ARCHIVE_FILE)) return true;
-            if (c == PAGE || c.contains("." + PAGE)) return true;
-            if (c == PAGE_IMAGE || c.contains("." + PAGE_IMAGE)) return true;
+            if (c.equals(CBID) || c.contains("." + CBID)) return true;
+            if (c.equals(ARCHIVE_FILE) || c.contains("." + ARCHIVE_FILE)) return true;
+            if (c.equals(PAGE) || c.contains("." + PAGE)) return true;
+            if (c.equals(PAGE_IMAGE) || c.contains("." + PAGE_IMAGE)) return true;
         }
         return false;
     }

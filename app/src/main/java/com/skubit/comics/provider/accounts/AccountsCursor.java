@@ -16,7 +16,10 @@ public class AccountsCursor extends AbstractCursor implements AccountsModel {
      * Primary key.
      */
     public long getId() {
-        return getLongOrNull(AccountsColumns._ID);
+        Long res = getLongOrNull(AccountsColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
@@ -24,7 +27,8 @@ public class AccountsCursor extends AbstractCursor implements AccountsModel {
      * Can be {@code null}.
      */
     public String getBitid() {
-        return getStringOrNull(AccountsColumns.BITID);
+        String res = getStringOrNull(AccountsColumns.BITID);
+        return res;
     }
 
     /**
@@ -32,7 +36,8 @@ public class AccountsCursor extends AbstractCursor implements AccountsModel {
      * Can be {@code null}.
      */
     public String getToken() {
-        return getStringOrNull(AccountsColumns.TOKEN);
+        String res = getStringOrNull(AccountsColumns.TOKEN);
+        return res;
     }
 
     /**
@@ -40,6 +45,7 @@ public class AccountsCursor extends AbstractCursor implements AccountsModel {
      * Can be {@code null}.
      */
     public Long getDate() {
-        return getLongOrNull(AccountsColumns.DATE);
+        Long res = getLongOrNull(AccountsColumns.DATE);
+        return res;
     }
 }

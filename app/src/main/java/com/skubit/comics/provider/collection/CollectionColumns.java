@@ -44,11 +44,11 @@ public class CollectionColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == CID || c.contains("." + CID)) return true;
-            if (c == NAME || c.contains("." + NAME)) return true;
-            if (c == TAGS || c.contains("." + TAGS)) return true;
-            if (c == COVERART || c.contains("." + COVERART)) return true;
-            if (c == TYPE || c.contains("." + TYPE)) return true;
+            if (c.equals(CID) || c.contains("." + CID)) return true;
+            if (c.equals(NAME) || c.contains("." + NAME)) return true;
+            if (c.equals(TAGS) || c.contains("." + TAGS)) return true;
+            if (c.equals(COVERART) || c.contains("." + COVERART)) return true;
+            if (c.equals(TYPE) || c.contains("." + TYPE)) return true;
         }
         return false;
     }

@@ -22,7 +22,8 @@ public class DownloadDialogFragment extends DefaultFragment {
 
     private ButtonFlat mDownloadBtn;
 
-    public static DownloadDialogFragment newInstance(String title, ArrayList<ComicFile> comicFiles) {
+    public static DownloadDialogFragment newInstance(String title,
+            ArrayList<ComicFile> comicFiles) {
         Bundle args = new Bundle();
         args.putParcelableArrayList("com.skubit.comics.COMIC_FILES", comicFiles);
         args.putString("com.skubit.comics.TITLE", title);
@@ -42,20 +43,22 @@ public class DownloadDialogFragment extends DefaultFragment {
         mListView.setSelected(true);
         mListView.setClickable(true);
 
-        final ArrayList<ComicFile> comicFiles = getArguments().getParcelableArrayList("com.skubit.comics.COMIC_FILES");
+        final ArrayList<ComicFile> comicFiles = getArguments()
+                .getParcelableArrayList("com.skubit.comics.COMIC_FILES");
         String titleStr = getArguments().getString("com.skubit.comics.TITLE");
         title.setText(titleStr);
 
         ArrayList<String> adapterLabels = new ArrayList<>();
-        for(ComicFile comicFile : comicFiles) {
-            adapterLabels.add(MessageFormat.format("{0} ({1})", comicFile.format, fileSize(comicFile.size)));
+        for (ComicFile comicFile : comicFiles) {
+            adapterLabels.add(MessageFormat
+                    .format("{0} ({1})", comicFile.format, fileSize(comicFile.size)));
         }
 
         final ArrayAdapter<String> mAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_single_choice, adapterLabels);
         mListView.setAdapter(mAdapter);
 
-        if(comicFiles.size() > 0) {
+        if (comicFiles.size() > 0) {
             mListView.setItemChecked(0, true);
         }
 
@@ -81,13 +84,14 @@ public class DownloadDialogFragment extends DefaultFragment {
         return v;
     }
 
-    private static final String[] units = new String[] { "B", "kB", "MB", "GB",};
+    private static final String[] units = new String[]{"B", "kB", "MB", "GB",};
 
     private static String fileSize(long size) {
-        if(size <= 0) {
+        if (size <= 0) {
             return "0";
         }
-        int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
-        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+        int digitGroups = (int) (Math.log10(size) / Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size / Math.pow(1024, digitGroups)) + " "
+                + units[digitGroups];
     }
 }

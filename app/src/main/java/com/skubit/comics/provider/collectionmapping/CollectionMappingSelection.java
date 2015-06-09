@@ -3,6 +3,7 @@ package com.skubit.comics.provider.collectionmapping;
 import com.skubit.comics.provider.base.AbstractSelection;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -42,6 +43,35 @@ public class CollectionMappingSelection extends AbstractSelection<CollectionMapp
      */
     public CollectionMappingCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
+    }
+
+    /**
+     * Query the given content resolver using this selection.
+     *
+     * @param context The context to use for the query.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code CollectionMappingCursor} object, which is positioned before the first entry, or null.
+     */
+    public CollectionMappingCursor query(Context context, String[] projection, String sortOrder) {
+        Cursor cursor = context.getContentResolver().query(uri(), projection, sel(), args(), sortOrder);
+        if (cursor == null) return null;
+        return new CollectionMappingCursor(cursor);
+    }
+
+    /**
+     * Equivalent of calling {@code query(context, projection, null)}.
+     */
+    public CollectionMappingCursor query(Context context, String[] projection) {
+        return query(context, projection, null);
+    }
+
+    /**
+     * Equivalent of calling {@code query(context, projection, null, null)}.
+     */
+    public CollectionMappingCursor query(Context context) {
+        return query(context, null, null);
     }
 
 

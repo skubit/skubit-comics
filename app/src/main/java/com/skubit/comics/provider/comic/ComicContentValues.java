@@ -3,7 +3,10 @@ package com.skubit.comics.provider.comic;
 import com.skubit.comics.provider.base.AbstractContentValues;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
+
+import java.util.Date;
 
 /**
  * Content values wrapper for the {@code comic} table.
@@ -22,6 +25,16 @@ public class ComicContentValues extends AbstractContentValues {
      */
     public int update(ContentResolver contentResolver,  ComicSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
+
+    /**
+     * Update row(s) using the values stored by this object and the given selection.
+     *
+     * @param contentResolver The content resolver to use.
+     * @param where The selection to use (can be {@code null}).
+     */
+    public int update(Context context,  ComicSelection where) {
+        return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
     public ComicContentValues putCbid(String value) {
@@ -44,6 +57,86 @@ public class ComicContentValues extends AbstractContentValues {
         return this;
     }
 
+    public ComicContentValues putArchiveFormat(String value) {
+        mContentValues.put(ComicColumns.ARCHIVE_FORMAT, value);
+        return this;
+    }
+
+    public ComicContentValues putArchiveFormatNull() {
+        mContentValues.putNull(ComicColumns.ARCHIVE_FORMAT);
+        return this;
+    }
+
+    public ComicContentValues putIsSample(Boolean value) {
+        mContentValues.put(ComicColumns.IS_SAMPLE, value);
+        return this;
+    }
+
+    public ComicContentValues putIsSampleNull() {
+        mContentValues.putNull(ComicColumns.IS_SAMPLE);
+        return this;
+    }
+
+    public ComicContentValues putDownloadDate(Date value) {
+        mContentValues.put(ComicColumns.DOWNLOAD_DATE, value == null ? null : value.getTime());
+        return this;
+    }
+
+    public ComicContentValues putDownloadDateNull() {
+        mContentValues.putNull(ComicColumns.DOWNLOAD_DATE);
+        return this;
+    }
+
+    public ComicContentValues putDownloadDate(Long value) {
+        mContentValues.put(ComicColumns.DOWNLOAD_DATE, value);
+        return this;
+    }
+
+    public ComicContentValues putAgeRating(String value) {
+        mContentValues.put(ComicColumns.AGE_RATING, value);
+        return this;
+    }
+
+    public ComicContentValues putAgeRatingNull() {
+        mContentValues.putNull(ComicColumns.AGE_RATING);
+        return this;
+    }
+
+    public ComicContentValues putGenre(String value) {
+        mContentValues.put(ComicColumns.GENRE, value);
+        return this;
+    }
+
+    public ComicContentValues putGenreNull() {
+        mContentValues.putNull(ComicColumns.GENRE);
+        return this;
+    }
+
+    public ComicContentValues putLanguage(String value) {
+        mContentValues.put(ComicColumns.LANGUAGE, value);
+        return this;
+    }
+
+    public ComicContentValues putLanguageNull() {
+        mContentValues.putNull(ComicColumns.LANGUAGE);
+        return this;
+    }
+
+    public ComicContentValues putAccessDate(Date value) {
+        mContentValues.put(ComicColumns.ACCESS_DATE, value == null ? null : value.getTime());
+        return this;
+    }
+
+    public ComicContentValues putAccessDateNull() {
+        mContentValues.putNull(ComicColumns.ACCESS_DATE);
+        return this;
+    }
+
+    public ComicContentValues putAccessDate(Long value) {
+        mContentValues.put(ComicColumns.ACCESS_DATE, value);
+        return this;
+    }
+
     public ComicContentValues putCoverArt(String value) {
         mContentValues.put(ComicColumns.COVER_ART, value);
         return this;
@@ -61,6 +154,16 @@ public class ComicContentValues extends AbstractContentValues {
 
     public ComicContentValues putPublisherNull() {
         mContentValues.putNull(ComicColumns.PUBLISHER);
+        return this;
+    }
+
+    public ComicContentValues putVolume(String value) {
+        mContentValues.put(ComicColumns.VOLUME, value);
+        return this;
+    }
+
+    public ComicContentValues putVolumeNull() {
+        mContentValues.putNull(ComicColumns.VOLUME);
         return this;
     }
 

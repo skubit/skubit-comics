@@ -3,6 +3,7 @@ package com.skubit.comics.provider.comicreader;
 import com.skubit.comics.provider.base.AbstractSelection;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -42,6 +43,35 @@ public class ComicReaderSelection extends AbstractSelection<ComicReaderSelection
      */
     public ComicReaderCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
+    }
+
+    /**
+     * Query the given content resolver using this selection.
+     *
+     * @param context The context to use for the query.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code ComicReaderCursor} object, which is positioned before the first entry, or null.
+     */
+    public ComicReaderCursor query(Context context, String[] projection, String sortOrder) {
+        Cursor cursor = context.getContentResolver().query(uri(), projection, sel(), args(), sortOrder);
+        if (cursor == null) return null;
+        return new ComicReaderCursor(cursor);
+    }
+
+    /**
+     * Equivalent of calling {@code query(context, projection, null)}.
+     */
+    public ComicReaderCursor query(Context context, String[] projection) {
+        return query(context, projection, null);
+    }
+
+    /**
+     * Equivalent of calling {@code query(context, projection, null, null)}.
+     */
+    public ComicReaderCursor query(Context context) {
+        return query(context, null, null);
     }
 
 

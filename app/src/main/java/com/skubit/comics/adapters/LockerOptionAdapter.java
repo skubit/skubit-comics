@@ -2,7 +2,16 @@ package com.skubit.comics.adapters;
 
 public class LockerOptionAdapter extends BaseOptionAdapter {
 
-    private final String[] mItems = new String[]{"Download", "Open"};
+    private static final String[] mAllItems = new String[]{"Download", "Open"};
+
+    private static final String[] mDownloadItems = new String[]{"Download"};
+
+
+    private String[] mItems;
+
+    public LockerOptionAdapter(boolean onlyDownload) {
+        mItems = (onlyDownload) ? mDownloadItems : mAllItems;
+    }
 
     @Override
     public int getCount() {

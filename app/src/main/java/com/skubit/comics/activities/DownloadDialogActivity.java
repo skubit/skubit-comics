@@ -126,7 +126,7 @@ public class DownloadDialogActivity extends ProgressActivity<Bundle> {
                 Toast.makeText(getBaseContext(), data.errorMessage, Toast.LENGTH_SHORT).show();
             } else {
                 Utils.download(getBaseContext(), data.result.getUrl(), md5,  mCbid,
-                        mStoryTitle + (mIsSample ? " - Sample" : ""), "",
+                        mStoryTitle + (mIsSample ? " - Sample" : ""),
                         mArchiveFormat,
                         mDownloadManager);
                 Toast.makeText(getBaseContext(),

@@ -7,7 +7,6 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -56,7 +55,6 @@ public class ScreenshotPageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        System.out.println("foo: Create ScreenshotFragment");
         mComicPageView = inflater.inflate(R.layout.fragment_screenshot_page, container, false);
         mCoverArt = (ImageView) mComicPageView.findViewById(R.id.coverArt);
         Picasso.with(getActivity()).load(mCoverArtUrl + "=s" + mLongestDim + "-rw").into(mCoverArt);

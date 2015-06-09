@@ -60,6 +60,10 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
         return mLockerItemsDtos.size();
     }
 
+    public void clear() {
+        mLockerItemsDtos.clear();
+    }
+
     public void add(ArrayList<LockerItemDto> lockerItemsDtos) {
         mLockerItemsDtos.addAll(lockerItemsDtos);
     }

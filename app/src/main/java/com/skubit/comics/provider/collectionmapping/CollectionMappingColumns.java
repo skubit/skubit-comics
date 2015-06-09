@@ -35,8 +35,8 @@ public class CollectionMappingColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (c == CID || c.contains("." + CID)) return true;
-            if (c == CBID || c.contains("." + CBID)) return true;
+            if (c.equals(CID) || c.contains("." + CID)) return true;
+            if (c.equals(CBID) || c.contains("." + CBID)) return true;
         }
         return false;
     }

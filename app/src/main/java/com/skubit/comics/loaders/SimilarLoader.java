@@ -4,13 +4,10 @@ import com.skubit.AccountSettings;
 import com.skubit.comics.services.ComicService;
 import com.skubit.comics.services.rest.ComicRestService;
 import com.skubit.shared.dto.ComicBookListDto;
-import com.skubit.shared.dto.ImageType;
-import com.skubit.shared.dto.UrlDto;
 
 import android.content.Context;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class SimilarLoader extends BaseLoader<ComicBookListDto> {
 

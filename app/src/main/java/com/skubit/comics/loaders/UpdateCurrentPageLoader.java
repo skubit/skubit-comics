@@ -6,6 +6,7 @@ import com.skubit.comics.provider.comic.ComicSelection;
 import android.content.Context;
 
 import java.io.IOException;
+import java.util.Date;
 
 public class UpdateCurrentPageLoader extends BaseLoader {
 
@@ -31,6 +32,7 @@ public class UpdateCurrentPageLoader extends BaseLoader {
 
         ComicContentValues ccv = new ComicContentValues();
         ccv.putLastPageRead(mCurrentPage);
+        ccv.putAccessDate(new Date());
         return ccv.update(mContext.getContentResolver(), ks);
     }
 }

@@ -18,4 +18,8 @@
     <string name="similar_comics">Similar Comics</string>
 
     <string name="series_image_size">s250-c</string>
+    <string name="processing_order">Waiting to complete order...</string>
+    <string name="end_order_message">Processed order</string>
+    <string name="downloading_comic_notif">Downloading comic...</string>
+    <string name="order_timeout_notif">Order notification timed out</string>
 </resources>
