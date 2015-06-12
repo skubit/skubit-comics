@@ -9,6 +9,8 @@ public class PathParameter {
 
     public static final String COMIC_BOOKS_GET_ALL = "issues/all";
 
+    public static final String COMIC_BOOKS_MOST_RECENT = "issues/mostRecent";
+
     public static final String COMIC_BOOKS_GET_BY_SERIES = "issues/series/{series}";
 
     public static final String COMIC_SCREENSHOTS_DOWNLOAD = "{cbid}/screenshots/download";

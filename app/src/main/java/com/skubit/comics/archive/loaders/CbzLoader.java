@@ -81,16 +81,6 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (zipfile != null) {
-                /*
-                try {
-                    zipfile.close();
-                } catch (IOException e) {
-
-                }
-                */
-            }
         }
         return zipfile;
     }

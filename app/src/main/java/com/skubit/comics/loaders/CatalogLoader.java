@@ -31,6 +31,7 @@ public class CatalogLoader extends BaseComicServiceLoader<ComicBookListDto> {
                 return mComicService.getBySeries(mComicFilter.series, 20, mWebCursor,
                         BuildConfig.APPLICATION_ID);
             }
+            //TODO: JUST released
             return mComicService.getAllComics(50, mWebCursor,
                     true, BuildConfig.APPLICATION_ID);
         } catch (Exception e) {

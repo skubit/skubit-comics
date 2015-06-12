@@ -71,13 +71,16 @@ public class CollectionOfComicsLoader extends BaseLoader<Cursor> {
                 mContext.getContentResolver().query(CollectionMappingColumns.CONTENT_URI, null,
                         CollectionMappingColumns.CID + " =?",
                         new String[]{mCid}, null);
-        CollectionMappingCursor cmc = new CollectionMappingCursor(collectionCursor);
+
+        CollectionMappingCursor collectionMappingCursor = new CollectionMappingCursor(collectionCursor);
         String[] comicIds = new String[collectionCursor.getCount()];
         int length = comicIds.length;
         for (int i = 0; i < length; i++) {
-            cmc.moveToPosition(i);
-            comicIds[i] = cmc.getCbid();
+            collectionMappingCursor.moveToPosition(i);
+            comicIds[i] = collectionMappingCursor.getCbid();
         }
+        collectionMappingCursor.close();
+        collectionCursor.close();
 
         ComicSelection where = new ComicSelection();
         if (comicIds.length > 0) {
@@ -85,6 +88,7 @@ public class CollectionOfComicsLoader extends BaseLoader<Cursor> {
         }
         Cursor c = mContext.getContentResolver().query(ComicColumns.CONTENT_URI, null,
                 where.sel(), where.args(), null);
+
         return c;
     }
 }

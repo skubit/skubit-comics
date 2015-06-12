@@ -22,11 +22,19 @@ import com.skubit.comics.archive.ComicArchiveInfo;
 import com.skubit.comics.archive.ZipManager;
 import com.skubit.comics.archive.responses.ArchiveScannerResponse;
 import com.skubit.comics.loaders.BaseLoader;
+import com.skubit.comics.provider.collection.CollectionContentValues;
+import com.skubit.comics.provider.collection.CollectionCursor;
+import com.skubit.comics.provider.collection.CollectionSelection;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingContentValues;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingSelection;
 import com.skubit.comics.provider.comic.ComicContentValues;
+import com.skubit.comics.provider.comic.ComicCursor;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.shared.dto.ArchiveFormat;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.os.Environment;
 
 import java.io.File;
 import java.io.IOException;
@@ -143,7 +151,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
     @Override
     public ArchiveScannerResponse loadInBackground() {
-
+        HashMap<String, String> collections = new HashMap<>();//name,cid
         ArrayList<ComicArchiveInfo> comics = getComicArchives(mRoot);
         for (ComicArchiveInfo info : comics) {
             final File archive = new File(info.archiveFile);
@@ -163,23 +171,72 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
             String fileName = info.archiveFile.toLowerCase();
 
-            if(fileName.contains("sample")) {
-               ccv.putIsSample(true);
+            if (fileName.contains("sample")) {
+                ccv.putIsSample(true);
             }
 
             if (fileName.endsWith(".cbz")) {
                 ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
             }
 
+            String cbid;
             if (ccv.update(mContext.getContentResolver(), ks) != 1) {
-                ccv.putCbid(CodeGenerator.generateCode(10));
+                cbid = CodeGenerator.generateCode(10);
+                ccv.putCbid(cbid);
                 ccv.insert(mContext.getContentResolver());
+            } else {
+                final ComicCursor c = ks.query(mContext.getContentResolver());
+                c.moveToFirst();
+                cbid = c.getCbid();
+                c.close();
             }
+
+            String name = archive.getParentFile().getName();
+            if (!collections.containsKey(name)) {
+                if (archive.getParent()
+                        .equals(Environment.getExternalStorageDirectory().getAbsolutePath())) {
+                    name = "Default";
+                }
+                CollectionContentValues cv = new CollectionContentValues();
+                cv.putCoverart(coverArt.getAbsolutePath());
+                cv.putName(name);
+
+                CollectionSelection where = new CollectionSelection();
+                where.name(name);
+
+                final CollectionCursor c = where.query(mContext.getContentResolver());
+                String cid;
+                if (c.getCount() == 0) {
+                    cid = CodeGenerator.generateCode(6);
+                    cv.putCid(cid);
+                    cv.insert(mContext.getContentResolver());
+                } else {
+                    c.moveToFirst();
+                    cid = c.getCid();
+                }
+                c.close();
+                collections.put(name, cid);
+            }
+            updateCollectionMapping(collections.get(name), cbid);
         }
 
         mResponse = new ArchiveScannerResponse();
         mResponse.comicArchives = comics;
         return mResponse;
+    }
+
+    private void updateCollectionMapping(String cid, String cbid) {
+        CollectionMappingSelection cms = new CollectionMappingSelection();
+        Cursor collectionMappingCursor = cms.cid(cid).and().cbid(cbid)
+                .query(mContext.getContentResolver());
+        if (collectionMappingCursor.getCount() == 0) {
+            CollectionMappingContentValues cmap = new CollectionMappingContentValues();
+            cmap.putCid(cid);
+            cmap.putCbid(cbid);
+            cmap.insert(mContext.getContentResolver());
+
+        }
+        collectionMappingCursor.close();
     }
 
     public File loadCoverArt(File mDestDir, File mArchiveFile) {
@@ -197,6 +254,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
         ZipManager zm = ZipManager.getInstance();
         zm.unzip(zipFile, compressionEntries.get(orderedEntries.get(0)), mDestDir);
+
 
         return new File(mDestDir, orderedEntries.get(0));
     }

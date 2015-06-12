@@ -37,7 +37,7 @@ import retrofit.http.Query;
 
 public interface ComicRestService {
 
-    public static final String baseUri = "/";
+    String baseUri = "/";
 
     @GET(baseUri + PathParameter.COMIC_BOOKS_GET_ALL)
     ComicBookListDto getAllComics(
@@ -45,6 +45,9 @@ public interface ComicRestService {
             @Query("cursor") String cursor,
             @Query("isReduced") boolean isReduced,
             @Query("packageName") String packageName);
+
+    @GET(baseUri + PathParameter.COMIC_BOOKS_MOST_RECENT)
+    ComicBookListDto getMostRecent(@Query("packageName") String packageName);
 
     @GET(baseUri + PathParameter.COMIC_BOOK)
     ComicBookDto getComicBook(@Path("cbid") String cbid);

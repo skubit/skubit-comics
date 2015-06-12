@@ -3,11 +3,13 @@ package com.skubit.comics.adapters;
 import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
 import com.skubit.comics.provider.collection.CollectionCursor;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingSelection;
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
+
 
 public class MyCollectionsAdapter
         extends CursorRecyclerViewAdapter<MyCollectionsAdapter.MyCollectionHolder> {
@@ -32,17 +35,25 @@ public class MyCollectionsAdapter
     @Override
     public void onBindViewHolder(MyCollectionHolder viewHolder,
             Cursor cursor) {
-        CollectionCursor cc = new CollectionCursor(cursor);
-        viewHolder.name.setText(cc.getName());
+        final CollectionCursor collectionCursor = new CollectionCursor(cursor);
+        viewHolder.name.setText(collectionCursor.getName());
         viewHolder.position = cursor.getPosition();
-        viewHolder.cid = cc.getCid();
+        viewHolder.cid = collectionCursor.getCid();
 
-        String coverArt = cc.getCoverart();
+        CollectionMappingSelection cms = new CollectionMappingSelection();
+        cms.cid(collectionCursor.getCid());
+
+        final Cursor collectionMappingCursor = cms.query(mContext.getContentResolver());
+        viewHolder.count.setText(collectionMappingCursor.getCount() + " Comics¬");
+        collectionMappingCursor.close();
+
+        String coverArt = collectionCursor.getCoverart();
 
         if (!TextUtils.isEmpty(coverArt)) {
-            Picasso.with(mContext).load(new File(coverArt))
-                    .resize(200, 300).into(viewHolder.coverArt);//350,500
+            Picasso.with(mContext).load(new File(coverArt)).centerCrop().resize(200, 200).into(
+                    viewHolder.coverArt);//350,500
         }
+
     }
 
     @Override
@@ -63,9 +74,12 @@ public class MyCollectionsAdapter
 
         public String cid;
 
+        public TextView count;
+
         public MyCollectionHolder(final View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.title);
+            count = (TextView) view.findViewById(R.id.comicCount);
             coverArt = (ImageView) view.findViewById(R.id.coverArt);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

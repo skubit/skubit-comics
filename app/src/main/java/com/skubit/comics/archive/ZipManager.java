@@ -118,8 +118,17 @@ public final class ZipManager {
             public void run() {
                 try {
                     unzipEntry(zipFile, entry, outputDir);
+
                 } catch (IOException e) {
 
+                } finally {
+                    if(zipFile != null) {
+                        try {
+                            zipFile.close();
+                        } catch (IOException e) {
+
+                        }
+                    }
                 }
             }
         });
