@@ -23,6 +23,7 @@ import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
 import com.skubit.comics.adapters.MyCollectionsComicOptionAdapter;
 import com.skubit.comics.archive.ArchiveLoadedCallback;
+import com.skubit.comics.archive.ArchiveType;
 import com.skubit.comics.archive.loaders.ArchiveScannerLoader;
 import com.skubit.comics.archive.responses.ArchiveScannerResponse;
 import com.skubit.comics.loaders.MyComicsLoader;
@@ -167,8 +168,10 @@ public final class MyComicsFragment extends Fragment implements
         if (cursor != null && position >= 0) {
             ComicCursor c = new ComicCursor(cursor);
             c.moveToPosition(position);
+            System.out.println("foo - af " + c.getArchiveFormat());
             Intent i = ComicViewerActivity
-                    .newInstance(c.getStoryTitle(), c.getArchiveFile(), c.getLastPageRead());
+                    .newInstance(c.getStoryTitle(), c.getArchiveFile(),
+                            ArchiveType.fromString(c.getArchiveFormat()), c.getLastPageRead());
             startActivity(i);
             getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.none);
         }

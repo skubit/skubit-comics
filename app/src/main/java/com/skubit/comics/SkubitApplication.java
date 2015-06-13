@@ -21,6 +21,9 @@ import java.io.File;
 import java.io.IOException;
 
 public final class SkubitApplication extends Application {
+    static {
+        System.loadLibrary("unrar");
+    }
 
     @Override
     public void onCreate() {

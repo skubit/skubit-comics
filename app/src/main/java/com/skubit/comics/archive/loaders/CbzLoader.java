@@ -16,7 +16,8 @@ package com.skubit.comics.archive.loaders;
 
 import com.skubit.comics.CodeGenerator;
 import com.skubit.comics.archive.AlphanumComparator;
-import com.skubit.comics.archive.ZipManager;
+import com.skubit.comics.archive.ArchiveManager;
+import com.skubit.comics.archive.ArchiveUtils;
 import com.skubit.comics.archive.responses.CbzResponse;
 import com.skubit.comics.loaders.BaseLoader;
 import com.skubit.comics.provider.comic.ComicContentValues;
@@ -39,8 +40,6 @@ import java.util.zip.ZipFile;
 
 public final class CbzLoader extends BaseLoader<CbzResponse> {
 
-    private static final String[] ACCEPTS = new String[]{"jpeg", "jpg", "png", "webp"};
-
     private final File mArchiveFile;
 
     private final File mDestDir;
@@ -53,19 +52,6 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
         mDestDir = destDir;
     }
 
-    private static boolean hasExtension(String filename) {
-        int index = filename.lastIndexOf(".");
-        if (index > -1) {
-            String extension = filename.substring(index + 1).toLowerCase();
-            for (String accept : ACCEPTS) {
-                if (accept.equals(extension)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     private static ZipFile readEntries(File archive,
             final HashMap<String, ZipEntry> compressionEntries) {
         ZipFile zipfile = null;
@@ -75,7 +61,8 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
 
                 ZipEntry entry = (ZipEntry) e.nextElement();
                 if (!entry.getName().contains("META-INF") && !entry.getName().contains("MACOSX")
-                        && entry.getCompressedSize() > 20000 && hasExtension(entry.getName())) {
+                        && entry.getCompressedSize() > 20000 && ArchiveUtils
+                        .hasExtension(entry.getName())) {
                     compressionEntries.put(entry.getName(), entry);
                 }
             }
@@ -134,7 +121,7 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
             ccv.insert(mContext.getContentResolver());
         }
 
-        ZipManager zm = ZipManager.getInstance();
+        ArchiveManager zm = ArchiveManager.getInstance();
         for (String archiveFileEntry : orderedEntries) {
             zm.unzip(zipFile, compressionEntries.get(archiveFileEntry), mDestDir);
         }

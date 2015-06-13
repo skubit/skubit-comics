@@ -16,6 +16,13 @@ package com.skubit.comics.archive;
 
 import com.google.common.io.ByteStreams;
 
+import com.github.junrar.Archive;
+import com.github.junrar.rarfile.FileHeader;
+import com.github.junrar.unpack.decode.Compress;
+import com.ssb.droidsound.utils.UnRar;
+
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public final class ZipManager {
+public final class ArchiveManager {
 
     private static final int KEEP_ALIVE_TIME = 5;
 
@@ -37,10 +44,10 @@ public final class ZipManager {
 
     private static final String[] ACCEPTS = new String[]{"jpeg", "jpg", "png", "webp"};
 
-    private static ZipManager sInstance = null;
+    private static ArchiveManager sInstance = null;
 
     static {
-        sInstance = new ZipManager();
+        sInstance = new ArchiveManager();
     }
 
     private final ThreadPoolExecutor mThreadPool;
@@ -48,13 +55,13 @@ public final class ZipManager {
     private int NUMBER_OF_CORES = Math
             .max(1, Runtime.getRuntime().availableProcessors() - 1);
 
-    private ZipManager() {
+    private ArchiveManager() {
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<Runnable>();
         mThreadPool = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES,
                 KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, workQueue);
     }
 
-    public static ZipManager getInstance() {
+    public static ArchiveManager getInstance() {
         return sInstance;
     }
 
@@ -111,6 +118,119 @@ public final class ZipManager {
         }
     }
 
+    public void unrar(final File archiveFile, final File destDir) {
+
+        mThreadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                UnRar ur = new UnRar(archiveFile.getAbsolutePath());
+                ur.extractTo(destDir.getAbsolutePath());
+            }
+        });
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+        }
+
+    }
+
+    private static File makeFile(File destination, String name)
+            throws IOException {
+        String[] dirs = name.split("\\\\");
+        String path = "";
+        int size = dirs.length;
+        if (size == 1) {
+            return new File(destination, name);
+        } else if (size > 1) {
+            for (int i = 0; i < dirs.length - 1; i++) {
+                path = path + File.separator + dirs[i];
+                new File(destination, path).mkdir();
+            }
+            path = path + File.separator + dirs[dirs.length - 1];
+            File f = new File(destination, path);
+            f.createNewFile();
+            return f;
+        } else {
+            return null;
+        }
+    }
+
+    public static File createFileNoDir(FileHeader fh, File destination) {
+        File f;
+        String name;
+        if (fh.isFileHeader() && fh.isUnicode()) {
+            name = fh.getFileNameW();
+        } else {
+            name = fh.getFileNameString();
+        }
+        int i = name.lastIndexOf("\\");
+        if(i != -1 && i != name.length()) {
+            name = name.substring(i + 1, name.length()) ;
+        }
+
+        f = new File(destination, name);
+        if (!f.exists()) {
+            try {
+                f = makeFile(destination, name);
+            } catch (IOException e) {
+                // logError(e, "error creating the new file: " + f.getName());
+            }
+        }
+        return f;
+    }
+
+    public File unrar(final Archive archive, final FileHeader fileHeader, final File outputDir) {
+        if(archive == null) {
+            throw new IllegalArgumentException("archive is null");
+        }
+        final File file = createFileNoDir(fileHeader, outputDir);
+        FileOutputStream os = null;
+        try {
+            os = new FileOutputStream(file);
+            archive.extractFile(fileHeader, os);
+        } catch (Exception e) {
+            Compress.adjustWindowSize(false);
+            e.printStackTrace();
+        } finally {
+            if(os != null) {
+                try {
+                    os.close();
+                } catch (IOException e) {
+
+                }
+            }
+        }
+
+        return file;
+    /*
+        mThreadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                FileOutputStream os = null;
+                try {
+                    os = new FileOutputStream(file);
+                    archive.extractFile(fileHeader, os);
+                } catch (Exception e) {
+                    Compress.adjustWindowSize(false);
+                    e.printStackTrace();
+                } finally {
+                    if(os != null) {
+                        try {
+                            os.close();
+                        } catch (IOException e) {
+
+                        }
+                    }
+                }
+            }
+        });
+        return file;
+        */
+    }
+
     public void unzip(final ZipFile zipFile, final ZipEntry entry, final File outputDir) {
         mThreadPool.execute(new Runnable() {
 
@@ -118,10 +238,10 @@ public final class ZipManager {
             public void run() {
                 try {
                     unzipEntry(zipFile, entry, outputDir);
-
                 } catch (IOException e) {
 
                 } finally {
+                    /*
                     if(zipFile != null) {
                         try {
                             zipFile.close();
@@ -129,6 +249,7 @@ public final class ZipManager {
 
                         }
                     }
+                    */
                 }
             }
         });

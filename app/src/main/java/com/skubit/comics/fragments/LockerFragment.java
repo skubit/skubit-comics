@@ -22,6 +22,7 @@ import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.adapters.LockerAdapter;
 import com.skubit.comics.adapters.LockerOptionAdapter;
+import com.skubit.comics.archive.ArchiveType;
 import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.LockerLoader;
 import com.skubit.comics.provider.comic.ComicCursor;
@@ -142,7 +143,8 @@ public class LockerFragment extends Fragment implements ItemClickListener {
                         c.moveToFirst();
                         if (!TextUtils.isEmpty(c.getArchiveFile())) {
                             startActivity(ComicViewerActivity
-                                    .newInstance(c.getStoryTitle(), c.getArchiveFile(),
+                                    .newInstance(c.getStoryTitle(), c.getArchiveFile(), ArchiveType
+                                                    .fromString(c.getArchiveFormat()),
                                             c.getLastPageRead()));
 
                         }

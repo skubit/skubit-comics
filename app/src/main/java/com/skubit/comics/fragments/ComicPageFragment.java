@@ -104,7 +104,6 @@ public final class ComicPageFragment extends Fragment {
                 if (mListener != null) {
                     mListener.toggleView();
                 }
-
             }
         });
 

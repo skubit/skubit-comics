@@ -14,6 +14,8 @@
  */
 package com.skubit.comics.archive;
 
+import android.text.TextUtils;
+
 /**
  * Known comic archive types
  */
@@ -22,6 +24,10 @@ public enum ArchiveType {
     CBZ, CBR, UNKNOWN;
 
     public static ArchiveType fromString(String value) {
+        if(TextUtils.isEmpty(value)) {
+            return UNKNOWN;
+        }
+        value = value.toLowerCase();
         if ("cbz".equals(value)) {
             return CBZ;
         } else if ("cbr".equals(value)) {

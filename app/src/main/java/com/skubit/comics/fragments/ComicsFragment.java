@@ -21,6 +21,7 @@ import com.skubit.comics.R;
 import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
 import com.skubit.comics.adapters.MyComicsOptionAdapter;
+import com.skubit.comics.archive.ArchiveType;
 import com.skubit.comics.loaders.MyComicsLoader;
 import com.skubit.comics.provider.comic.ComicCursor;
 
@@ -110,7 +111,8 @@ public final class ComicsFragment extends Fragment implements AdapterListener {
         ComicCursor c = new ComicCursor(cursor);
         c.moveToPosition(position);
         startActivity(ComicViewerActivity
-                .newInstance(c.getStoryTitle(), c.getArchiveFile(), c.getLastPageRead()));
+                .newInstance(c.getStoryTitle(), c.getArchiveFile(),
+                        ArchiveType.fromString(c.getArchiveFormat()), c.getLastPageRead()));
         getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.none);
 
     }

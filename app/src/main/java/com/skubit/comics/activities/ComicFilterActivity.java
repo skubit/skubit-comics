@@ -7,6 +7,7 @@ import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
 import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
 import com.skubit.comics.adapters.MyComicsOptionAdapter;
+import com.skubit.comics.archive.ArchiveType;
 import com.skubit.comics.loaders.MyComicsLoader;
 import com.skubit.comics.provider.comic.ComicCursor;
 
@@ -88,7 +89,8 @@ public class ComicFilterActivity extends ActionBarActivity implements AdapterLis
         ComicCursor c = new ComicCursor(cursor);
         c.moveToPosition(position);
         startActivity(ComicViewerActivity
-                .newInstance(c.getStoryTitle(), c.getArchiveFile(), c.getLastPageRead()));
+                .newInstance(c.getStoryTitle(), c.getArchiveFile(), ArchiveType.fromString(c.getArchiveFormat()),
+                        c.getLastPageRead()));
         overridePendingTransition(R.anim.pull_in_right, R.anim.none);
     }
 }

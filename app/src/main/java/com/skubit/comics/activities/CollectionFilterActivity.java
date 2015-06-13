@@ -8,6 +8,7 @@ import com.skubit.comics.R;
 import com.skubit.comics.adapters.CursorRecyclerViewAdapter;
 import com.skubit.comics.adapters.MyCollectionsComicOptionAdapter;
 import com.skubit.comics.adapters.MyComicsAdapter;
+import com.skubit.comics.archive.ArchiveType;
 import com.skubit.comics.loaders.CollectionOfComicsLoader;
 import com.skubit.comics.provider.comic.ComicCursor;
 
@@ -129,8 +130,10 @@ public class CollectionFilterActivity extends ActionBarActivity implements Adapt
     public void onClick(View v, int position, Cursor cursor) {
         ComicCursor c = new ComicCursor(cursor);
         c.moveToPosition(position);
+
         startActivity(ComicViewerActivity
-                .newInstance(c.getStoryTitle(), c.getArchiveFile(), c.getLastPageRead()));
+                .newInstance(c.getStoryTitle(), c.getArchiveFile(),
+                        ArchiveType.fromString(c.getArchiveFormat()),c.getLastPageRead()));
         overridePendingTransition(R.anim.pull_in_right, R.anim.none);
     }
 

@@ -20,6 +20,8 @@ import com.skubit.comics.Constants;
 import com.skubit.comics.PageTapListener;
 import com.skubit.comics.R;
 import com.skubit.comics.adapters.ComicViewerAdapter;
+import com.skubit.comics.archive.ArchiveType;
+import com.skubit.comics.archive.loaders.CbrLoader;
 import com.skubit.comics.archive.loaders.CbzLoader;
 import com.skubit.comics.archive.responses.CbzResponse;
 import com.skubit.comics.loaders.ComicViewerLoader;
@@ -47,21 +49,33 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
 
     private static final String ARCHIVE_EXTRA = "com.skubit.comics.ARCHIVE_EXTRA";
 
+    private static final String ARCHIVE_TYPE_EXTRA = "com.skubit.comics.ARCHIVE_TYPE_EXTRA";
+
     private final LoaderManager.LoaderCallbacks<CbzResponse> mUnarchiverCallback
             = new LoaderManager.LoaderCallbacks<CbzResponse>() {
 
         @Override
         public Loader<CbzResponse> onCreateLoader(int id, Bundle args) {
             File archive = new File(args.getString(ARCHIVE_EXTRA));
-            return new CbzLoader(getBaseContext(),
-                    archive,
-                    new File(Constants.SKUBIT_UNARCHIVES, archive.getName()));
+            ArchiveType type = ArchiveType.fromString(mArchiveType);
+            if(ArchiveType.CBR.equals(type)) {
+                return new CbrLoader(getBaseContext(),
+                        archive,
+                        new File(Constants.SKUBIT_UNARCHIVES, archive.getName()));
+            } else if(ArchiveType.CBZ.equals(type)) {
+                return new CbzLoader(getBaseContext(),
+                        archive,
+                        new File(Constants.SKUBIT_UNARCHIVES, archive.getName()));
+            }
+            return null;
+
         }
 
         @Override
         public void onLoadFinished(Loader<CbzResponse> loader, CbzResponse data) {
-            getLoaderManager().restartLoader(7000, null, new ComicViewerLoader(ComicViewerActivity.this,
-                    getFragmentManager(), mArchiveFile));
+            getLoaderManager()
+                    .restartLoader(1+ mArchiveFile.hashCode(), null, new ComicViewerLoader(ComicViewerActivity.this,
+                            getFragmentManager(), mArchiveFile));
         }
 
         @Override
@@ -106,11 +120,14 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
 
     private boolean mIsFullView = true;
 
-    public static Intent newInstance(String title, String archiveFile, int lastPageRead) {
+    private String mArchiveType;
+
+    public static Intent newInstance(String title, String archiveFile, ArchiveType archiveType, int lastPageRead) {
         Intent i = new Intent();
         i.putExtra("title", title);
         i.putExtra(ARCHIVE_EXTRA, archiveFile);
         i.putExtra(CURRENT_COMIC_EXTRA, lastPageRead);
+        i.putExtra(ARCHIVE_TYPE_EXTRA, archiveType.name());
         i.setClassName(BuildConfig.APPLICATION_ID, ComicViewerActivity.class.getName());
         return i;
     }
@@ -139,8 +156,7 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
         mPager.setPageMargin((int) getResources().getDimension(R.dimen.horizontal_page_margin));
         mPager.setOffscreenPageLimit(2);
         mPager.setPageTransformer(false, new ParallaxPagerTransformer(R.id.coverArt));
-
-
+        
         mSlider = (Slider) findViewById(R.id.slider);
 
         mSlider.setOnValueChangedListener(new Slider.OnValueChangedListener() {
@@ -157,7 +173,9 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
         setTitle(title);
 
         mArchiveFile = getIntent().getStringExtra(ARCHIVE_EXTRA);
-        getLoaderManager().initLoader(7000, null, new ComicViewerLoader(this,
+        mArchiveType = getIntent().getStringExtra(ARCHIVE_TYPE_EXTRA);
+        
+        getLoaderManager().initLoader(1 + mArchiveFile.hashCode(), null, new ComicViewerLoader(this,
                 getFragmentManager(), mArchiveFile));
         mMainView.setBackgroundColor(getResources()
                 .getColor(android.R.color.background_dark));
@@ -206,9 +224,9 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
 
     public void resetAdapter(ComicViewerAdapter adapter) {
         mAdapter = adapter;
+        createViewer();
+        if (mAdapter.getCount() > 1) {
 
-        if (mAdapter.getCount() > 0) {
-            createViewer();
         } else {
             Bundle args = new Bundle();
             args.putString(ARCHIVE_EXTRA, mArchiveFile);
