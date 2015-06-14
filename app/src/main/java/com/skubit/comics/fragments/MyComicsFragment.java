@@ -168,7 +168,6 @@ public final class MyComicsFragment extends Fragment implements
         if (cursor != null && position >= 0) {
             ComicCursor c = new ComicCursor(cursor);
             c.moveToPosition(position);
-            System.out.println("foo - af " + c.getArchiveFormat());
             Intent i = ComicViewerActivity
                     .newInstance(c.getStoryTitle(), c.getArchiveFile(),
                             ArchiveType.fromString(c.getArchiveFormat()), c.getLastPageRead());

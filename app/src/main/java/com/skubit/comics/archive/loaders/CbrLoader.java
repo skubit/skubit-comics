@@ -17,7 +17,6 @@ package com.skubit.comics.archive.loaders;
 import com.github.junrar.Archive;
 import com.github.junrar.rarfile.FileHeader;
 import com.skubit.comics.archive.ArchiveManager;
-import com.ssb.droidsound.utils.UnRar;
 import com.skubit.comics.CodeGenerator;
 import com.skubit.comics.archive.AlphanumComparator;
 import com.skubit.comics.archive.ArchiveUtils;
@@ -69,6 +68,10 @@ public final class CbrLoader extends BaseLoader<CbzResponse> {
         List<String> orderedEntries = new ArrayList<>();
         orderedEntries.addAll(compressionEntries.keySet());
         Collections.sort(orderedEntries, new AlphanumComparator());
+
+        if(orderedEntries.isEmpty()) {
+            return new CbzResponse();
+        }
 
         ContentValues[] values = new ContentValues[orderedEntries.size()];
 

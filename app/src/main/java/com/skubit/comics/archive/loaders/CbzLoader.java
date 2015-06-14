@@ -52,26 +52,6 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
         mDestDir = destDir;
     }
 
-    private static ZipFile readEntries(File archive,
-            final HashMap<String, ZipEntry> compressionEntries) {
-        ZipFile zipfile = null;
-        try {
-            zipfile = new ZipFile(archive);
-            for (Enumeration<?> e = zipfile.entries(); e.hasMoreElements(); ) {
-
-                ZipEntry entry = (ZipEntry) e.nextElement();
-                if (!entry.getName().contains("META-INF") && !entry.getName().contains("MACOSX")
-                        && entry.getCompressedSize() > 20000 && ArchiveUtils
-                        .hasExtension(entry.getName())) {
-                    compressionEntries.put(entry.getName(), entry);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return zipfile;
-    }
-
     @Override
     public CbzResponse loadInBackground() {
         if (!mDestDir.exists()) {
@@ -86,11 +66,15 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
         final HashMap<String, ZipEntry> compressionEntries = new HashMap<String, ZipEntry>(
                 100);
 
-        ZipFile zipFile = readEntries(mArchiveFile, compressionEntries);
+        ZipFile zipFile = ArchiveUtils.readZipEntries(mArchiveFile, compressionEntries);
 
         List<String> orderedEntries = new ArrayList<String>();
         orderedEntries.addAll(compressionEntries.keySet());
         Collections.sort(orderedEntries, new AlphanumComparator());
+
+        if(orderedEntries.isEmpty()) {
+            return new CbzResponse();
+        }
 
         ContentValues[] values = new ContentValues[orderedEntries.size()];
 

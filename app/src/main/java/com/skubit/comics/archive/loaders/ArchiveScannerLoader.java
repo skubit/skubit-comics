@@ -88,27 +88,6 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
         return null;
     }
 
-    private static ZipFile readZipEntries(File archive,
-            final HashMap<String, ZipEntry> compressionEntries) {
-        ZipFile zipfile = null;
-        try {
-            zipfile = new ZipFile(archive);
-            for (Enumeration<?> e = zipfile.entries(); e.hasMoreElements(); ) {
-                ZipEntry entry = (ZipEntry) e.nextElement();
-                if (!entry.getName().contains("META-INF") && !entry.getName().contains("MACOSX")
-                        && entry.getCompressedSize() > 20000
-                        && ArchiveUtils.hasExtension(entry.getName())) {
-
-                    compressionEntries.put(entry.getName(), entry);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-        return zipfile;
-    }
 
     @Override
     protected void closeStream() throws IOException {
@@ -253,7 +232,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
         if (ArchiveType.CBZ.equals(archiveType)) {
             final HashMap<String, ZipEntry> compressionEntries = new HashMap<>(
                     100);
-            ZipFile zipFile = readZipEntries(archiveFile, compressionEntries);
+            ZipFile zipFile = ArchiveUtils.readZipEntries(archiveFile, compressionEntries);
 
             List<String> orderedEntries = new ArrayList<String>();
             orderedEntries.addAll(compressionEntries.keySet());
