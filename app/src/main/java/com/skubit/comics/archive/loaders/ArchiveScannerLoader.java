@@ -156,7 +156,9 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             final File archive = new File(info.archiveFile);
             File destDir = new File(Constants.SKUBIT_UNARCHIVES, archive.getName());
             File coverArt = loadCoverArtAndUnarchiveFile(destDir, archive, info.archiveType);
-
+            if(coverArt == null) {
+                continue;
+            }
             putCoverAsFirstPage(archive, coverArt);
             //TODO: Load up first page of viewer
 
@@ -256,7 +258,9 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             List<String> orderedEntries = new ArrayList<String>();
             orderedEntries.addAll(compressionEntries.keySet());
             Collections.sort(orderedEntries, new AlphanumComparator());
-
+            if(orderedEntries.isEmpty()) {
+                return null;
+            }
             ArchiveManager zm = ArchiveManager.getInstance();
             zm.unzip(zipFile, compressionEntries.get(orderedEntries.get(0)), destDir);
 
@@ -269,6 +273,9 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             List<String> orderedEntries = new ArrayList<String>();
             orderedEntries.addAll(compressionEntries.keySet());
             Collections.sort(orderedEntries, new AlphanumComparator());
+            if(orderedEntries.isEmpty()) {
+                return null;
+            }
 
             ArchiveManager zm = ArchiveManager.getInstance();
             return zm.unrar(archive, compressionEntries.get(orderedEntries.get(0)), destDir);
