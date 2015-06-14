@@ -1,11 +1,13 @@
 package com.skubit.comics.provider.collectionmapping;
 
-import com.skubit.comics.provider.base.AbstractSelection;
+import java.util.Date;
 
-import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+
+import com.skubit.comics.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code collection_mapping} table.

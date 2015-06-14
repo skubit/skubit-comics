@@ -116,4 +116,10 @@ public interface ComicModel extends BaseModel {
      * Can be {@code null}.
      */
     Integer getLastPageRead();
+
+    /**
+     * Get the {@code is_favorite} value.
+     * Can be {@code null}.
+     */
+    Boolean getIsFavorite();
 }

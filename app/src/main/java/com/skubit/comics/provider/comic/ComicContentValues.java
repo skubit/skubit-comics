@@ -1,12 +1,12 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.base.AbstractContentValues;
+import java.util.Date;
 
-import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.net.Uri;
 
-import java.util.Date;
+import com.skubit.comics.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code comic} table.
@@ -224,6 +224,16 @@ public class ComicContentValues extends AbstractContentValues {
 
     public ComicContentValues putLastPageReadNull() {
         mContentValues.putNull(ComicColumns.LAST_PAGE_READ);
+        return this;
+    }
+
+    public ComicContentValues putIsFavorite(Boolean value) {
+        mContentValues.put(ComicColumns.IS_FAVORITE, value);
+        return this;
+    }
+
+    public ComicContentValues putIsFavoriteNull() {
+        mContentValues.putNull(ComicColumns.IS_FAVORITE);
         return this;
     }
 }

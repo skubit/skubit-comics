@@ -2,6 +2,8 @@ package com.skubit.comics.provider.collectionmapping;
 
 import com.skubit.comics.provider.base.BaseModel;
 
+import java.util.Date;
+
 /**
  * Data model for the {@code collection_mapping} table.
  */

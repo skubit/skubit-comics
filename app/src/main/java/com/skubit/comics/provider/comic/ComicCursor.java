@@ -1,10 +1,10 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.base.AbstractCursor;
+import java.util.Date;
 
 import android.database.Cursor;
 
-import java.util.Date;
+import com.skubit.comics.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code comic} table.
@@ -183,6 +183,15 @@ public class ComicCursor extends AbstractCursor implements ComicModel {
      */
     public Integer getLastPageRead() {
         Integer res = getIntegerOrNull(ComicColumns.LAST_PAGE_READ);
+        return res;
+    }
+
+    /**
+     * Get the {@code is_favorite} value.
+     * Can be {@code null}.
+     */
+    public Boolean getIsFavorite() {
+        Boolean res = getBooleanOrNull(ComicColumns.IS_FAVORITE);
         return res;
     }
 }

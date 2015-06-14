@@ -1,10 +1,12 @@
 package com.skubit.comics.provider.accounts;
 
-import com.skubit.comics.provider.base.AbstractContentValues;
+import java.util.Date;
 
-import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.net.Uri;
+
+import com.skubit.comics.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code accounts} table.

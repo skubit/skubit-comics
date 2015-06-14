@@ -1,9 +1,14 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.ComicsProvider;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
+
+import com.skubit.comics.provider.ComicsProvider;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 
 /**
  * Columns for the {@code comic} table.
@@ -53,6 +58,8 @@ public class ComicColumns implements BaseColumns {
 
     public static final String LAST_PAGE_READ = "last_page_read";
 
+    public static final String IS_FAVORITE = "is_favorite";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
@@ -76,7 +83,8 @@ public class ComicColumns implements BaseColumns {
             ARCHIVE_FILE,
             IMAGE_DIRECTORY,
             IS_DELETED,
-            LAST_PAGE_READ
+            LAST_PAGE_READ,
+            IS_FAVORITE
     };
     // @formatter:on
 
@@ -101,6 +109,7 @@ public class ComicColumns implements BaseColumns {
             if (c.equals(IMAGE_DIRECTORY) || c.contains("." + IMAGE_DIRECTORY)) return true;
             if (c.equals(IS_DELETED) || c.contains("." + IS_DELETED)) return true;
             if (c.equals(LAST_PAGE_READ) || c.contains("." + LAST_PAGE_READ)) return true;
+            if (c.equals(IS_FAVORITE) || c.contains("." + IS_FAVORITE)) return true;
         }
         return false;
     }

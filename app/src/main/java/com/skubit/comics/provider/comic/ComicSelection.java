@@ -1,13 +1,13 @@
 package com.skubit.comics.provider.comic;
 
-import com.skubit.comics.provider.base.AbstractSelection;
+import java.util.Date;
 
-import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
-import java.util.Date;
+import com.skubit.comics.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code comic} table.
@@ -579,6 +579,11 @@ public class ComicSelection extends AbstractSelection<ComicSelection> {
 
     public ComicSelection lastPageReadLtEq(int value) {
         addLessThanOrEquals(ComicColumns.LAST_PAGE_READ, value);
+        return this;
+    }
+
+    public ComicSelection isFavorite(Boolean value) {
+        addEquals(ComicColumns.IS_FAVORITE, toObjectArray(value));
         return this;
     }
 }

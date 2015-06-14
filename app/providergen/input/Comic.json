@@ -82,7 +82,12 @@
       "name": "last_page_read",
       "type": "Integer",
       "defaultValue": "0"
-    }
+    },
+    {
+       "name": "is_favorite",
+       "type": "Boolean",
+       "index": true,
+    },
 
   ]
 }

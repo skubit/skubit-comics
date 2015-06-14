@@ -1,12 +1,5 @@
 package com.skubit.comics.provider;
 
-import com.skubit.comics.BuildConfig;
-import com.skubit.comics.provider.accounts.AccountsColumns;
-import com.skubit.comics.provider.collection.CollectionColumns;
-import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
-import com.skubit.comics.provider.comic.ComicColumns;
-import com.skubit.comics.provider.comicreader.ComicReaderColumns;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.DatabaseErrorHandler;
@@ -16,10 +9,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
 
+import com.skubit.comics.BuildConfig;
+import com.skubit.comics.provider.accounts.AccountsColumns;
+import com.skubit.comics.provider.collection.CollectionColumns;
+import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
+import com.skubit.comics.provider.comic.ComicColumns;
+import com.skubit.comics.provider.comicreader.ComicReaderColumns;
+
 public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = ComicsSQLiteOpenHelper.class.getSimpleName();
 
-    public static final String DATABASE_FILE_NAME = "skubitreader.db";
+    public static final String DATABASE_FILE_NAME = "skubitreader2.db";
     private static final int DATABASE_VERSION = 1;
     private static ComicsSQLiteOpenHelper sInstance;
     private final Context mContext;
@@ -89,7 +89,8 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
             + ComicColumns.ARCHIVE_FILE + " TEXT, "
             + ComicColumns.IMAGE_DIRECTORY + " TEXT, "
             + ComicColumns.IS_DELETED + " INTEGER, "
-            + ComicColumns.LAST_PAGE_READ + " INTEGER DEFAULT 0 "
+            + ComicColumns.LAST_PAGE_READ + " INTEGER DEFAULT 0, "
+            + ComicColumns.IS_FAVORITE + " INTEGER "
             + " );";
 
     public static final String SQL_CREATE_INDEX_COMIC_CBID = "CREATE INDEX IDX_COMIC_CBID "
@@ -121,6 +122,9 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public static final String SQL_CREATE_INDEX_COMIC_IS_DELETED = "CREATE INDEX IDX_COMIC_IS_DELETED "
             + " ON " + ComicColumns.TABLE_NAME + " ( " + ComicColumns.IS_DELETED + " );";
+
+    public static final String SQL_CREATE_INDEX_COMIC_IS_FAVORITE = "CREATE INDEX IDX_COMIC_IS_FAVORITE "
+            + " ON " + ComicColumns.TABLE_NAME + " ( " + ComicColumns.IS_FAVORITE + " );";
 
     public static final String SQL_CREATE_TABLE_COMIC_READER = "CREATE TABLE IF NOT EXISTS "
             + ComicReaderColumns.TABLE_NAME + " ( "
@@ -211,6 +215,7 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_INDEX_COMIC_ACCESS_DATE);
         db.execSQL(SQL_CREATE_INDEX_COMIC_ARCHIVE_FILE);
         db.execSQL(SQL_CREATE_INDEX_COMIC_IS_DELETED);
+        db.execSQL(SQL_CREATE_INDEX_COMIC_IS_FAVORITE);
         db.execSQL(SQL_CREATE_TABLE_COMIC_READER);
         db.execSQL(SQL_CREATE_INDEX_COMIC_READER_CBID);
         db.execSQL(SQL_CREATE_INDEX_COMIC_READER_ARCHIVE_FILE);
