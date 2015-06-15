@@ -10,4 +10,13 @@
     <dimen name="text_medium">18sp</dimen>
     <dimen name="text_large">22sp</dimen>
     <dimen name="text_xlarge">26sp</dimen>
+
+    <dimen name="text_catalog_description">14sp</dimen>
+    <dimen name="series_title_text">14sp</dimen>
+    <dimen name="publisher_text">14sp</dimen>
+    <dimen name="genre_text">14sp</dimen>
+    <dimen name="creator_text">14sp</dimen>
+    <dimen name="my_collections_title">18sp</dimen>
+    <dimen name="my_collections_issue_count">14sp</dimen>
+    <dimen name="my_collection_row">120dp</dimen>
 </resources>

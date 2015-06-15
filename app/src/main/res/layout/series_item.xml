@@ -27,6 +27,6 @@
                 android:gravity="center_horizontal"
                 android:lines="2"
                 android:ellipsize="end"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/series_title_text"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

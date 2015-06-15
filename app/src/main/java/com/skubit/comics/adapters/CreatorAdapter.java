@@ -1,7 +1,6 @@
 package com.skubit.comics.adapters;
 
 import com.skubit.comics.ClickComicListener;
-import com.skubit.comics.FontManager;
 import com.skubit.comics.ICatalogAdapter;
 import com.skubit.comics.R;
 import com.skubit.shared.dto.CreatorDto;
@@ -40,7 +39,6 @@ public class CreatorAdapter extends RecyclerView.Adapter<CreatorAdapter.Holder>
     public void onBindViewHolder(Holder holder, int position) {
         CreatorDto dto = mDtos.get(position);
         holder.name.setText(dto.getFullNameReverse());
-        holder.name.setTypeface(FontManager.REGULAR);
         holder.position = position;
     }
 

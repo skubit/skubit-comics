@@ -2,27 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp">
         <ImageView
                 android:id="@+id/coverArt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_width="200dp"
+                android:layout_height="300dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="10dp"
                 android:layout_toRightOf="@+id/coverArt"
-                android:orientation="vertical">
-
+                android:orientation="vertical"
+                android:layout_alignBottom="@+id/coverArt"
+                android:layout_alignTop="@+id/coverArt">
             <TextView
                     android:id="@+id/title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:ellipsize="marquee"
                     android:fadingEdge="horizontal"
-                    android:textSize="@dimen/text_medium"
+                    android:textSize="@dimen/text_large"
                     android:maxLines="2"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:textStyle="bold"
@@ -35,7 +38,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:textSize="@dimen/text_medium"
                     android:textStyle="bold"
                     android:text="#1"/>
 
@@ -44,53 +47,54 @@
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:textSize="@dimen/text_medium"
                     android:text="Publisher"/>
             <TextView
                     android:id="@+id/writer"
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:textSize="@dimen/text_medium"
                     android:text="Writer"/>
             <TextView
                     android:id="@+id/pages"
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:textSize="@dimen/text_medium"
                     android:text="2"/>
             <TextView
                     android:id="@+id/age_rating"
                     android:layout_marginRight="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_small"
+                    android:textSize="@dimen/text_medium"
                     android:text=""/>
-
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="bottom|center_horizontal">
+                        <com.gc.materialdesign.views.ButtonRectangle
+                                android:id="@+id/sampleBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:text="@string/sample_button"
+                                android:layout_weight=".5"
+                                android:background="@color/primary_button_color"/>
+                        <com.gc.materialdesign.views.ButtonRectangle
+                                android:id="@+id/buyBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:layout_weight=".5"
+                                android:text="@string/buy_button"
+                                android:background="@color/primary_button_color"/>
+                </LinearLayout>
         </LinearLayout>
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
-            android:gravity="center_horizontal"
-            android:layout_below="@+id/coverArt">
-        <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/sampleBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="@string/sample_button"
-                android:layout_weight=".5"
-                android:background="@color/primary_button_color"/>
-        <com.gc.materialdesign.views.ButtonRectangle
-                android:id="@+id/buyBtn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_weight=".5"
-                android:text="@string/buy_button"
-                android:background="@color/primary_button_color"/>
-    </LinearLayout>
+
 </RelativeLayout>

@@ -22,4 +22,7 @@
     <string name="end_order_message">Processed order</string>
     <string name="downloading_comic_notif">Downloading comic...</string>
     <string name="order_timeout_notif">Order notification timed out</string>
+    <string name="sample_button">Sample</string>
+    <string name="buy_button">BUY</string>
+    <string name="see_more_button">SEE MORE</string>
 </resources>

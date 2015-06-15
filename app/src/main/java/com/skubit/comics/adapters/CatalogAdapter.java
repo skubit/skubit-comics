@@ -15,7 +15,6 @@
 package com.skubit.comics.adapters;
 
 import com.skubit.comics.ClickComicListener;
-import com.skubit.comics.FontManager;
 import com.skubit.comics.ICatalogAdapter;
 import com.skubit.comics.R;
 import com.skubit.currencies.Bitcoin;
@@ -97,8 +96,6 @@ public final class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.Co
             holder.storyTitle
                     .setText(comicBookDto.getStoryTitle() + issue);
         }
-
-        holder.storyTitle.setTypeface(FontManager.REGULAR);
 
         holder.position = position;
         if (comicBookDto.isPurchased()) {

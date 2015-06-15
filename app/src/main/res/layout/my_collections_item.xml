@@ -1,55 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_height="120dp"
-              android:layout_width="match_parent"
-              android:orientation="horizontal">
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/coverArt"
-            android:padding="0dp"
-            android:src="@drawable/empty_photo"
-            android:adjustViewBounds="true"/>
+<android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/my_collection_row"
+        card_view:cardCornerRadius="4dp"
+        card_view:contentPadding="1dp">
 
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingBottom="2dp"
-            android:gravity="center_vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:paddingTop="10dp">
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/coverArt"
+                android:padding="0dp"
+                android:src="@drawable/empty_photo"
+                android:adjustViewBounds="true"/>
 
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Title"
-                android:id="@+id/title"
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingBottom="2dp"
+                android:gravity="center_vertical">
 
-                android:lines="1"
-                android:ellipsize="end"
-                android:textSize="18sp"
-                android:paddingLeft="10dp"/>
-        <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:id="@+id/comicCount"
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title"
+                    android:id="@+id/title"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/my_collections_title"
+                    android:paddingLeft="10dp"
+                    android:fontFamily="sans-serif"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:id="@+id/comicCount"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    android:textSize="@dimen/my_collections_issue_count"
+                    android:paddingLeft="10dp"/>
+        </LinearLayout>
+        <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+        <ImageButton
+                android:id="@+id/collection_options"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:lines="1"
-                android:ellipsize="end"
-                android:textSize="14sp"
-                android:paddingLeft="10dp"/>
+                android:src="@drawable/ic_more_vert_black_18dp"
+                android:background="?android:selectableItemBackground"
+                android:paddingRight="10dp"/>
     </LinearLayout>
-    <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-    <ImageButton
-            android:id="@+id/collection_options"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:src="@drawable/ic_more_vert_black_18dp"
-            android:background="?android:selectableItemBackground"
-            android:paddingRight="10dp"/>
-</LinearLayout>
+</android.support.v7.widget.CardView>

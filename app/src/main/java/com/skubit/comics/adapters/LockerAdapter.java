@@ -1,6 +1,5 @@
 package com.skubit.comics.adapters;
 
-import com.skubit.comics.FontManager;
 import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
 import com.skubit.shared.dto.LockerItemDto;
@@ -44,7 +43,6 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
 
         holder.storyTitle.setText(lockerItemDto.getTitle()
                 + " Vol." + lockerItemDto.getVolume() + " #" + lockerItemDto.getIssue());
-        holder.storyTitle.setTypeface(FontManager.REGULAR);
         holder.cbid = lockerItemDto.getProductId();
 
         String coverArt = lockerItemDto.getCoverArt() +"=-rw";

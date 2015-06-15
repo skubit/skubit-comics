@@ -1,7 +1,5 @@
 package com.skubit.comics.adapters;
 
-
-import com.skubit.comics.FontManager;
 import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
 import com.skubit.comics.provider.comic.ComicCursor;
@@ -37,7 +35,6 @@ public class MyComicsAdapter extends CursorRecyclerViewAdapter<MyComicsAdapter.M
         ComicCursor c = new ComicCursor(cursor);
 
         holder.storyTitle.setText(c.getStoryTitle());
-        holder.storyTitle.setTypeface(FontManager.REGULAR);
         holder.position = c.getPosition();
         holder.cbid = c.getCbid();
 

@@ -6,6 +6,7 @@ import com.skubit.comics.LinearRecyclerScrollListener;
 import com.skubit.comics.PaddingItemDecoration;
 import com.skubit.comics.R;
 import com.skubit.comics.SeriesFilter;
+import com.skubit.comics.SeriesGridView;
 import com.skubit.comics.activities.CatalogActivity;
 import com.skubit.comics.adapters.SeriesAdapter;
 import com.skubit.comics.loaders.BaseComicServiceLoaderCallbacks;
@@ -35,7 +36,7 @@ public class SeriesFragment extends BaseComicFragment implements
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ComicGridView comicGridView = (ComicGridView) view.findViewById(R.id.list);
+        SeriesGridView comicGridView = (SeriesGridView) view.findViewById(R.id.list);
         comicGridView.setHasFixedSize(true);
         comicGridView.setAdapter(mAdapter);
         comicGridView.addItemDecoration(new PaddingItemDecoration(20));

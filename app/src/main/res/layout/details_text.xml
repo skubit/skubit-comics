@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 skubit:animationDuration="100"
-                skubit:collapsedHeight="100dip"
+                skubit:collapsedHeight="110dp"
                 skubit:content="@+id/description"
                 skubit:handle="@+id/expand">
 
@@ -30,7 +30,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#595959"
-                        android:textSize="@dimen/text_small"/>
+                        android:textSize="@dimen/text_catalog_description"/>
 
                 <ImageButton
                         android:id="@id/expand"

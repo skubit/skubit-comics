@@ -34,6 +34,7 @@
                 android:lines="2"
                 android:ellipsize="end"
                 android:textSize="14sp"
+                android:fontFamily="sans-serif"
                 android:layout_below="@+id/coverArt"/>
         <TextView
                 android:layout_width="match_parent"

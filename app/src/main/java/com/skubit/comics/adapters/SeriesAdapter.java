@@ -1,7 +1,6 @@
 package com.skubit.comics.adapters;
 
 import com.skubit.comics.ClickComicListener;
-import com.skubit.comics.FontManager;
 import com.skubit.comics.ICatalogAdapter;
 import com.skubit.comics.R;
 import com.skubit.shared.dto.SeriesDto;
@@ -51,7 +50,6 @@ public class SeriesAdapter extends RecyclerView.Adapter<SeriesAdapter.Holder>
     public void onBindViewHolder(Holder holder, int position) {
         SeriesDto dto = mDtos.get(position);
         holder.name.setText(dto.getSeriesName());
-        holder.name.setTypeface(FontManager.REGULAR);
 
         if (!TextUtils.isEmpty(dto.getCoverArt())) {
             Picasso.with(mContext).load(dto.getCoverArt() + "=" + mSeriesSize + "-rw")

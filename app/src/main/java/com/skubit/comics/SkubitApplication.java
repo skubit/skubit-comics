@@ -28,7 +28,6 @@ public final class SkubitApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        new FontManager(this);
         /*
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()

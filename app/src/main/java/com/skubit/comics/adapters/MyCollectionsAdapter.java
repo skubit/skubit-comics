@@ -9,7 +9,6 @@ import com.squareup.picasso.Picasso;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -44,7 +43,7 @@ public class MyCollectionsAdapter
         cms.cid(collectionCursor.getCid());
 
         final Cursor collectionMappingCursor = cms.query(mContext.getContentResolver());
-        viewHolder.count.setText(collectionMappingCursor.getCount() + " Comics¬");
+        viewHolder.count.setText(collectionMappingCursor.getCount() + " Comics");
         collectionMappingCursor.close();
 
         String coverArt = collectionCursor.getCoverart();
