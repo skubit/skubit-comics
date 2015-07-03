@@ -34,6 +34,24 @@ public class AccountsCursor extends AbstractCursor implements AccountsModel {
     }
 
     /**
+     * Get the {@code alias} value.
+     * Can be {@code null}.
+     */
+    public String getAlias() {
+        String res = getStringOrNull(AccountsColumns.ALIAS);
+        return res;
+    }
+
+    /**
+     * Get the {@code authtype} value.
+     * Can be {@code null}.
+     */
+    public String getAuthtype() {
+        String res = getStringOrNull(AccountsColumns.AUTHTYPE);
+        return res;
+    }
+
+    /**
      * Get the {@code token} value.
      * Can be {@code null}.
      */

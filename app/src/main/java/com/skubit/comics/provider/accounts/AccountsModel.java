@@ -16,6 +16,18 @@ public interface AccountsModel extends BaseModel {
     String getBitid();
 
     /**
+     * Get the {@code alias} value.
+     * Can be {@code null}.
+     */
+    String getAlias();
+
+    /**
+     * Get the {@code authtype} value.
+     * Can be {@code null}.
+     */
+    String getAuthtype();
+
+    /**
      * Get the {@code token} value.
      * Can be {@code null}.
      */

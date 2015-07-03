@@ -19,7 +19,7 @@ import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = ComicsSQLiteOpenHelper.class.getSimpleName();
 
-    public static final String DATABASE_FILE_NAME = "skubitreader2.db";
+    public static final String DATABASE_FILE_NAME = "skubitreader3.db";
     private static final int DATABASE_VERSION = 1;
     private static ComicsSQLiteOpenHelper sInstance;
     private final Context mContext;
@@ -30,12 +30,11 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
             + AccountsColumns.TABLE_NAME + " ( "
             + AccountsColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AccountsColumns.BITID + " TEXT, "
+            + AccountsColumns.ALIAS + " TEXT, "
+            + AccountsColumns.AUTHTYPE + " TEXT, "
             + AccountsColumns.TOKEN + " TEXT, "
             + AccountsColumns.DATE + " INTEGER "
             + " );";
-
-    public static final String SQL_CREATE_INDEX_ACCOUNTS_BITID = "CREATE INDEX IDX_ACCOUNTS_BITID "
-            + " ON " + AccountsColumns.TABLE_NAME + " ( " + AccountsColumns.BITID + " );";
 
     public static final String SQL_CREATE_TABLE_COLLECTION = "CREATE TABLE IF NOT EXISTS "
             + CollectionColumns.TABLE_NAME + " ( "
@@ -196,7 +195,6 @@ public class ComicsSQLiteOpenHelper extends SQLiteOpenHelper {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         mOpenHelperCallbacks.onPreCreate(mContext, db);
         db.execSQL(SQL_CREATE_TABLE_ACCOUNTS);
-        db.execSQL(SQL_CREATE_INDEX_ACCOUNTS_BITID);
         db.execSQL(SQL_CREATE_TABLE_COLLECTION);
         db.execSQL(SQL_CREATE_INDEX_COLLECTION_CID);
         db.execSQL(SQL_CREATE_INDEX_COLLECTION_NAME);

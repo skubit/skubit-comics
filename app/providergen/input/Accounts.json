@@ -1,17 +1,24 @@
 {
-  "fields": [
-    {
-      "name": "bitId",
-      "type": "String",
-      "index": true
-    },
-    {
-      "name": "token",
-      "type": "String"
-    },
-    {
-      "name": "date",
-      "type": "Long"
-    }
-  ]
+    "fields": [
+        {
+            "name": "bitId",
+            "type": "String"
+        },
+        {
+             "name": "alias",
+             "type": "String"
+        },
+        {
+             "name": "authType",
+             "type": "String"
+        },
+        {
+            "name": "token",
+            "type": "String"
+        },
+        {
+            "name": "date",
+            "type": "Long"
+        }
+        ]
 }

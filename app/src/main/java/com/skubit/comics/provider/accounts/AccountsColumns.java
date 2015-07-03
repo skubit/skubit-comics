@@ -24,6 +24,10 @@ public class AccountsColumns implements BaseColumns {
 
     public static final String BITID = "bitId";
 
+    public static final String ALIAS = "alias";
+
+    public static final String AUTHTYPE = "authType";
+
     public static final String TOKEN = "token";
 
     public static final String DATE = "date";
@@ -35,6 +39,8 @@ public class AccountsColumns implements BaseColumns {
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
             BITID,
+            ALIAS,
+            AUTHTYPE,
             TOKEN,
             DATE
     };
@@ -44,6 +50,8 @@ public class AccountsColumns implements BaseColumns {
         if (projection == null) return true;
         for (String c : projection) {
             if (c.equals(BITID) || c.contains("." + BITID)) return true;
+            if (c.equals(ALIAS) || c.contains("." + ALIAS)) return true;
+            if (c.equals(AUTHTYPE) || c.contains("." + AUTHTYPE)) return true;
             if (c.equals(TOKEN) || c.contains("." + TOKEN)) return true;
             if (c.equals(DATE) || c.contains("." + DATE)) return true;
         }

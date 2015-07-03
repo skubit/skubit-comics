@@ -13,6 +13,8 @@ import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.activities.MainActivity;
 import com.skubit.comics.provider.accounts.AccountsColumns;
 import com.skubit.comics.provider.accounts.AccountsContentValues;
+import com.skubit.comics.provider.accounts.AccountsCursor;
+import com.skubit.comics.provider.accounts.AccountsSelection;
 import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ComicBookDto;
 
@@ -93,6 +95,26 @@ public class Utils {
         }
     }
 
+    public static String getAccountAlias(Context context, String userId) {
+        AccountsSelection as = new AccountsSelection();
+        as.bitid(userId);
+        AccountsCursor accountsCursor = null;
+        try {
+            accountsCursor = as.query(context.getContentResolver());
+            if (accountsCursor != null && accountsCursor.getCount() > 0) {
+                accountsCursor.moveToFirst();
+                return accountsCursor.getAlias();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (accountsCursor != null) {
+                accountsCursor.close();
+            }
+        }
+        return null;
+    }
+
     public static void createNewAccount(Activity context, Intent data) {
         String[] tokens = data.getStringExtra("response").split("[:]");
         String account = tokens[0];
@@ -101,6 +123,7 @@ public class Utils {
         kcv.putBitid(account);
         kcv.putToken(tokens[1]);
         kcv.putDate(new Date().getTime());
+        kcv.putAlias(tokens[2]);
 
         context.getContentResolver().delete(AccountsColumns.CONTENT_URI,
                 AccountsColumns.BITID + "=?",
@@ -111,7 +134,7 @@ public class Utils {
 
         AccountSettings.get(context).saveToken(tokens[1]);
         AccountSettings.get(context).saveBitId(account);
-        Events.accountChange(context, account);
+        Events.accountChange(context, account, tokens[2]);
 
     }
 

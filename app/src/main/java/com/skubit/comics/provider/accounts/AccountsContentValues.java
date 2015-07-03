@@ -47,6 +47,26 @@ public class AccountsContentValues extends AbstractContentValues {
         return this;
     }
 
+    public AccountsContentValues putAlias(String value) {
+        mContentValues.put(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsContentValues putAliasNull() {
+        mContentValues.putNull(AccountsColumns.ALIAS);
+        return this;
+    }
+
+    public AccountsContentValues putAuthtype(String value) {
+        mContentValues.put(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsContentValues putAuthtypeNull() {
+        mContentValues.putNull(AccountsColumns.AUTHTYPE);
+        return this;
+    }
+
     public AccountsContentValues putToken(String value) {
         mContentValues.put(AccountsColumns.TOKEN, value);
         return this;

@@ -36,7 +36,8 @@ import android.text.TextUtils;
 import java.io.File;
 import java.util.Date;
 
-public class DownloadService extends IntentService implements
+public class
+        DownloadService extends IntentService implements
         Loader.OnLoadCompleteListener<ArchiveScannerResponse> {
 
     private DownloadManager mDownloadManager;

@@ -112,6 +112,66 @@ public class AccountsSelection extends AbstractSelection<AccountsSelection> {
         return this;
     }
 
+    public AccountsSelection alias(String... value) {
+        addEquals(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection aliasNot(String... value) {
+        addNotEquals(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection aliasLike(String... value) {
+        addLike(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection aliasContains(String... value) {
+        addContains(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection aliasStartsWith(String... value) {
+        addStartsWith(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection aliasEndsWith(String... value) {
+        addEndsWith(AccountsColumns.ALIAS, value);
+        return this;
+    }
+
+    public AccountsSelection authtype(String... value) {
+        addEquals(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsSelection authtypeNot(String... value) {
+        addNotEquals(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsSelection authtypeLike(String... value) {
+        addLike(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsSelection authtypeContains(String... value) {
+        addContains(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsSelection authtypeStartsWith(String... value) {
+        addStartsWith(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
+    public AccountsSelection authtypeEndsWith(String... value) {
+        addEndsWith(AccountsColumns.AUTHTYPE, value);
+        return this;
+    }
+
     public AccountsSelection token(String... value) {
         addEquals(AccountsColumns.TOKEN, value);
         return this;
