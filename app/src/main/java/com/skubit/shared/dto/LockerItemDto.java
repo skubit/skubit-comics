@@ -3,10 +3,11 @@ package com.skubit.shared.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @JsonInclude(Include.NON_NULL)
-public class LockerItemDto implements Dto {
+public class LockerItemDto implements Serializable {
 
 	/**
 	 * 

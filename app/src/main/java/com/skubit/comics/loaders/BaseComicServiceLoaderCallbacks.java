@@ -1,14 +1,15 @@
 package com.skubit.comics.loaders;
 
 import com.skubit.comics.ICatalogAdapter;
-import com.skubit.shared.dto.Dto;
 import com.skubit.shared.dto.DtoList;
 
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-public abstract class BaseComicServiceLoaderCallbacks<T extends DtoList, U extends Dto>
+import java.io.Serializable;
+
+public abstract class BaseComicServiceLoaderCallbacks<T extends DtoList, U extends Serializable>
         implements LoaderManager.LoaderCallbacks<T> {
 
     public String mWebCursor;

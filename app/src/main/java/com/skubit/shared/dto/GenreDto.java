@@ -2,8 +2,10 @@ package com.skubit.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GenreDto implements Dto {
+public class GenreDto implements Serializable {
 
 	/**
 	 * 

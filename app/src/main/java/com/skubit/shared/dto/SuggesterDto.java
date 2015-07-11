@@ -1,6 +1,8 @@
 package com.skubit.shared.dto;
 
 
+import java.io.Serializable;
+
 /**
  * mySuggester: {
  Mu: {
@@ -13,7 +15,7 @@ package com.skubit.shared.dto;
  }
  ]
  */
-public class SuggesterDto implements Dto {
+public class SuggesterDto implements Serializable {
 
 
 }

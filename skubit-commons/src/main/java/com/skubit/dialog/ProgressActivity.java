@@ -53,12 +53,32 @@ public abstract class ProgressActivity<T> extends FragmentActivity
 
     @Override
     public void sendResultsBackToCaller(int resultCode, String message) {
+        sendResultsBackToCaller(resultCode, message, true);
+    }
+
+    @Override
+    public void sendResultsBackToCaller(int resultCode, String message, boolean finish) {
         if (TextUtils.isEmpty(message)) {
             setResult(resultCode);
         } else {
-            setResult(resultCode, new Intent().putExtra("response", message));
+            setResult(1001, new Intent().putExtra("response", message));
         }
-        finish();
+        if(finish) {
+            finish();
+        }
+    }
+
+    @Override
+    public void sendResultsBackToCaller(int resultCode, Bundle data) {
+        sendResultsBackToCaller(resultCode, data, true);
+    }
+
+    @Override
+    public void sendResultsBackToCaller(int resultCode, Bundle data, boolean finish) {
+        setResult(resultCode, new Intent().replaceExtras(data));
+        if(finish) {
+            finish();
+        }
     }
 
     @Override
@@ -99,5 +119,4 @@ public abstract class ProgressActivity<T> extends FragmentActivity
     public boolean isAlive() {
         return mContainer != null;
     }
-
 }

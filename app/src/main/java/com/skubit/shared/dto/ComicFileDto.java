@@ -1,9 +1,10 @@
 package com.skubit.shared.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
-public class ComicFileDto implements Dto{
+public class ComicFileDto implements Serializable {
 
 	/**
 	 * 

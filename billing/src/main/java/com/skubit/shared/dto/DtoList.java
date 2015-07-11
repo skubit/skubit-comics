@@ -1,10 +1,7 @@
 package com.skubit.shared.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.ArrayList;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class DtoList<T> implements Dto {
 
     /**
@@ -21,6 +18,10 @@ public abstract class DtoList<T> implements Dto {
     private String nextWebCursor;
 
     private int currentItemCount;
+
+    public void setCurrentItemCount(int currentItemCount) {
+        this.currentItemCount = currentItemCount;
+    }
 
     public String getNextWebCursor() {
         return nextWebCursor;
@@ -62,15 +63,11 @@ public abstract class DtoList<T> implements Dto {
         return currentItemCount;
     }
 
-    public void setCurrentItemCount(int currentItemCount) {
-        this.currentItemCount = currentItemCount;
+    public void setItems(ArrayList<T> items) {
+        this.items = items;
     }
 
     public ArrayList<T> getItems() {
         return items;
-    }
-
-    public void setItems(ArrayList<T> items) {
-        this.items = items;
     }
 }

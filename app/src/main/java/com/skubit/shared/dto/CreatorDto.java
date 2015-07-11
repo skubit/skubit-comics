@@ -3,8 +3,10 @@ package com.skubit.shared.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import java.io.Serializable;
+
 @JsonInclude(Include.NON_NULL)
-public class CreatorDto implements Dto {
+public class CreatorDto implements Serializable {
 
 	/**
 	 * 

@@ -1,0 +1,24 @@
+{
+    "fields": [
+        {
+            "name": "bitId",
+            "type": "String"
+        },
+        {
+            "name": "alias",
+            "type": "String"
+        },
+        {
+            "name": "app",
+            "type": "String"
+        },
+        {
+            "name": "scope",
+            "type": "String"
+        },
+        {
+            "name": "date",
+            "type": "Long"
+        }
+        ]
+}

@@ -15,9 +15,7 @@
 package com.skubit.comics.activities;
 
 import com.skubit.android.billing.IBillingService;
-import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
-import com.skubit.comics.Constants;
 import com.skubit.comics.ControllerCallback;
 import com.skubit.comics.OrderReceiver;
 import com.skubit.comics.R;
@@ -31,8 +29,9 @@ import com.skubit.comics.fragments.MyCollectionsFragment;
 import com.skubit.comics.fragments.MyComicsFragment;
 import com.skubit.comics.fragments.PublishersTabsFragment;
 import com.skubit.comics.fragments.SeriesTabsFragment;
+import com.skubit.iab.activities.SkubitAndroidActivity;
 import com.skubit.navigation.NavigationDrawerCallbacks;
-import com.skubit.navigation.NavigationDrawerFragment;
+import com.skubit.iab.navigation.NavigationDrawerFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -208,10 +207,13 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             showFragment(new LockerFragment(), UiState.LOCKER, position);
             setTitle("Locker");
         } else if (position == 8) {
+            startActivity(SkubitAndroidActivity.newInstance());
+            /*
             String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
                     : Constants.IAB_PROD;
             Intent i = new Intent(serviceName + ".MAIN");
             startActivity(i);
+            */
 
         }
         mCurrentPosition = position;
