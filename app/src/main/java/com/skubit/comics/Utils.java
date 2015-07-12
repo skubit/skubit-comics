@@ -6,15 +6,11 @@ import com.google.common.io.Files;
 
 import com.skubit.AccountSettings;
 import com.skubit.Events;
-import com.skubit.Permissions;;
+import com.skubit.Permissions;
 import com.skubit.bitid.activities.AppRequestActivity;
 import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.activities.MainActivity;
-import com.skubit.comics.provider.accounts.AccountsColumns;
-import com.skubit.comics.provider.accounts.AccountsContentValues;
-import com.skubit.comics.provider.accounts.AccountsCursor;
-import com.skubit.comics.provider.accounts.AccountsSelection;
 import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ComicBookDto;
 
@@ -25,17 +21,16 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
+;
 
 public class Utils {
 
@@ -82,49 +77,6 @@ public class Utils {
     public static void startAuthorization(Activity activity) {
         Intent auth = AppRequestActivity.newInstance(activity, BuildConfig.APPLICATION_ID, Permissions.IAB_DEFAULT);
         activity.startActivityForResult(auth, AUTHORIZATION_CODE);
-    }
-
-    public static String getAccountAlias(Context context, String userId) {
-        AccountsSelection as = new AccountsSelection();
-        as.bitid(userId);
-        AccountsCursor accountsCursor = null;
-        try {
-            accountsCursor = as.query(context.getContentResolver());
-            if (accountsCursor != null && accountsCursor.getCount() > 0) {
-                accountsCursor.moveToFirst();
-                return accountsCursor.getAlias();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (accountsCursor != null) {
-                accountsCursor.close();
-            }
-        }
-        return null;
-    }
-
-    public static void createNewAccount(Activity context, Intent data) {
-        String[] tokens = data.getStringExtra("response").split("[:]");
-        String account = tokens[0];
-
-        AccountsContentValues kcv = new AccountsContentValues();
-        kcv.putBitid(account);
-        kcv.putToken(tokens[1]);
-        kcv.putDate(new Date().getTime());
-        kcv.putAlias(tokens[2]);
-
-        context.getContentResolver().delete(AccountsColumns.CONTENT_URI,
-                AccountsColumns.BITID + "=?",
-                new String[]{
-                        account
-                });
-        context.getContentResolver().insert(AccountsColumns.CONTENT_URI, kcv.values());
-
-        AccountSettings.get(context).saveToken(tokens[1]);
-        AccountSettings.get(context).saveBitId(account);
-        Events.accountChange(context, account, tokens[2]);
-
     }
 
     public static void doDownloadedNotification(Context context, ComicBookDto data) {

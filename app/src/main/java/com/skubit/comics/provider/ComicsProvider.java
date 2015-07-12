@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.skubit.comics.BuildConfig;
 import com.skubit.comics.provider.base.BaseContentProvider;
-import com.skubit.comics.provider.accounts.AccountsColumns;
 import com.skubit.comics.provider.collection.CollectionColumns;
 import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
 import com.skubit.comics.provider.comic.ComicColumns;
@@ -28,28 +27,23 @@ public class ComicsProvider extends BaseContentProvider {
     public static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".provider";
     public static final String CONTENT_URI_BASE = "content://" + AUTHORITY;
 
-    private static final int URI_TYPE_ACCOUNTS = 0;
-    private static final int URI_TYPE_ACCOUNTS_ID = 1;
+    private static final int URI_TYPE_COLLECTION = 0;
+    private static final int URI_TYPE_COLLECTION_ID = 1;
 
-    private static final int URI_TYPE_COLLECTION = 2;
-    private static final int URI_TYPE_COLLECTION_ID = 3;
+    private static final int URI_TYPE_COLLECTION_MAPPING = 2;
+    private static final int URI_TYPE_COLLECTION_MAPPING_ID = 3;
 
-    private static final int URI_TYPE_COLLECTION_MAPPING = 4;
-    private static final int URI_TYPE_COLLECTION_MAPPING_ID = 5;
+    private static final int URI_TYPE_COMIC = 4;
+    private static final int URI_TYPE_COMIC_ID = 5;
 
-    private static final int URI_TYPE_COMIC = 6;
-    private static final int URI_TYPE_COMIC_ID = 7;
-
-    private static final int URI_TYPE_COMIC_READER = 8;
-    private static final int URI_TYPE_COMIC_READER_ID = 9;
+    private static final int URI_TYPE_COMIC_READER = 6;
+    private static final int URI_TYPE_COMIC_READER_ID = 7;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, AccountsColumns.TABLE_NAME, URI_TYPE_ACCOUNTS);
-        URI_MATCHER.addURI(AUTHORITY, AccountsColumns.TABLE_NAME + "/#", URI_TYPE_ACCOUNTS_ID);
         URI_MATCHER.addURI(AUTHORITY, CollectionColumns.TABLE_NAME, URI_TYPE_COLLECTION);
         URI_MATCHER.addURI(AUTHORITY, CollectionColumns.TABLE_NAME + "/#", URI_TYPE_COLLECTION_ID);
         URI_MATCHER.addURI(AUTHORITY, CollectionMappingColumns.TABLE_NAME, URI_TYPE_COLLECTION_MAPPING);
@@ -74,11 +68,6 @@ public class ComicsProvider extends BaseContentProvider {
     public String getType(Uri uri) {
         int match = URI_MATCHER.match(uri);
         switch (match) {
-            case URI_TYPE_ACCOUNTS:
-                return TYPE_CURSOR_DIR + AccountsColumns.TABLE_NAME;
-            case URI_TYPE_ACCOUNTS_ID:
-                return TYPE_CURSOR_ITEM + AccountsColumns.TABLE_NAME;
-
             case URI_TYPE_COLLECTION:
                 return TYPE_CURSOR_DIR + CollectionColumns.TABLE_NAME;
             case URI_TYPE_COLLECTION_ID:
@@ -141,14 +130,6 @@ public class ComicsProvider extends BaseContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
-            case URI_TYPE_ACCOUNTS:
-            case URI_TYPE_ACCOUNTS_ID:
-                res.table = AccountsColumns.TABLE_NAME;
-                res.idColumn = AccountsColumns._ID;
-                res.tablesWithJoins = AccountsColumns.TABLE_NAME;
-                res.orderBy = AccountsColumns.DEFAULT_ORDER;
-                break;
-
             case URI_TYPE_COLLECTION:
             case URI_TYPE_COLLECTION_ID:
                 res.table = CollectionColumns.TABLE_NAME;
@@ -186,7 +167,6 @@ public class ComicsProvider extends BaseContentProvider {
         }
 
         switch (matchedId) {
-            case URI_TYPE_ACCOUNTS_ID:
             case URI_TYPE_COLLECTION_ID:
             case URI_TYPE_COLLECTION_MAPPING_ID:
             case URI_TYPE_COMIC_ID:

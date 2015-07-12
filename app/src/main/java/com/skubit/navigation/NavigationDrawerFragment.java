@@ -4,7 +4,6 @@ import com.skubit.AccountSettings;
 import com.skubit.Intents;
 import com.skubit.comics.R;
 import com.skubit.comics.Utils;
-import com.skubit.comics.provider.accounts.AccountsColumns;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -13,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,19 +55,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
     private int mCurrentSelectedPosition;
 
-    private BitIdAccountView mAccountView;
-
-    private BroadcastReceiver mAccountChangeReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mAccountView != null) {
-                String alias = intent.getStringExtra(Intents.ALIAS);
-                mAccountView.displayAccountName(alias);
-            }
-
-        }
-    };
-
     public NavigationDrawerFragment() {
     }
 
@@ -87,54 +72,23 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         return sharedPref.getString(settingName, defaultValue);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        String alias = Utils.getAccountAlias(getActivity().getBaseContext(),
-                AccountSettings.get(getActivity()).retrieveBitId());
-        mAccountView.displayAccountName(alias);
-
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
-                mAccountChangeReceiver,
-                Intents.accountChangeFilter());
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mAccountChangeReceiver);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
+        View view = inflater.inflate(R.layout.fragment_navigation_drawer_comic, container, false);
         mDrawerList = (RecyclerView) view.findViewById(R.id.drawerList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mDrawerList.setLayoutManager(layoutManager);
         mDrawerList.setHasFixedSize(true);
 
-        mAccountView = (BitIdAccountView) view.findViewById(R.id.bitid_accounts);
-
         List<NavigationItem> navigationItems = getMenu();
         NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(navigationItems);
         adapter.setNavigationDrawerCallbacks(this);
         mDrawerList.setAdapter(adapter);
         selectItem(mCurrentSelectedPosition);
-
-        String currentId = AccountSettings.get(getActivity()).retrieveBitId();
-        String alias = Utils.getAccountAlias(getActivity().getBaseContext(), currentId);
-
-        Cursor c = getActivity().getContentResolver()
-                .query(AccountsColumns.CONTENT_URI, null, null, null, null);
-
-        mAccountView.initialize(getActivity(),
-                new com.skubit.navigation.AccountDropDownClickEvent(getActivity().getBaseContext(), c), c,
-                AccountsColumns.ALIAS, alias);
 
         return view;
     }

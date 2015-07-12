@@ -138,7 +138,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Utils.AUTHORIZATION_CODE && data != null && !TextUtils
                 .isEmpty(data.getStringExtra("response"))) {
-            Utils.createNewAccount(this, data);
+          //  Utils.createNewAccount(this, data);
         } else if (requestCode == Utils.PLAY_CODE) {
             doLogin = true;
         }

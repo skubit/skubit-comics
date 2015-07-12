@@ -383,7 +383,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
         } else if (requestCode == Utils.AUTHORIZATION_CODE && data != null && !TextUtils
                 .isEmpty(data.getStringExtra("response"))) {
 
-            Utils.createNewAccount(this, data);
+           // Utils.createNewAccount(this, data);
             try {
                 purchase();
             } catch (IntentSender.SendIntentException e) {

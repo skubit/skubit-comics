@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import com.skubit.comics.provider.ComicsProvider;
-import com.skubit.comics.provider.accounts.AccountsColumns;
 import com.skubit.comics.provider.collection.CollectionColumns;
 import com.skubit.comics.provider.collectionmapping.CollectionMappingColumns;
 import com.skubit.comics.provider.comic.ComicColumns;
