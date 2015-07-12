@@ -20,7 +20,6 @@ import com.coinbase.zxing.client.android.Intents;
 import com.skubit.AccountSettings;
 import com.skubit.bitid.activities.AppRequestActivity;
 import com.skubit.bitid.activities.KeyAuthActivity;
-import com.skubit.iab.BuildConfig;
 import com.skubit.iab.FontManager;
 import com.skubit.iab.Permissions;
 import com.skubit.iab.R;
@@ -105,7 +104,7 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.main_iab, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
