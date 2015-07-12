@@ -8,9 +8,20 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
     }
+    publishNonDefault true
+    productFlavors {
+        prod {
+        }
+        dev {
+        }
+    }
 
     buildTypes {
         release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
+        }
+        debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }

@@ -24,7 +24,11 @@ import java.io.IOException;
 
 public final class SkubitApplication extends Application {
     static {
-        System.loadLibrary("unrar");
+        try {
+            System.loadLibrary("unrar");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

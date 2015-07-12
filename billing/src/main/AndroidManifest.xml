@@ -122,10 +122,7 @@
             </intent-filter>
 
         </activity>
-        <provider
-                android:name="com.skubit.iab.provider.AccountProvider"
-                android:authorities="${applicationId}.internal.provider"
-                android:exported="false" />
+
     </application>
 
 </manifest>

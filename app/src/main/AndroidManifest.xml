@@ -130,6 +130,7 @@
                 android:name="com.skubit.comics.OrderService"
                 android:enabled="true">
         </service>
+
     </application>
 
 </manifest>
