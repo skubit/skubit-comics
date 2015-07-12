@@ -18,7 +18,7 @@
         <activity
                 android:name="com.skubit.iab.activities.SkubitAndroidActivity"
                 android:label="@string/app_name"
-                android:theme="@style/AppTheme">
+                android:theme="@style/AppThemeIab">
         </activity>
         <activity
                 android:name="com.skubit.bitid.activities.AppRequestActivity"

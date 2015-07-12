@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="@string/save_btn"
-                android:background="@color/primary_button_color"/>
+                android:background="@color/primary_button_color_iab"/>
     </RelativeLayout>
 
 </LinearLayout>

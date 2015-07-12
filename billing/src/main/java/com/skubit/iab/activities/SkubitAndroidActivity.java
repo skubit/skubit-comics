@@ -78,7 +78,6 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
             mLoginInProcess = savedInstanceState.getBoolean("LoginInProcess");
         }
         setContentView(R.layout.activity_billing_main);
-        new FontManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

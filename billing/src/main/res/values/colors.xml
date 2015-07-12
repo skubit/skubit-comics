@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="default_text_color">#000000</color>
-    <color name="primary_color">#4CAF50</color>
-    <color name="secondary_color">#C8E6C9</color>
-    <color name="primary_button_color">#388E3C</color>
-    <color name="secondary_button_color">#1B5E20</color>
-    <color name="selected_nav">#E8F5E9</color>
-    <color name="nav_header">#81C784</color>
+    <color name="default_text_color_iab">#000000</color>
+    <color name="primary_color_iab">#4CAF50</color>
+    <color name="secondary_color_iab">#C8E6C9</color>
+    <color name="primary_button_color_iab">#388E3C</color>
+    <color name="secondary_button_color_iab">#1B5E20</color>
+    <color name="selected_nav_iab">#E8F5E9</color>
+    <color name="nav_header_iab">#81C784</color>
 
     <!-- Transactions -->
     <color name="transactiondetails_label">#000000</color>
