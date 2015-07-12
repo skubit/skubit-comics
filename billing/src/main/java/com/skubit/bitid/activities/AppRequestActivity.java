@@ -22,11 +22,13 @@ import com.skubit.bitid.fragments.LoginChoiceFragment;
 import com.skubit.bitid.loaders.TidbitLoader;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.dialog.ProgressActivity;
+import com.skubit.iab.R;
 import com.skubit.iab.Utils;
 import com.skubit.shared.dto.TidbitDto;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -60,7 +62,7 @@ public class AppRequestActivity extends ProgressActivity<Bundle> {
                         } else {
                             startActivityForResult(
                                     KeyAuthActivity
-                                            .newInstance(data.result.getTidbit(), true), 0);
+                                            .newInstance(getBaseContext(), data.result.getTidbit(), true), 0);
 
                         }
                         hideProgress();
@@ -75,11 +77,11 @@ public class AppRequestActivity extends ProgressActivity<Bundle> {
 
     private AccountSettings mAccountSettings;
 
-    public static Intent newInstance(String packageName, String scopes) {
+    public static Intent newInstance(Context context, String packageName, String scopes) {
         Intent intent = new Intent();
-        intent.setClassName(com.skubit.iab.BuildConfig.APPLICATION_ID,
-                AppRequestActivity.class.getName());
-        intent.putExtra(PACKAGE_NAME, packageName);
+        String pn = context.getString(R.string.packageName);
+        intent.setClassName(pn, AppRequestActivity.class.getName());
+        intent.putExtra(PACKAGE_NAME, TextUtils.isEmpty(packageName) ? pn : packageName);
         intent.putExtra(SCOPES, scopes);
         return intent;
     }
@@ -113,7 +115,7 @@ public class AppRequestActivity extends ProgressActivity<Bundle> {
             showProgress();
                 startActivityForResult(
                         BasicAuthActivity
-                                .newInstance(mPackageName), 0);
+                                .newInstance(getBaseContext(), mPackageName), 0);
             hideProgress();
         } else {
             getLoaderManager().initLoader(3000, null, tidbitLoader);

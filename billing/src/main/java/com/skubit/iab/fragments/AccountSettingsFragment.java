@@ -152,7 +152,7 @@ public class AccountSettingsFragment extends Fragment {
                     if(error.getResponse() != null) {
                         if (error.getResponse().getStatus() == 403) {
                             Intent intent = AppRequestActivity
-                                    .newInstance(BuildConfig.APPLICATION_ID,
+                                    .newInstance(getActivity(), null,
                                             Permissions.SKUBIT_DEFAULT);
                             startActivity(intent);
                         }

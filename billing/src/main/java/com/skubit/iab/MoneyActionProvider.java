@@ -15,6 +15,7 @@
  */
 package com.skubit.iab;
 
+import com.skubit.iab.R;
 import com.skubit.iab.activities.DepositMoneyActivity;
 import com.skubit.iab.activities.RequestMoneyActivity;
 import com.skubit.iab.activities.SendMoneyActivity;

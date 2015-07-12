@@ -18,8 +18,8 @@ package com.skubit.iab.services.rest;
 
 import com.skubit.shared.dto.BitcoinAddressDto;
 import com.skubit.shared.dto.UserDto;
-import com.skubit.shared.rest.PathParameter;
-import com.skubit.shared.rest.ResourcesPath;
+import com.skubit.shared.rest.IabPathParameter;
+import com.skubit.shared.rest.IabResourcesPath;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -29,13 +29,13 @@ import retrofit.http.PUT;
 
 public interface AccountsRestService {
 
-    public static final String baseUri = ResourcesPath.ACCOUNTS;
+    public static final String baseUri = IabResourcesPath.ACCOUNTS;
 
     @Headers("Content-Type: application/json")
-    @GET(baseUri + "/" + PathParameter.USER_PROFILE)
+    @GET(baseUri + "/" + IabPathParameter.USER_PROFILE)
     void getUserProfile(Callback<UserDto> currentUserDto);
 
-    @PUT(baseUri + "/" + PathParameter.USER_PROFILE)
+    @PUT(baseUri + "/" + IabPathParameter.USER_PROFILE)
     void putUserProfile(@Body
     UserDto userProfileDto, Callback<UserDto> result);
 

@@ -26,11 +26,13 @@ import com.skubit.bitid.fragments.CreateAddressFragment;
 import com.skubit.bitid.fragments.SignInRequestFragment;
 import com.skubit.bitid.fragments.SignInResponseFragment;
 import com.skubit.dialog.ProgressActivity;
+import com.skubit.iab.R;
 import com.skubit.shared.dto.BitJwtCallbackResponseDto;
 
 import org.bitcoinj.core.ECKey;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,9 +47,9 @@ public class KeyAuthActivity extends ProgressActivity<Bundle> implements BitIdCa
 
     private boolean mInband;
 
-    public static Intent newInstance(String bitId, boolean inband) {
+    public static Intent newInstance(Context context, String bitId, boolean inband) {
         Intent i = new Intent();
-        i.setClassName(com.skubit.iab.BuildConfig.APPLICATION_ID,
+        i.setClassName(context.getString(R.string.packageName),
                 KeyAuthActivity.class.getName());
         i.putExtra(BitID.EXTRA_NAME, bitId);
         i.putExtra(BitID.EXTRA_INBAND, inband);

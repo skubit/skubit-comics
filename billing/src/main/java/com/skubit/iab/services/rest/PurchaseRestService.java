@@ -20,8 +20,8 @@ import com.skubit.shared.dto.InAppPurchaseDataDto;
 import com.skubit.shared.dto.InAppPurchaseDataListDto;
 import com.skubit.shared.dto.OrderDto;
 import com.skubit.shared.dto.PurchaseDataDto;
-import com.skubit.shared.rest.PathParameter;
-import com.skubit.shared.rest.ResourcesPath;
+import com.skubit.shared.rest.IabPathParameter;
+import com.skubit.shared.rest.IabResourcesPath;
 
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -32,7 +32,7 @@ import retrofit.http.Query;
 
 public interface PurchaseRestService {
 
-    public static final String baseUri = ResourcesPath.PURCHASES;
+    public static final String baseUri = IabResourcesPath.PURCHASES;
 
     @Headers("Content-Type: application/json")
     @GET(baseUri + "/{application}")
@@ -52,7 +52,7 @@ public interface PurchaseRestService {
             @Body PurchaseDataDto request);
 
     @Headers("Content-Type: application/json")
-    @POST(baseUri + "/" + PathParameter.PURCHASE_CREATE_ORDER)
+    @POST(baseUri + "/" + IabPathParameter.PURCHASE_CREATE_ORDER)
     OrderDto createOrder(
             @Path("application") String application,
             @Path("productId") String productId,

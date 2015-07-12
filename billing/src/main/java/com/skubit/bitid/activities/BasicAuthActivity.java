@@ -10,6 +10,7 @@ import com.skubit.bitid.loaders.BasicAuthLoader;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.dialog.ProgressActivity;
 import com.skubit.iab.BuildConfig;
+import com.skubit.iab.R;
 import com.skubit.shared.dto.BitJwtCallbackResponseDto;
 import com.skubit.shared.dto.CurrentUserDto;
 import com.skubit.shared.dto.LoginDto;
@@ -17,6 +18,7 @@ import com.skubit.shared.dto.UserDto;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
@@ -26,9 +28,9 @@ public class BasicAuthActivity extends ProgressActivity<Bundle> implements BitId
 
     private LoginDto mLoginDto;
 
-    public static Intent newInstance(String packageName) {
+    public static Intent newInstance(Context context, String packageName) {
         Intent i = new Intent();
-        i.setClassName(com.skubit.iab.BuildConfig.APPLICATION_ID,
+        i.setClassName(context.getString(R.string.packageName),
                 BasicAuthActivity.class.getName());
         i.putExtra(AppRequestActivity.PACKAGE_NAME, packageName);
         return i;

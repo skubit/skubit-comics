@@ -19,8 +19,8 @@ package com.skubit.iab.services.rest;
 import com.skubit.shared.dto.BalanceDto;
 import com.skubit.shared.dto.TransactionDto;
 import com.skubit.shared.dto.TransactionsListDto;
-import com.skubit.shared.rest.PathParameter;
-import com.skubit.shared.rest.ResourcesPath;
+import com.skubit.shared.rest.IabPathParameter;
+import com.skubit.shared.rest.IabResourcesPath;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -32,9 +32,9 @@ import retrofit.http.Query;
 
 public interface TransactionRestService {
 
-    public static final String baseUri = ResourcesPath.TRANSACTIONS;
+    public static final String baseUri = IabResourcesPath.TRANSACTIONS;
 
-    @GET(baseUri + "/" + PathParameter.BALANCE)
+    @GET(baseUri + "/" + IabPathParameter.BALANCE)
     void getBalance(Callback<BalanceDto> balance);
 
     @Headers("Content-Type: application/json")

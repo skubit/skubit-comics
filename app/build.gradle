@@ -54,7 +54,9 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':skubit-commons')
-    compile project(':billing')
+    devCompile project(path: ':billing', configuration:'devDebug')
+
+
     compile 'com.xgc1986.android:parallaxpagertransformer:1.0.3'
 
 }

@@ -19,8 +19,8 @@ package com.skubit.iab.services.rest;
 import com.skubit.shared.dto.ApplicationsListDto;
 import com.skubit.shared.dto.SkuDetailsDto;
 import com.skubit.shared.dto.SkuDetailsListDto;
-import com.skubit.shared.rest.PathParameter;
-import com.skubit.shared.rest.ResourcesPath;
+import com.skubit.shared.rest.IabPathParameter;
+import com.skubit.shared.rest.IabResourcesPath;
 
 import retrofit.http.GET;
 import retrofit.http.Path;
@@ -28,9 +28,9 @@ import retrofit.http.Query;
 
 public interface InventoryRestService {
 
-    public static final String baseUri = ResourcesPath.INVENTORY_API;
+    public static final String baseUri = IabResourcesPath.INVENTORY_API;
 
-    @GET(baseUri + "/" + PathParameter.INVENTORY_COUNT)
+    @GET(baseUri + "/" + IabPathParameter.INVENTORY_COUNT)
     Integer getApplicationCount(@Path("application") String application);
 
     @GET(baseUri + "/applications")
@@ -40,17 +40,17 @@ public interface InventoryRestService {
             @Query("offset") int offset,
             @Query("cursor") String cursor);
 
-    @GET(baseUri + "/" + PathParameter.SKUS_SKUDETAILS)
+    @GET(baseUri + "/" + IabPathParameter.SKUS_SKUDETAILS)
     SkuDetailsDto getSkuDetails(
             @Path("application") String application,
             @Path("productId") String productId);
 
-    @GET(baseUri + "/" + PathParameter.SKUS_LIST)
+    @GET(baseUri + "/" + IabPathParameter.SKUS_LIST)
     SkuDetailsListDto getSkuDetailsByIds(
             @Path("application") String application,
             @Query("ids") String productIds);
 
-    @GET(baseUri + "/" + PathParameter.SKUS_COUNT)
+    @GET(baseUri + "/" + IabPathParameter.SKUS_COUNT)
     Integer getSkuDetailsCount(
             @Path("application") String application);
 }

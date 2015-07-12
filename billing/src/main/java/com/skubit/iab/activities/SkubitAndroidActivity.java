@@ -30,6 +30,7 @@ import com.skubit.navigation.NavigationDrawerCallbacks;
 import com.skubit.iab.navigation.NavigationDrawerFragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -54,9 +55,9 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
 
     private boolean mResolvingError;
 
-    public static Intent newInstance() {
+    public static Intent newInstance(Context context) {
         Intent i = new Intent();
-        i.setClassName("com.skubit.iab.activities", SkubitAndroidActivity.class.getName());
+        i.setClassName(context.getString(R.string.packageName), SkubitAndroidActivity.class.getName());
         return i;
     }
 
@@ -77,7 +78,7 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
             mResolvingError = savedInstanceState.getBoolean("ResolvingError");
             mLoginInProcess = savedInstanceState.getBoolean("LoginInProcess");
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_billing_main);
         new FontManager(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,14 +89,14 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager()
                 .findFragmentById(
-                        R.id.fragment_drawer);
+                        R.id.fragment_iab_drawer);
         mNavigationDrawerFragment
-                .setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
+                .setup(R.id.fragment_iab_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
 
         mAccountSettings = AccountSettings.get(this);
         String cookie = mAccountSettings.retrieveToken();
         if (TextUtils.isEmpty(cookie)) {
-            Intent intent = AppRequestActivity.newInstance(BuildConfig.APPLICATION_ID,
+            Intent intent = AppRequestActivity.newInstance(this, null,
                     Permissions.SKUBIT_DEFAULT);
             startActivity(intent);
         }
@@ -131,7 +132,7 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
             return;
         }
         Intent authenticationIntent = KeyAuthActivity
-                .newInstance(data.getStringExtra("SCAN_RESULT"), false);
+                .newInstance(this, data.getStringExtra("SCAN_RESULT"), false);
         startActivity(authenticationIntent);
     }
 
@@ -140,7 +141,7 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
         int order = item.getOrder();
         if (order == 2) {
             Intent intent = AppRequestActivity
-                    .newInstance(BuildConfig.APPLICATION_ID, Permissions.SKUBIT_DEFAULT);
+                    .newInstance(this, null, Permissions.SKUBIT_DEFAULT);
             startActivity(intent);
         } else if (order == 3) {
             startBarcodeScan();

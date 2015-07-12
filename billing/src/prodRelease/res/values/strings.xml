@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Skubit IAB (Testnet)</string>
     <string name="iab_net">IAB Testnet</string>
+    <string name="packageName">net.skubit.comics</string>
 </resources>

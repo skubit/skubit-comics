@@ -18,8 +18,8 @@ package com.skubit.bitid.services.rest;
 import com.skubit.shared.dto.CurrentUserDto;
 import com.skubit.shared.dto.LoginDto;
 import com.skubit.shared.dto.TidbitDto;
-import com.skubit.shared.rest.PathParameter;
-import com.skubit.shared.rest.ResourcesPath;
+import com.skubit.shared.rest.IabPathParameter;
+import com.skubit.shared.rest.IabResourcesPath;
 
 import retrofit.http.Body;
 import retrofit.http.GET;
@@ -28,13 +28,13 @@ import retrofit.http.Query;
 
 public interface AuthenticationRestService {
 
-    public static final String baseUri = ResourcesPath.AUTHENTICATION;
+    public static final String baseUri = IabResourcesPath.AUTHENTICATION;
 
-    @POST(baseUri + "/" + PathParameter.LOGIN_WITH_USERNAME)
+    @POST(baseUri + "/" + IabPathParameter.LOGIN_WITH_USERNAME)
     CurrentUserDto postLoginWithUserName(@Body
             LoginDto loginDto);
 
-    @GET(baseUri + "/" + PathParameter.GET_TIDBIT)
+    @GET(baseUri + "/" + IabPathParameter.GET_TIDBIT)
     TidbitDto getTidbit(@Query("scope") String scope, @Query("app") String app,
             @Query("inband") boolean inband);
 

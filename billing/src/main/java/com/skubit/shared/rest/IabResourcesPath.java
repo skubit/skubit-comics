@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Skubit
+ * Copyright 2014 Skubit
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,15 +13,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.skubit.iab;
 
-import android.app.Application;
+package com.skubit.shared.rest;
 
-public class SkubitApplication extends Application {
+public class IabResourcesPath {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        new FontManager(this);
-    }
+    public static final String ACCOUNTS = "/accounts";
+
+    public static final String AUTHENTICATION = "/auth";
+
+    public static final String INVENTORY_API = "/inventory";
+
+    public static final String PURCHASES = "/purchases";
+
+    public static final String SESSION = "/session";
+
+    public static final String TRANSACTIONS = "/transactions";
+
 }

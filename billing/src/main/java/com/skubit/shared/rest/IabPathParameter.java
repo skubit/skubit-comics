@@ -16,7 +16,7 @@
 
 package com.skubit.shared.rest;
 
-public class PathParameter {
+public class IabPathParameter {
 
     public static final String INVENTORY_APPLICATION = "inventory/{application}";
 

@@ -31,7 +31,7 @@ import com.skubit.comics.fragments.PublishersTabsFragment;
 import com.skubit.comics.fragments.SeriesTabsFragment;
 import com.skubit.iab.activities.SkubitAndroidActivity;
 import com.skubit.navigation.NavigationDrawerCallbacks;
-import com.skubit.iab.navigation.NavigationDrawerFragment;
+import com.skubit.navigation.NavigationDrawerFragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -207,7 +207,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             showFragment(new LockerFragment(), UiState.LOCKER, position);
             setTitle("Locker");
         } else if (position == 8) {
-            startActivity(SkubitAndroidActivity.newInstance());
+            startActivity(SkubitAndroidActivity.newInstance(getBaseContext()));
             /*
             String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
                     : Constants.IAB_PROD;

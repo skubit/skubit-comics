@@ -7,16 +7,20 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+    }
+
+    publishNonDefault true
+    productFlavors {
+        prod {
+            targetSdkVersion 21
+        }
+        dev {
+            targetSdkVersion 21
+        }
     }
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
-        }
-        debug {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project.txt'
         }

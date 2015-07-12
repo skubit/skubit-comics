@@ -17,6 +17,7 @@ package com.skubit.iab;
 
 import com.skubit.bitid.activities.ExportActivity;
 import com.skubit.bitid.activities.ImportActivity;
+import com.skubit.iab.R;
 import com.skubit.iab.adapters.KeysAdapter;
 
 import android.content.Context;

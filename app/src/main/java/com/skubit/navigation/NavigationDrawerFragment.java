@@ -133,7 +133,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
                 .query(AccountsColumns.CONTENT_URI, null, null, null, null);
 
         mAccountView.initialize(getActivity(),
-                new com.skubit.iab.navigation.AccountDropDownClickEvent(getActivity().getBaseContext(), c), c,
+                new com.skubit.navigation.AccountDropDownClickEvent(getActivity().getBaseContext(), c), c,
                 AccountsColumns.ALIAS, alias);
 
         return view;
