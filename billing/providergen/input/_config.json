@@ -1,13 +1,13 @@
 {
     "syntaxVersion":"3",
     "projectPackageId": "com.skubit.iab",
-    "authority": "com.skubit.iab.provider",
+    "authority": "com.skubit.iab.internal.provider",
     "providerJavaPackage": "com.skubit.iab.provider",
     "providerClassName": "AccountProvider",
     "sqliteOpenHelperClassName": "AccountSQLiteOpenHelper",
     "sqliteOpenHelperCallbacksClassName": "AccountSQLiteOpenHelperCallbacks",
     "sqliteUpgradeHelperClassName": "AccountSQLiteUpgradeHelper",
-    "databaseFileName": "accounts2.db",
+    "databaseFileName": "accounts.db",
     "databaseVersion": 1,
     "enableForeignKeys": false,
     "useAnnotations": false

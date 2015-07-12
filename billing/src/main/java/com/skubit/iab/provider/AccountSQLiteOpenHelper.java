@@ -17,7 +17,7 @@ import com.skubit.iab.provider.key.KeyColumns;
 public class AccountSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = AccountSQLiteOpenHelper.class.getSimpleName();
 
-    public static final String DATABASE_FILE_NAME = "accounts2.db";
+    public static final String DATABASE_FILE_NAME = "accounts.db";
     private static final int DATABASE_VERSION = 1;
     private static AccountSQLiteOpenHelper sInstance;
     private final Context mContext;
