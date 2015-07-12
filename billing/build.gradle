@@ -9,16 +9,6 @@ android {
         targetSdkVersion 21
     }
 
-    publishNonDefault true
-    productFlavors {
-        prod {
-            targetSdkVersion 21
-        }
-        dev {
-            targetSdkVersion 21
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled true

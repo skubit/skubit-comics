@@ -15,6 +15,7 @@
  */
 package com.skubit.bitid.activities;
 
+import com.skubit.Flavor;
 import com.skubit.bitid.BitID;
 import com.skubit.bitid.BitIdCallback;
 import com.skubit.bitid.ECKeyData;
@@ -49,7 +50,7 @@ public class KeyAuthActivity extends ProgressActivity<Bundle> implements BitIdCa
 
     public static Intent newInstance(Context context, String bitId, boolean inband) {
         Intent i = new Intent();
-        i.setClassName(context.getString(R.string.packageName),
+        i.setClassName(Flavor.VALUE,
                 KeyAuthActivity.class.getName());
         i.putExtra(BitID.EXTRA_NAME, bitId);
         i.putExtra(BitID.EXTRA_INBAND, inband);

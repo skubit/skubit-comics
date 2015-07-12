@@ -48,9 +48,9 @@ public abstract class BaseService<T> {
             builder.setConverter(new JacksonConverter(mapper));
         }
 
-        if (BuildConfig.FLAVOR.equals("prod")) {
+        if (Flavor.VALUE.equals("com.skubit.comics")) {
             builder.setEndpoint(Constants.SKUBIT_CATALOG_PROD);
-        } else if (BuildConfig.FLAVOR.equals("dev")) {
+        } else if (Flavor.VALUE.equals("net.skubit.comics")) {
             builder.setEndpoint(Constants.SKUBIT_CATALOG_TEST);
         }
 

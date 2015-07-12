@@ -18,6 +18,7 @@ package com.skubit.iab.activities;
 
 import com.coinbase.zxing.client.android.Intents;
 import com.skubit.AccountSettings;
+import com.skubit.Flavor;
 import com.skubit.bitid.activities.AppRequestActivity;
 import com.skubit.bitid.activities.KeyAuthActivity;
 import com.skubit.iab.FontManager;
@@ -44,6 +45,8 @@ import android.view.MenuItem;
 
 public class SkubitAndroidActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
+    public static String FLAVOR;
+
     private static final String TAG = "PLUS";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -56,7 +59,7 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
 
     public static Intent newInstance(Context context) {
         Intent i = new Intent();
-        i.setClassName(context.getString(R.string.packageName), SkubitAndroidActivity.class.getName());
+        i.setClassName(Flavor.VALUE, SkubitAndroidActivity.class.getName());
         return i;
     }
 

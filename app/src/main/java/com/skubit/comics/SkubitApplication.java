@@ -14,6 +14,8 @@
  */
 package com.skubit.comics;
 
+import com.skubit.Flavor;
+
 import android.app.Application;
 import android.os.StrictMode;
 
@@ -28,6 +30,7 @@ public final class SkubitApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Flavor.VALUE = BuildConfig.APPLICATION_ID;
         /*
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()

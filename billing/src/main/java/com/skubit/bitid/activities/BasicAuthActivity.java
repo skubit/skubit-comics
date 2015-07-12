@@ -1,6 +1,7 @@
 package com.skubit.bitid.activities;
 
 import com.skubit.AccountSettings;
+import com.skubit.Flavor;
 import com.skubit.bitid.BitIdCallback;
 import com.skubit.bitid.ECKeyData;
 import com.skubit.bitid.UIState;
@@ -30,7 +31,7 @@ public class BasicAuthActivity extends ProgressActivity<Bundle> implements BitId
 
     public static Intent newInstance(Context context, String packageName) {
         Intent i = new Intent();
-        i.setClassName(context.getString(R.string.packageName),
+        i.setClassName(Flavor.VALUE,
                 BasicAuthActivity.class.getName());
         i.putExtra(AppRequestActivity.PACKAGE_NAME, packageName);
         return i;

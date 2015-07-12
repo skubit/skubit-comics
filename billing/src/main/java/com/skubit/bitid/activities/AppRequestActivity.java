@@ -16,6 +16,7 @@
 package com.skubit.bitid.activities;
 
 import com.skubit.AccountSettings;
+import com.skubit.Flavor;
 import com.skubit.android.billing.BillingResponseCodes;
 import com.skubit.bitid.UIState;
 import com.skubit.bitid.fragments.LoginChoiceFragment;
@@ -79,7 +80,7 @@ public class AppRequestActivity extends ProgressActivity<Bundle> {
 
     public static Intent newInstance(Context context, String packageName, String scopes) {
         Intent intent = new Intent();
-        String pn = context.getString(R.string.packageName);
+        String pn = Flavor.VALUE;
         intent.setClassName(pn, AppRequestActivity.class.getName());
         intent.putExtra(PACKAGE_NAME, TextUtils.isEmpty(packageName) ? pn : packageName);
         intent.putExtra(SCOPES, scopes);

@@ -17,6 +17,7 @@ package com.skubit.bitid.services;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skubit.Flavor;
 import com.skubit.bitid.services.rest.AuthenticationRestService;
 import com.skubit.iab.BuildConfig;
 import com.skubit.iab.Constants;
@@ -43,9 +44,9 @@ public class AuthenticationService {
             builder.setConverter(new JacksonConverter(mapper));
         }
 
-        if (BuildConfig.FLAVOR.equals("prod")) {
+        if (Flavor.VALUE.equals("com.skubit.comics")) {
             builder.setEndpoint(Constants.SKUBIT_AUTH_PROD);
-        } else if (BuildConfig.FLAVOR.equals("dev")) {
+        } else if (Flavor.VALUE.equals("net.skubit.comics")) {
             builder.setEndpoint(Constants.SKUBIT_AUTH_TEST);
         }
 

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Skubit IAB (Testnet)</string>
-    <string name="iab_net">IAB Testnet</string>
-    <string name="packageName">net.skubit.comics</string>
-</resources>
