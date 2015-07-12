@@ -84,7 +84,8 @@
         <activity
                 android:name="com.skubit.iab.activities.TransactionDetailsActivity"
                 android:label="@string/app_name"
-                android:parentActivityName="com.skubit.iab.activities.SkubitAndroidActivity">
+                android:parentActivityName="com.skubit.iab.activities.SkubitAndroidActivity"
+                android:theme="@style/AppThemeIab">
         </activity>
 
         <!--Authentication-->
