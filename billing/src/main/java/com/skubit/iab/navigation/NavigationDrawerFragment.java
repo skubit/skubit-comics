@@ -231,12 +231,15 @@ public final class NavigationDrawerFragment extends Fragment implements Navigati
         Drawable transactions = getResources()
                 .getDrawable(R.drawable.ic_account_balance_wallet_black_18dp);
         Drawable account = getResources().getDrawable(R.drawable.ic_account_circle_black_18dp);
+        Drawable shop = getResources().getDrawable(R.drawable.ic_shop_black_18dp);
 
         transactions.setAlpha(180);
         account.setAlpha(180);
+        shop.setAlpha(180);
 
         items.add(new NavigationItem("Transactions", transactions));
         items.add(new NavigationItem("Account", account));
+        items.add(new NavigationItem("Shop", shop));
         return items;
     }
 

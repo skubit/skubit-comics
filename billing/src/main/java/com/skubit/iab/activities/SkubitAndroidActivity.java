@@ -45,8 +45,6 @@ import android.view.MenuItem;
 
 public class SkubitAndroidActivity extends ActionBarActivity implements NavigationDrawerCallbacks {
 
-    public static String FLAVOR;
-
     private static final String TAG = "PLUS";
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -67,9 +65,10 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
     public void onNavigationDrawerItemSelected(int position) {
         if (position == 0) {
             replaceFragmentFor("transactions", new TransactionsFragment());
-
         } else if (position == 1) {
             replaceFragmentFor("settings", new AccountSettingsFragment());
+        }  else if (position == 2) {
+            finish();
         }
     }
 
@@ -159,16 +158,9 @@ public class SkubitAndroidActivity extends ActionBarActivity implements Navigati
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(TAG, "onPause");
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume");
-
         unlockOrientation();
     }
 
