@@ -6,8 +6,8 @@ import com.google.common.io.Files;
 
 import com.skubit.AccountSettings;
 import com.skubit.Events;
-import com.skubit.Permissions;
-import com.skubit.android.billing.IBillingService;
+import com.skubit.Permissions;;
+import com.skubit.bitid.activities.AppRequestActivity;
 import com.skubit.comics.activities.ComicViewerActivity;
 import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.activities.MainActivity;
@@ -79,20 +79,9 @@ public class Utils {
         return true;
     }
 
-    public static void startAuthorization(Activity activity, IBillingService service) {
-        try {
-            Bundle bundle = service.getAuthorizationIntent(1,
-                    BuildConfig.APPLICATION_ID, Permissions.IAB_DEFAULT);
-            PendingIntent pendingIntent = bundle
-                    .getParcelable("AUTHORIZATION_INTENT");
-
-            activity.startIntentSenderForResult(pendingIntent.getIntentSender(), AUTHORIZATION_CODE,
-                    null, 0, 0, 0);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
-        }
+    public static void startAuthorization(Activity activity) {
+        Intent auth = AppRequestActivity.newInstance(activity, BuildConfig.APPLICATION_ID, Permissions.IAB_DEFAULT);
+        activity.startActivityForResult(auth, AUTHORIZATION_CODE);
     }
 
     public static String getAccountAlias(Context context, String userId) {

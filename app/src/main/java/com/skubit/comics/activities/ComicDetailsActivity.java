@@ -17,7 +17,7 @@ package com.skubit.comics.activities;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.skubit.AccountSettings;
-import com.skubit.android.billing.IBillingService;
+import com.skubit.android.billing.PurchaseData;
 import com.skubit.comics.BillingResponseCodes;
 import com.skubit.comics.BuildConfig;
 import com.skubit.comics.ComicData;
@@ -32,6 +32,7 @@ import com.skubit.comics.loaders.DownloadComicLoader;
 import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.ScreenshotsLoader;
 import com.skubit.dialog.LoaderResult;
+import com.skubit.iab.activities.PurchaseActivity;
 import com.skubit.shared.dto.ComicBookDto;
 import com.skubit.shared.dto.IssueFormat;
 import com.skubit.shared.dto.UrlDto;
@@ -42,8 +43,6 @@ import org.lucasr.twowayview.TwoWayView;
 import android.app.ActivityOptions;
 import android.app.DownloadManager;
 import android.app.LoaderManager;
-import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -51,7 +50,6 @@ import android.content.IntentSender;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -113,10 +111,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
     private ButtonRectangle mBuyBtn;
 
-    private IBillingService mService;
-
     private ScreenshotAdapter2 mScreenshotAdapter;
-
 
     private final LoaderManager.LoaderCallbacks<ArrayList<UrlDto>> mScreenshotsCallback
             = new LoaderManager.LoaderCallbacks<ArrayList<UrlDto>>() {
@@ -163,12 +158,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
                         String userId = AccountSettings.get(ComicDetailsActivity.this)
                                 .retrieveBitId();
                         if (TextUtils.isEmpty(userId)) {
-                            if (!Utils.isIabInstalled(getPackageManager())) {
-                                startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
-                            } else {
-                                //TODO: prompt to install and then we need to restart service
-                                Utils.startAuthorization(ComicDetailsActivity.this, mService);
-                            }
+                            Utils.startAuthorization(ComicDetailsActivity.this);
                             return;
                         }
                         purchase();
@@ -214,38 +204,33 @@ public class ComicDetailsActivity extends ActionBarActivity {
         return i;
     }
 
+    private Intent makePurchaseIntent(int apiVersion, String userId, String packageName,
+            String sku, String devPayload, String type) {
+
+        PurchaseData info = new PurchaseData();
+        info.signatureHash = "";
+        info.apiVersion = apiVersion;
+        info.versionCode = 1;
+        info.sku = sku;
+        info.developerPayload = devPayload;
+        info.packageName = packageName;
+        info.type = type;
+
+        return PurchaseActivity.newIntent(userId, info, BuildConfig.APPLICATION_ID);
+    }
+
     private void purchase() throws IntentSender.SendIntentException, RemoteException {
         String userId = AccountSettings.get(ComicDetailsActivity.this)
                 .retrieveBitId();
-
-        if (mService != null) {
-            if (TextUtils.isEmpty(userId)) {
-                Utils.startAuthorization(this, mService);
-                return;
-            }
-            Bundle bundle = mService
-                    .getBuyIntent(1, userId, BuildConfig.APPLICATION_ID, mComicBookDto.getCbid(),
-                            "inapp",
-                            "payload");
-            int code = bundle.getInt("RESPONSE_CODE");
-            if (code == BillingResponseCodes.RESULT_OK) {
-                PendingIntent pendingIntent = bundle.getParcelable("BUY_INTENT");
-                startIntentSenderForResult(pendingIntent.getIntentSender(),
-                        PURCHASE_CODE, null, 0, 0, 0);
-            } else if (code == BillingResponseCodes.RESULT_USER_ACCESS) {
-                Utils.startAuthorization(this, mService);
-            }
-        } else {
-            if (!Utils.isIabInstalled(getPackageManager())) {
-                startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
-            }
-            //TODO: prompt to install and then we need to restart service
+        if (TextUtils.isEmpty(userId)) {
+            Utils.startAuthorization(this);
+            return;
         }
-
-    }
-
-    private void startBillingService() {
-        bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
+        //get buy intent
+        Intent purchaseIntent = makePurchaseIntent(1, userId, BuildConfig.APPLICATION_ID, mComicBookDto.getCbid(),
+                "inapp",
+                "payload");
+        startActivityForResult(purchaseIntent, PURCHASE_CODE);
     }
 
     @Override
@@ -261,30 +246,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_black_24dp);
         setTitle(mComicData.getTitle());
-
-        mServiceConn = new ServiceConnection() {
-
-            @Override
-            public void onServiceConnected(ComponentName className, IBinder service) {
-                mService = IBillingService.Stub.asInterface(service);
-                if (doPurchase) {
-                    doPurchase = false;
-                    try {
-                        purchase();
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName arg0) {
-                mService = null;
-            }
-        };
 
         mDownloadManager = (DownloadManager) getSystemService(
                 Context.DOWNLOAD_SERVICE);
@@ -331,8 +292,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
         }
 
         refreshButtonState();
-
-        startBillingService();
 
         getLoaderManager().initLoader(9999, null, mScreenshotsCallback);
         getLoaderManager().initLoader(LoaderId.COMIC_DETAILS_LOADER, null, mComicDetailsCallback);
@@ -433,21 +392,10 @@ public class ComicDetailsActivity extends ActionBarActivity {
                 e.printStackTrace();
             }
 
-        } else if (requestCode == Utils.PLAY_CODE) {
-            doPurchase = true;
-            startBillingService();
         }
     }
 
     private boolean doPurchase;
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mService != null) {
-            this.unbindService(mServiceConn);
-        }
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

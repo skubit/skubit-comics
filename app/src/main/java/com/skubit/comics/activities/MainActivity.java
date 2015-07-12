@@ -14,7 +14,6 @@
  */
 package com.skubit.comics.activities;
 
-import com.skubit.android.billing.IBillingService;
 import com.skubit.comics.ComicData;
 import com.skubit.comics.ControllerCallback;
 import com.skubit.comics.OrderReceiver;
@@ -58,25 +57,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    private IBillingService mService;
-
-    private ServiceConnection mServiceConn = new ServiceConnection() {
-
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            mService = IBillingService.Stub.asInterface(service);
-            if (doLogin) {
-                doLogin = false;
-                Utils.startAuthorization(MainActivity.this, mService);
-            }
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            mService = null;
-        }
-    };
-
     private int mCurrentPosition;
 
     private OrderReceiver mOrderReceiver;
@@ -96,8 +76,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                         R.id.fragment_drawer);
         mNavigationDrawerFragment
                 .setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
-
-        bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
 
         if("com.skubit.comics.MY_COMICS".equals(getIntent().getAction())) {
             mNavigationDrawerFragment.selectItem(5);
@@ -145,13 +123,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
     public boolean onOptionsItemSelected(MenuItem item) {
         int order = item.getOrder();
         if (order == 1) {
-            if (mService != null) {
-                Utils.startAuthorization(this, mService);
-            } else {
-                if (!Utils.isIabInstalled(getPackageManager())) {
-                    startActivityForResult(Utils.getIabIntent(), Utils.PLAY_CODE);
-                }
-            }
+            Utils.startAuthorization(this);
         } else if (order == 4) {
             Intent i = new Intent();
             i.setClass(this, DisplayLicensesActivity.class);
@@ -171,7 +143,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             Utils.createNewAccount(this, data);
         } else if (requestCode == Utils.PLAY_CODE) {
             doLogin = true;
-            bindService(Utils.getBillingServiceIntent(), mServiceConn, Context.BIND_AUTO_CREATE);
         }
     }
 
@@ -294,14 +265,4 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             super.onBackPressed();
         }
     }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mService != null) {
-            this.unbindService(mServiceConn);
-        }
-    }
-
-
 }
