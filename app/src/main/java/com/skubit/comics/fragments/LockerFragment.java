@@ -29,6 +29,7 @@ import com.skubit.comics.provider.comic.ComicCursor;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.shared.dto.ArchiveFormat;
+import com.skubit.shared.dto.ComicBookType;
 import com.skubit.shared.dto.LockerItemListDto;
 
 import android.app.Fragment;
@@ -120,9 +121,13 @@ public class LockerFragment extends Fragment implements ItemClickListener {
     @Override
     public void onClickOption(View v, final Bundle bundle) {
         final String cbid = bundle.getString("cbid");
+        final String comicBookType = bundle.getString("comicBookType");
         //TODO: move off main thread
+        ArchiveFormat archiveFormat = ComicBookType.ELECTRICOMIC.name().equals(comicBookType)
+                ? ArchiveFormat.ELCX : ArchiveFormat.CBZ;
         ComicSelection ks = new ComicSelection();
-        ks.cbid(cbid).and().archiveFormat(ArchiveFormat.CBZ.name()).and().isSample(false);
+        ks.cbid(cbid).and().archiveFormat(archiveFormat.name())
+                .and().isSample(false);
 
         final ComicCursor c = ks.query(getActivity().getContentResolver());
 
@@ -138,7 +143,8 @@ public class LockerFragment extends Fragment implements ItemClickListener {
                 if (position == 0) {//Download
                     startActivity(DownloadDialogActivity
                             .newInstance(cbid, bundle.getString("title"), false));
-                } else if (position == 1) {//Open
+                } else if (position == 1) {
+
                     if (c != null && c.getCount() > 0) {
                         c.moveToFirst();
                         if (!TextUtils.isEmpty(c.getArchiveFile())) {

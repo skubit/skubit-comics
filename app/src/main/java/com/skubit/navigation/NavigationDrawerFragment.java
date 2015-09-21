@@ -193,6 +193,8 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         Drawable locker = getResources().getDrawable(R.drawable.ic_archive_black_18dp);
         Drawable wallet = getResources()
                 .getDrawable(R.drawable.ic_account_balance_wallet_black_18dp);
+        Drawable bulb = getResources()
+                .getDrawable(R.drawable.ic_wb_incandescent_black_18dp);
 
         shop.setAlpha(180);
         myComics.setAlpha(180);
@@ -203,12 +205,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         genre.setAlpha(180);
         creator.setAlpha(180);
         collections.setAlpha(180);
+        bulb.setAlpha(180);
 
         items.add(new NavigationItem("Catalog", shop));
         items.add(new NavigationItem("Publisher", publisher));
         items.add(new NavigationItem("Series", series));
         items.add(new NavigationItem("Genre", genre));
         items.add(new NavigationItem("Creator", creator));
+
+        items.add(new NavigationItem("Electricomics", bulb));
 
         items.add(new NavigationItem("My Comics", myComics));
         items.add(new NavigationItem("My Collections", collections));
@@ -225,7 +230,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }
-        if (position != 8) {//Don't highlight wallet
+        if (position != 9) {//Don't highlight wallet
             ((NavigationDrawerAdapter) mDrawerList.getAdapter()).selectPosition(position);
         }
 

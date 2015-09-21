@@ -58,10 +58,10 @@ public class
         long downloadId = intent.getLongExtra(
                 DownloadManager.EXTRA_DOWNLOAD_ID, 0);
         String fileName = getFileUri(downloadId);
-        if (TextUtils.isEmpty(fileName)) {;
+        if (TextUtils.isEmpty(fileName)) {
             return;
         }
-        if (fileName.toLowerCase().endsWith(".cbz")) {
+        if (fileName.toLowerCase().endsWith(".cbz") || fileName.toLowerCase().endsWith(".elcx")) {
             File parent = new File(fileName).getParentFile();
             ArchiveScannerLoader loader = new ArchiveScannerLoader(getBaseContext(), parent, true);
             loader.registerListener(fileName.hashCode(), this);
@@ -78,6 +78,8 @@ public class
             } catch (ActivityNotFoundException e) {
 
             }
+        } else if (fileName.toLowerCase().endsWith(".mp3")) {
+
         }
     }
 
@@ -150,11 +152,12 @@ public class
 
         String fileName = archive.getName().toLowerCase();
         ccv.putIsSample(fileName.contains("sample"));
-
         if (fileName.endsWith(".cbz")) {
             ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
         } else if(fileName.endsWith(".pdf")) {
             ccv.putArchiveFormat(ArchiveFormat.PDF.name());
+        } else if(fileName.endsWith(".elcx")) {
+            ccv.putArchiveFormat(ArchiveFormat.ELCX.name());
         }
 
         if (ccv.update(getBaseContext().getContentResolver(), ks) != 1) {

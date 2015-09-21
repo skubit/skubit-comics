@@ -16,6 +16,8 @@ public class ComicFilter implements Parcelable {
 
     public boolean isFeatured;
 
+    public boolean isElectricomic;
+
     public static Bundle toBundle(ComicFilter filter) {
         Bundle data = new Bundle();
         Parcel parcel = Parcel.obtain();
@@ -79,6 +81,9 @@ public class ComicFilter implements Parcelable {
             return false;
         }
         if (isFeatured != that.isFeatured) {
+            return false;
+        }
+        if(isElectricomic != this.isElectricomic) {
             return false;
         }
         return !(series != null ? !series.equals(that.series) : that.series != null);

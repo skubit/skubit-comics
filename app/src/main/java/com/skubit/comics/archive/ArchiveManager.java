@@ -21,8 +21,6 @@ import com.github.junrar.rarfile.FileHeader;
 import com.github.junrar.unpack.decode.Compress;
 import com.ssb.droidsound.utils.UnRar;
 
-import android.util.Log;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -42,7 +40,7 @@ public final class ArchiveManager {
 
     private static final TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
 
-    private static final String[] ACCEPTS = new String[]{"jpeg", "jpg", "png", "webp"};
+    private static final String[] ACCEPTS_IMAGE = new String[]{"jpeg", "jpg", "png", "webp"};
 
     private static ArchiveManager sInstance = null;
 
@@ -75,7 +73,7 @@ public final class ArchiveManager {
         int index = filename.lastIndexOf(".");
         if (index > -1) {
             String extension = filename.substring(index + 1).toLowerCase();
-            for (String accept : ACCEPTS) {
+            for (String accept : ACCEPTS_IMAGE) {
                 if (accept.equals(extension)) {
                     return true;
                 }
@@ -84,13 +82,13 @@ public final class ArchiveManager {
         return false;
     }
 
-    private static void unzipEntry(ZipFile zipfile, ZipEntry entry, File outputDir)
+    private static void unzipEntry(ZipFile zipfile, ZipEntry entry, File outputDir, boolean filter)
             throws IOException {
         if (Thread.interrupted()) {
             return;
         }
 
-        if (entry.isDirectory() || !hasExtension(entry.getName())) {
+        if (entry.isDirectory() || (filter &&  !hasExtension(entry.getName()))) {
             return;
         }
 
@@ -204,31 +202,6 @@ public final class ArchiveManager {
         }
 
         return file;
-    /*
-        mThreadPool.execute(new Runnable() {
-
-            @Override
-            public void run() {
-                FileOutputStream os = null;
-                try {
-                    os = new FileOutputStream(file);
-                    archive.extractFile(fileHeader, os);
-                } catch (Exception e) {
-                    Compress.adjustWindowSize(false);
-                    e.printStackTrace();
-                } finally {
-                    if(os != null) {
-                        try {
-                            os.close();
-                        } catch (IOException e) {
-
-                        }
-                    }
-                }
-            }
-        });
-        return file;
-        */
     }
 
     public void unzip(final ZipFile zipFile, final ZipEntry entry, final File outputDir) {
@@ -237,19 +210,28 @@ public final class ArchiveManager {
             @Override
             public void run() {
                 try {
-                    unzipEntry(zipFile, entry, outputDir);
+                    unzipEntry(zipFile, entry, outputDir, true);
                 } catch (IOException e) {
 
                 } finally {
-                    /*
-                    if(zipFile != null) {
-                        try {
-                            zipFile.close();
-                        } catch (IOException e) {
 
-                        }
-                    }
-                    */
+                }
+            }
+        });
+
+    }
+
+    public void unzip(final ZipFile zipFile, final ZipEntry entry, final File outputDir, final boolean filter) {
+        mThreadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    unzipEntry(zipFile, entry, outputDir, filter);
+                } catch (IOException e) {
+
+                } finally {
+
                 }
             }
         });

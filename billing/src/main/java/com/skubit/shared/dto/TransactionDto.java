@@ -1,163 +1,177 @@
-/**
- * Copyright 2014 Skubit
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy of
- * the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- */
 package com.skubit.shared.dto;
+
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import java.util.Date;
-
 @JsonInclude(Include.NON_NULL)
-public class TransactionDto implements Dto {
+public final class TransactionDto implements Dto {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = -5405919723957516557L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5405919723957516557L;
 
-    private String address;
+	private String address;
 
-    private String amount;// BTC
+	private String amount;// BTC
 
-    private String bitcoinTransactionId;
+	private String bitcoinTransactionId;
 
-    private Date createdDate;
+	private Date createdDate;
 
-    private long fee;
+	private long fee;
 
-    private String note;
+	private String note;
 
-    private String purchaseToken;
+	private String purchaseToken;
 
-    private String selfLink;
+	private String selfLink;
 
-    private TransactionState transactionState;
+	private TransactionState transactionState;
 
-    private TransactionType transactionType;
+	private TransactionType transactionType;
+	
+	private TransactionProcessor transactionProcessor;
+	
+	private double price;
+	
+	private String currency;
 
-    private Date updatedDate;
+	private Date updatedDate;
+	
+	private String userId;
 
-    private String userId;
+	public double getPrice() {
+		return price;
+	}
 
-    public String getAddress() {
-        return address;
-    }
+	public void setPrice(double price) {
+		this.price = price;
+	}
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+	public String getCurrency() {
+		return currency;
+	}
 
-    public String getAmount() {
-        return amount;
-    }
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
+	public TransactionProcessor getTransactionProcessor() {
+		return transactionProcessor;
+	}
 
-    public String getBitcoinTransactionId() {
-        return bitcoinTransactionId;
-    }
+	public void setTransactionProcessor(TransactionProcessor transactionProcessor) {
+		this.transactionProcessor = transactionProcessor;
+	}
 
-    public void setBitcoinTransactionId(String bitcoinTransactionId) {
-        this.bitcoinTransactionId = bitcoinTransactionId;
-    }
+	public String getAddress() {
+		return address;
+	}
 
-    public Date getCreatedDate() {
-        return createdDate;
-    }
+	public String getAmount() {
+		return amount;
+	}
 
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
+	public String getBitcoinTransactionId() {
+		return bitcoinTransactionId;
+	}
 
-    public long getFee() {
-        return fee;
-    }
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
-    public void setFee(long fee) {
-        this.fee = fee;
-    }
+	public long getFee() {
+		return fee;
+	}
 
-    public String getNote() {
-        return note;
-    }
+	public String getNote() {
+		return note;
+	}
 
-    public void setNote(String note) {
-        this.note = note;
-    }
+	public String getPurchaseToken() {
+		return purchaseToken;
+	}
 
-    public String getPurchaseToken() {
-        return purchaseToken;
-    }
+	public String getSelfLink() {
+		return selfLink;
+	}
 
-    public void setPurchaseToken(String purchaseToken) {
-        this.purchaseToken = purchaseToken;
-    }
+	public TransactionState getTransactionState() {
+		return transactionState;
+	}
 
-    public String getSelfLink() {
-        return selfLink;
-    }
+	public TransactionType getTransactionType() {
+		return transactionType;
+	}
 
-    public void setSelfLink(String selfLink) {
-        this.selfLink = selfLink;
-    }
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
 
-    public TransactionState getTransactionState() {
-        return transactionState;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setTransactionState(TransactionState transactionState) {
-        this.transactionState = transactionState;
-    }
+	public void setAddress(String address) {
+		this.address = address;
+	}
 
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
 
-    public void setTransactionType(TransactionType transactionType) {
-        this.transactionType = transactionType;
-    }
+	public void setBitcoinTransactionId(String bitcoinTransactionId) {
+		this.bitcoinTransactionId = bitcoinTransactionId;
+	}
 
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
+	public void setFee(long fee) {
+		this.fee = fee;
+	}
 
-    public String getUserId() {
-        return userId;
-    }
+	public void setNote(String note) {
+		this.note = note;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public void setPurchaseToken(String purchaseToken) {
+		this.purchaseToken = purchaseToken;
+	}
 
-    @Override
-    public String toString() {
-        return "TransactionDto [selfLink=" + selfLink + ", address=" + address
-                + ", amount=" + amount + ", bitcoinTransactionId="
-                + bitcoinTransactionId + ", createdDate=" + createdDate
-                + ", note=" + note + ", purchaseToken=" + purchaseToken
-                + ", transactionState=" + transactionState
-                + ", transactionType=" + transactionType + ", updatedDate="
-                + updatedDate + ", userId=" + userId + "]";
-    }
+	public void setSelfLink(String selfLink) {
+		this.selfLink = selfLink;
+	}
+
+	public void setTransactionState(TransactionState transactionState) {
+		this.transactionState = transactionState;
+	}
+
+	public void setTransactionType(TransactionType transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
+	public String toString() {
+		return "TransactionDto [selfLink=" + selfLink + ", address=" + address
+				+ ", amount=" + amount + ", bitcoinTransactionId="
+				+ bitcoinTransactionId + ", createdDate=" + createdDate
+				+ ", note=" + note + ", purchaseToken=" + purchaseToken
+				+ ", transactionState=" + transactionState
+				+ ", transactionType=" + transactionType + ", updatedDate="
+				+ updatedDate + ", userId=" + userId + "]";
+	}
 
 }
-

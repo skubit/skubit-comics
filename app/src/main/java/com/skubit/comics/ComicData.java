@@ -58,6 +58,8 @@ public class ComicData implements Parcelable {
 
     private String issueFormat;
 
+    private String comicBookType;
+
     public static final Creator<ComicData> CREATOR
             = new Creator<ComicData>() {
 
@@ -79,6 +81,7 @@ public class ComicData implements Parcelable {
             comicData.volume = readString(source);
             comicData.writer = readString(source);
             comicData.issueFormat = readString(source);
+            comicData.comicBookType = readString(source);
             return comicData;
         }
 
@@ -109,6 +112,10 @@ public class ComicData implements Parcelable {
         writer = dto.getWriter();
         if(dto.getIssueFormat() != null) {
             issueFormat = dto.getIssueFormat().name();
+        }
+
+        if(dto.getComicBookType() != null) {
+            comicBookType = dto.getComicBookType().name();
         }
     }
 
@@ -171,6 +178,7 @@ public class ComicData implements Parcelable {
         writeString(volume, parcel);
         writeString(writer, parcel);
         writeString(issueFormat, parcel);
+        writeString(comicBookType, parcel);
     }
 
     public String getIssueFormat() {
@@ -207,6 +215,10 @@ public class ComicData implements Parcelable {
 
     public String getWriter() {
         return writer;
+    }
+
+    public String getComicBookType() {
+        return comicBookType;
     }
 
     @Override

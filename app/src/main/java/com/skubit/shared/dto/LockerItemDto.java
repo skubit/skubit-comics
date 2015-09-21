@@ -1,18 +1,19 @@
 package com.skubit.shared.dto;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import java.io.Serializable;
-import java.util.Date;
-
 @JsonInclude(Include.NON_NULL)
-public class LockerItemDto implements Serializable {
+public class LockerItemDto implements Dto {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3559846565234314372L;
+	
+	private ComicBookType comicBookType;
 	
 	private String title;
 	
@@ -36,6 +37,14 @@ public class LockerItemDto implements Serializable {
 	
 	private int issue;
 	
+	public ComicBookType getComicBookType() {
+		return comicBookType;
+	}
+
+	public void setComicBookType(ComicBookType comicBookType) {
+		this.comicBookType = comicBookType;
+	}
+
 	public String getVolume() {
 		return volume;
 	}

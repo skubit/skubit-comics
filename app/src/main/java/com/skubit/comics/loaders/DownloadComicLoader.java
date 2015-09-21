@@ -1,10 +1,12 @@
 package com.skubit.comics.loaders;
 
 import com.skubit.AccountSettings;
+import com.skubit.comics.ComicData;
 import com.skubit.comics.Constants;
 import com.skubit.comics.services.ComicService;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.shared.dto.ArchiveFormat;
+import com.skubit.shared.dto.ComicBookType;
 import com.skubit.shared.dto.ErrorMessage;
 import com.skubit.shared.dto.UrlDto;
 
@@ -25,12 +27,22 @@ public class DownloadComicLoader extends BaseLoader<LoaderResult<UrlDto>> {
 
     private final ArchiveFormat mArchiveFormat;
 
-    public DownloadComicLoader(Context context, String cbid, boolean isSample,
-            ArchiveFormat format) {
+    public DownloadComicLoader(Context context, String cbid, boolean isSample, ArchiveFormat archiveFormat) {
         super(context);
         mCbid = cbid;
         mIsSample = isSample;
-        mArchiveFormat = format;
+        mArchiveFormat = archiveFormat;
+
+        String account = AccountSettings.get(context).retrieveBitId();
+        mComicService = new ComicService(account, context);
+    }
+
+    public DownloadComicLoader(Context context, ComicData comicData, boolean isSample) {
+        super(context);
+        mCbid = comicData.getCbid();
+        mIsSample = isSample;
+        mArchiveFormat = ComicBookType.ELECTRICOMIC.name().equals(comicData.getComicBookType()) ?
+                ArchiveFormat.ELCX : ArchiveFormat.CBZ;
 
         String account = AccountSettings.get(context).retrieveBitId();
         mComicService = new ComicService(account, context);

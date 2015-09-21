@@ -1,26 +1,31 @@
 package com.skubit.shared.dto;
 
+import java.util.Date;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-import java.io.Serializable;
-import java.util.Date;
-
 @JsonInclude(Include.NON_NULL)
-public class ComicBookDto implements Serializable {
+public class ComicBookDto implements Dto {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 68944290937084026L;
 	
+	private String video;
+	
+	//private boolean includeVideoForSeries;
+
+	private ComicBookType comicBookType;
+	
+	private int votes;
+	
 	private boolean approved;
 	
 	private String artist;
 
 	private String cbid;
-
-	private String contactEmail;
 
 	private String coverArtUrl;
 
@@ -52,15 +57,11 @@ public class ComicBookDto implements Serializable {
 	
 	private String storyTitle;
 	
-	private String summary;
-	
 	private Date updateDate;
 	
 	private String vendorId;
 	
 	private String volume;
-	
-	private String website;
 	
 	private String writer;
 	
@@ -73,6 +74,30 @@ public class ComicBookDto implements Serializable {
 	private AgeRating ageRating;
 	
 	private IssueFrequency issueFrequency;
+
+	public ComicBookType getComicBookType() {
+		return comicBookType;
+	}
+
+	public void setComicBookType(ComicBookType comicBookType) {
+		this.comicBookType = comicBookType;
+	}
+
+	public String getVideo() {
+		return video;
+	}
+
+	public void setVideo(String video) {
+		this.video = video;
+	}
+
+	public int getVotes() {
+		return votes;
+	}
+
+	public void setVotes(int votes) {
+		this.votes = votes;
+	}
 
 	public IssueFormat getIssueFormat() {
 		return issueFormat;
@@ -120,10 +145,6 @@ public class ComicBookDto implements Serializable {
 	
 	public String getCbid() {
 		return cbid;
-	}
-	
-	public String getContactEmail() {
-		return contactEmail;
 	}
 
 	public String getCoverArtUrl() {
@@ -177,11 +198,7 @@ public class ComicBookDto implements Serializable {
 	public String getStoryTitle() {
 		return storyTitle;
 	}
-
-	public String getSummary() {
-		return summary;
-	}
-
+	
 	public Date getUpdateDate() {
 		return updateDate;
 	}
@@ -192,10 +209,6 @@ public class ComicBookDto implements Serializable {
 
 	public String getVolume() {
 		return volume;
-	}
-
-	public String getWebsite() {
-		return website;
 	}
 
 	public String getWriter() {
@@ -224,10 +237,6 @@ public class ComicBookDto implements Serializable {
 
 	public void setCbid(String cbid) {
 		this.cbid = cbid;
-	}
-
-	public void setContactEmail(String contactEmail) {
-		this.contactEmail = contactEmail;
 	}
 
 	public void setCoverArtUrl(String coverArtUrl) {
@@ -290,10 +299,6 @@ public class ComicBookDto implements Serializable {
 		this.storyTitle = storyTitle;
 	}
 
-	public void setSummary(String summary) {
-		this.summary = summary;
-	}
-
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
@@ -306,11 +311,26 @@ public class ComicBookDto implements Serializable {
 		this.volume = volume;
 	}
 
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
+
+	@Override
+	public String toString() {
+		return "ComicBookDto [approved=" + approved + ", artist=" + artist
+				+ ", cbid=" + cbid + ", coverArtUrl=" + coverArtUrl
+				+ ", currencySymbol=" + currencySymbol + ", description="
+				+ description + ", genre=" + genre + ", issueNumber="
+				+ issueNumber + ", numPages=" + numPages + ", packageName="
+				+ packageName + ", price=" + price + ", publishDate="
+				+ publishDate + ", published=" + published + ", publisher="
+				+ publisher + ", purchased=" + purchased + ", satoshi="
+				+ satoshi + ", series=" + series + ", storyTitle=" + storyTitle
+				+ ", updateDate=" + updateDate + ", vendorId=" + vendorId
+				+ ", volume=" + volume + ", writer=" + writer
+				+ ", issueFormat=" + issueFormat + ", language=" + language
+				+ ", deliveryFormat=" + deliveryFormat + ", ageRating="
+				+ ageRating + ", issueFrequency=" + issueFrequency + "]";
+	}
+	
 }

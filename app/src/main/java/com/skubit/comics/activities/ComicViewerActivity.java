@@ -122,7 +122,13 @@ public class ComicViewerActivity extends ActionBarActivity implements PageTapLis
 
     private String mArchiveType;
 
-    public static Intent newInstance(String title, String archiveFile, ArchiveType archiveType, int lastPageRead) {
+    public static Intent newInstance(String title, String archiveFile, ArchiveType archiveType,
+            int lastPageRead) {
+        if (ArchiveType.ELCX.equals(archiveType)) {
+            return ElectricViewerActivity.newInstance(
+                    new File(Constants.SKUBIT_UNARCHIVES, new File(archiveFile).getName()));
+        }
+
         Intent i = new Intent();
         i.putExtra("title", title);
         i.putExtra(ARCHIVE_EXTRA, archiveFile);

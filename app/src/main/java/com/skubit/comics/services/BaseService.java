@@ -48,7 +48,6 @@ public abstract class BaseService<T> {
 
         mRestService = builder.build().create(getClazz());
     }
-
     public abstract Class<T> getClazz();
 
     public T getRestService() {

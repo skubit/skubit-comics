@@ -2,6 +2,7 @@ package com.skubit.comics.adapters;
 
 import com.skubit.comics.ItemClickListener;
 import com.skubit.comics.R;
+import com.skubit.shared.dto.ComicBookType;
 import com.skubit.shared.dto.LockerItemDto;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +45,7 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
         holder.storyTitle.setText(lockerItemDto.getTitle()
                 + " Vol." + lockerItemDto.getVolume() + " #" + lockerItemDto.getIssue());
         holder.cbid = lockerItemDto.getProductId();
+        holder.comicBookType = lockerItemDto.getComicBookType();
 
         String coverArt = lockerItemDto.getCoverArt() +"=-rw";
 
@@ -74,6 +76,8 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
 
         public String cbid;
 
+        public ComicBookType comicBookType;
+
         public LockerItemViewHolder(final View view) {
             super(view);
             storyTitle = (TextView) view.findViewById(R.id.title);
@@ -97,6 +101,7 @@ public class LockerAdapter extends RecyclerView.Adapter<LockerAdapter.LockerItem
                 public void onClick(View v) {
                     Bundle data = new Bundle();
                     data.putString("cbid", cbid);
+                    data.putString("comicBookType", comicBookType.name());
                     data.putString("title", storyTitle.getText().toString());
                     mItemClickListener.onClickOption(v, data);
                 }

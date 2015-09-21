@@ -101,6 +101,10 @@ public class DownloadDialogActivity extends ProgressActivity<Bundle> {
                 mArchiveFormat = ArchiveFormat.PDF;
             } else if (ArchiveFormat.CBZ.name().equals(format)) {
                 mArchiveFormat = ArchiveFormat.CBZ;
+            } else if(ArchiveFormat.ELCX.name().equals(format)) {
+                mArchiveFormat = ArchiveFormat.ELCX;
+            } else if(ArchiveFormat.VOICE.name().equals(format)) {
+                mArchiveFormat = ArchiveFormat.VOICE;
             }
             getLoaderManager().initLoader((mCbid + format + mIsSample).hashCode(), null,
                     mDownloadCallback);

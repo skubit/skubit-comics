@@ -41,7 +41,7 @@ public class SimilarFragment extends Fragment implements
 
         @Override
         public void onLoadFinished(Loader<ComicBookListDto> loader, ComicBookListDto data) {
-            if(data != null && !data.getItems().isEmpty()) {
+            if(data != null && data.getItems() != null && !data.getItems().isEmpty()) {
                 ArrayList<ComicBookDto> items = data.getItems();
                 int maxNum = Math.min(5, data.getItems().size());
 

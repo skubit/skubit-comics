@@ -6,21 +6,21 @@ android {
 
     defaultConfig {
         applicationId "com.skubit.comics"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 21
-        versionCode 7
-        versionName "2.0"
+        versionCode 8
+        versionName "2.1"
         multiDexEnabled true
     }
 
     productFlavors {
         prod {
             applicationId "com.skubit.comics"
-            versionName = "2.0"
+            versionName = "2.1"
         }
         dev {
             applicationId "net.skubit.comics"
-            versionName = "2.0-TestNet"
+            versionName = "2.1-TestNet"
         }
     }
 
@@ -54,6 +54,7 @@ dependencies {
     compile 'com.github.navasmdc:MaterialDesign:1.+@aar'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':skubit-commons')
+    androidTestCompile 'org.mockito:mockito-core:1.+'
 
     devCompile project(path: ':billing',  configuration: 'devDebug')
     prodCompile project(path: ':billing',  configuration: 'prodDebug')

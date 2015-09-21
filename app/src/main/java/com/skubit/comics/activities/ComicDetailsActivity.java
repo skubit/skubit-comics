@@ -33,7 +33,9 @@ import com.skubit.comics.loaders.LoaderId;
 import com.skubit.comics.loaders.ScreenshotsLoader;
 import com.skubit.dialog.LoaderResult;
 import com.skubit.iab.activities.PurchaseActivity;
+import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ComicBookDto;
+import com.skubit.shared.dto.ComicBookType;
 import com.skubit.shared.dto.IssueFormat;
 import com.skubit.shared.dto.UrlDto;
 import com.squareup.picasso.Picasso;
@@ -79,7 +81,7 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
         @Override
         public Loader<LoaderResult<UrlDto>> onCreateLoader(int id, Bundle args) {
-            return new DownloadComicLoader(getBaseContext(), mComicData.getCbid(), false, null);
+            return new DownloadComicLoader(getBaseContext(), mComicData, false);
         }
 
         @Override
@@ -90,7 +92,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
             } else {
                 mBuyBtn.setText("Purchased");
                 mBuyBtn.setEnabled(false);
-
                 Utils.download(getBaseContext(), data.result.getUrl(), "", mComicBookDto, mDownloadManager);
             }
         }
@@ -177,8 +178,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
         }
     };
-
-    private ServiceConnection mServiceConn;
 
     private TextView mIssue;
 
@@ -301,16 +300,23 @@ public class ComicDetailsActivity extends ActionBarActivity {
                         "SIM_CONTAINER")
                 .commit();
 
-        mSampleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(DownloadDialogActivity
-                        .newInstance(mComicData.getCbid(),
-                                mComicData.getTitle()
-                                        + " Vol." + mComicData.getVolume()
-                                        + " #" + mComicData.getIssueNumber(), true));
-            }
-        });
+        ArchiveFormat archiveFormat = ComicBookType.ELECTRICOMIC.name().equals(mComicData.getComicBookType()) ?
+                ArchiveFormat.ELCX : ArchiveFormat.CBZ;
+        if(ArchiveFormat.ELCX.equals(archiveFormat)) {
+            mSampleBtn.setVisibility(View.GONE);
+        } else {
+            mSampleBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(DownloadDialogActivity
+                            .newInstance(mComicData.getCbid(),
+                                    mComicData.getTitle()
+                                            + " Vol." + mComicData.getVolume()
+                                            + " #" + mComicData.getIssueNumber(), true));
+                }
+            });
+        }
+
 
         mCoverArt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -394,8 +400,6 @@ public class ComicDetailsActivity extends ActionBarActivity {
 
         }
     }
-
-    private boolean doPurchase;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

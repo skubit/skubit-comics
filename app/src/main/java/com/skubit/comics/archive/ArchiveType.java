@@ -21,7 +21,7 @@ import android.text.TextUtils;
  */
 public enum ArchiveType {
 
-    CBZ, CBR, UNKNOWN;
+    CBZ, CBR, MP3, ELCX, UNKNOWN;
 
     public static ArchiveType fromString(String value) {
         if(TextUtils.isEmpty(value)) {
@@ -32,6 +32,10 @@ public enum ArchiveType {
             return CBZ;
         } else if ("cbr".equals(value)) {
             return CBR;
+        } else if ("elcx".equals(value)) {
+            return ELCX;
+        } else if ("mp3".equals(value)) {
+            return MP3;
         }
         return UNKNOWN;
     }

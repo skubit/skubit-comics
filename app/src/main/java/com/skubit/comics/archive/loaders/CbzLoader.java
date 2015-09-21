@@ -24,6 +24,7 @@ import com.skubit.comics.provider.comic.ComicContentValues;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 import com.skubit.comics.provider.comicreader.ComicReaderContentValues;
+import com.skubit.shared.dto.ArchiveFormat;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -99,7 +100,7 @@ public final class CbzLoader extends BaseLoader<CbzResponse> {
         ComicContentValues ccv = new ComicContentValues();
         ccv.putCoverArt(new File(mDestDir, orderedEntries.get(0)).getAbsolutePath());
         ccv.putArchiveFile(mArchiveFile.getAbsolutePath());
-
+        ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
         if (ccv.update(mContext.getContentResolver(), ks) != 1) {
             ccv.putCbid(CodeGenerator.generateCode(6));
             ccv.insert(mContext.getContentResolver());

@@ -15,11 +15,13 @@
 package com.skubit.comics.activities;
 
 import com.skubit.comics.ComicData;
+import com.skubit.comics.ComicFilter;
 import com.skubit.comics.ControllerCallback;
 import com.skubit.comics.OrderReceiver;
 import com.skubit.comics.R;
 import com.skubit.comics.UiState;
 import com.skubit.comics.Utils;
+import com.skubit.comics.fragments.CatalogFragment;
 import com.skubit.comics.fragments.CatalogTabsFragment;
 import com.skubit.comics.fragments.CreatorsTabsFragment;
 import com.skubit.comics.fragments.GenreFragment;
@@ -31,6 +33,7 @@ import com.skubit.comics.fragments.SeriesTabsFragment;
 import com.skubit.iab.activities.SkubitAndroidActivity;
 import com.skubit.navigation.NavigationDrawerCallbacks;
 import com.skubit.navigation.NavigationDrawerFragment;
+import com.skubit.shared.dto.CatalogFilter;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -76,10 +79,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
                 .setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
 
         if("com.skubit.comics.MY_COMICS".equals(getIntent().getAction())) {
-            mNavigationDrawerFragment.selectItem(5);
+            mNavigationDrawerFragment.selectItem(6);
             getIntent().setAction(null);
         } else if("com.skubit.comics.MY_LOCKER".equals(getIntent().getAction())) {
-            mNavigationDrawerFragment.selectItem(7);
+            mNavigationDrawerFragment.selectItem(8);
             getIntent().setAction(null);
         }
 
@@ -167,23 +170,21 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerC
             showFragment(new CreatorsTabsFragment(), UiState.CREATOR, position);
             setTitle("Creator");
         } else if (position == 5) {
+            ComicFilter filter = new ComicFilter();
+            filter.isElectricomic = true;
+            showFragment(CatalogFragment.newInstance(filter), UiState.ELECTRICOMICS, position);
+            setTitle("Electricomics");
+        } else if (position == 6) {
             showFragment(new MyComicsFragment(), UiState.MY_COMICS, position);
             setTitle("My Comics");
-        } else if (position == 6) {
+        } else if (position == 7) {
             showFragment(new MyCollectionsFragment(), UiState.MY_COLLECTIONS, position);
             setTitle("My Collections");
-        } else if (position == 7) {
+        } else if (position == 8) {
             showFragment(new LockerFragment(), UiState.LOCKER, position);
             setTitle("Locker");
-        } else if (position == 8) {
+        } else if (position == 9) {
             startActivity(SkubitAndroidActivity.newInstance(getBaseContext()));
-            /*
-            String serviceName = BuildConfig.FLAVOR.startsWith("dev") ? Constants.IAB_TEST
-                    : Constants.IAB_PROD;
-            Intent i = new Intent(serviceName + ".MAIN");
-            startActivity(i);
-            */
-
         }
         mCurrentPosition = position;
     }

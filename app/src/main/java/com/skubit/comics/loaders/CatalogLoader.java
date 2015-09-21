@@ -27,10 +27,13 @@ public class CatalogLoader extends BaseComicServiceLoader<ComicBookListDto> {
                 return mComicService.getByFilter(CatalogFilter.TOP_FREE, 20, mWebCursor);
             } else if (mComicFilter.isPaid) {
                 return mComicService.getByFilter(CatalogFilter.TOP_PAID, 20, mWebCursor);
+            } else if (mComicFilter.isElectricomic) {
+                return mComicService.getByFilter(CatalogFilter.ELECTRICOMIC, 20, mWebCursor);
             } else if (!TextUtils.isEmpty(mComicFilter.series)) {
                 return mComicService.getBySeries(mComicFilter.series, 20, mWebCursor,
                         BuildConfig.APPLICATION_ID);
             }
+
             //TODO: JUST released
             return mComicService.getAllComics(50, mWebCursor,
                     true, BuildConfig.APPLICATION_ID);

@@ -18,6 +18,8 @@ public class UiState {
 
     public final static String LOCKER = "LOCKER";
 
+    public final static String ELECTRICOMICS = "ELECTRICOMICS";
+
     public final static String GALLERY = "GALLERY";
 
     public final static String DOWNLOAD_SAMPLE = "DOWNLOAD_SAMPLE";

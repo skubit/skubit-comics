@@ -136,9 +136,7 @@ public class OrderService extends Service {
     }
 
     private void downloadComic(final ComicData comicData) {
-        DownloadComicLoader downloader = new DownloadComicLoader(getBaseContext(),
-                comicData.getCbid(),
-                false, ArchiveFormat.CBZ);
+        DownloadComicLoader downloader = new DownloadComicLoader(getBaseContext(), comicData, false);
         downloader.registerListener(comicData.getCbid().hashCode(),
                 new Loader.OnLoadCompleteListener<LoaderResult<UrlDto>>() {
 

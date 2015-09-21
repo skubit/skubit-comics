@@ -26,6 +26,7 @@ import com.skubit.comics.provider.comic.ComicContentValues;
 import com.skubit.comics.provider.comic.ComicSelection;
 import com.skubit.comics.provider.comicreader.ComicReaderColumns;
 import com.skubit.comics.provider.comicreader.ComicReaderContentValues;
+import com.skubit.shared.dto.ArchiveFormat;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -49,14 +50,6 @@ public final class CbrLoader extends BaseLoader<CbzResponse> {
         super(context);
         mArchiveFile = archiveFile;
         mDestDir = destDir;
-    }
-
-    private String cleanFile(String name) {
-        int i = name.lastIndexOf("\\");
-        if(i != -1 && i != name.length()) {
-            name = name.substring(i + 1, name.length()) ;
-        }
-        return name;
     }
 
     @Override
@@ -95,7 +88,7 @@ public final class CbrLoader extends BaseLoader<CbzResponse> {
 
         ComicContentValues ccv = new ComicContentValues();
         ccv.putArchiveFile(mArchiveFile.getAbsolutePath());
-
+        ccv.putArchiveFormat(ArchiveFormat.CBR.name());
         if (ccv.update(mContext.getContentResolver(), ks) != 1) {
             ccv.putCbid(CodeGenerator.generateCode(6));
             ccv.insert(mContext.getContentResolver());

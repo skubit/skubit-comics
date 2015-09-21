@@ -1,82 +1,129 @@
 package com.skubit.shared.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto implements Dto {
+public final class UserDto implements Dto {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 4548823909918422169L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4548823909918422169L;
 
-    private String contactWebsite;
+	private UserProfileDto userProfile;
+	
+	private String contactWebsite;
 
-    private String email;
+	private String email;
 
-    private String payoutAddress;
+	private String payoutAddress;
 
-    private String userId;
+	private String userId;
 
-    private String userName;
+	private String userName;
 
-    public UserDto() {
-    }
+	private String iconUrl;
 
-    public UserDto(String userId, String email, String userName) {
-        this.userId = userId;
-        this.email = email;
-        this.userName = userName;
-    }
+	private boolean canContact;
 
-    public String getContactWebsite() {
-        return contactWebsite;
-    }
+	private String location;
+	
+	private int karma;
 
-    public void setContactWebsite(String contactWebsite) {
-        this.contactWebsite = contactWebsite;
-    }
+	public UserDto() {
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public int getKarma() {
+		return karma;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
-    public String getPayoutAddress() {
-        return payoutAddress;
-    }
+	public void setKarma(int karma) {
+		this.karma = karma;
+	}
 
-    public void setPayoutAddress(String payoutAddress) {
-        this.payoutAddress = payoutAddress;
-    }
 
-    public String getUserId() {
-        return userId;
-    }
+	public UserProfileDto getUserProfile() {
+		return userProfile;
+	}
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
+	public void setUserProfile(UserProfileDto userProfile) {
+		this.userProfile = userProfile;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "contactWebsite='" + contactWebsite + '\'' +
-                ", email='" + email + '\'' +
-                ", payoutAddress='" + payoutAddress + '\'' +
-                ", userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                '}';
-    }
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public boolean isCanContact() {
+		return canContact;
+	}
+
+	public void setCanContact(boolean canContact) {
+		this.canContact = canContact;
+	}
+
+	public UserDto(String userId, String email, String userName) {
+		this.userId = userId;
+		this.email = email;
+		this.userName = userName;
+	}
+
+	public String getIconUrl() {
+		return iconUrl;
+	}
+
+	public void setIconUrl(String iconUrl) {
+		this.iconUrl = iconUrl;
+	}
+
+	public String getContactWebsite() {
+		return contactWebsite;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPayoutAddress() {
+		return payoutAddress;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setContactWebsite(String contactWebsite) {
+		this.contactWebsite = contactWebsite;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setPayoutAddress(String payoutAddress) {
+		this.payoutAddress = payoutAddress;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 }

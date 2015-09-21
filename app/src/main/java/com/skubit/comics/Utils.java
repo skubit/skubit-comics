@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
 import com.google.common.io.Files;
 
+import com.github.junrar.Archive;
 import com.skubit.AccountSettings;
 import com.skubit.Events;
 import com.skubit.Permissions;
@@ -13,6 +14,7 @@ import com.skubit.comics.activities.DownloadDialogActivity;
 import com.skubit.comics.activities.MainActivity;
 import com.skubit.shared.dto.ArchiveFormat;
 import com.skubit.shared.dto.ComicBookDto;
+import com.skubit.shared.dto.ComicBookType;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -29,8 +31,6 @@ import android.support.v4.app.TaskStackBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-
-;
 
 public class Utils {
 
@@ -270,17 +270,36 @@ public class Utils {
 
     public static void download(Context context, String uri, String md5, ComicBookDto comicBookDto,
             DownloadManager downloadManager) {
-        String title = comicBookDto.getStoryTitle() + " Vol."
-                + comicBookDto.getVolume() + " #" + comicBookDto.getIssueNumber();
-        download(context, uri, md5, comicBookDto.getCbid(), title, ArchiveFormat.CBZ,
+       ArchiveFormat archiveFormat = ComicBookType.ELECTRICOMIC.name().equals(comicBookDto.getComicBookType()) ?
+               ArchiveFormat.ELCX : ArchiveFormat.CBZ;
+
+        String title = ArchiveFormat.ELCX.equals(archiveFormat) ? comicBookDto.getStoryTitle().replace(" ", "_")
+                : createTitle(comicBookDto);
+
+        download(context, uri, md5, comicBookDto.getCbid(), title, archiveFormat,
                 downloadManager);//TODO: PDF?
     }
 
     public static void download(Context context, String uri, String md5, ComicData comicData,
             DownloadManager downloadManager) {
-        String title = comicData.getTitle() + " Vol."
-                + comicData.getVolume() + " #" + comicData.getIssueNumber();
-        download(context, uri, md5, comicData.getCbid(), title,
-                ArchiveFormat.CBZ, downloadManager);//TODO: PDF?
+        ArchiveFormat archiveFormat = ComicBookType.ELECTRICOMIC.name().equals(comicData.getComicBookType()) ?
+                ArchiveFormat.ELCX : ArchiveFormat.CBZ;
+        String title = ArchiveFormat.ELCX.equals(archiveFormat) ? comicData.getTitle().replace(" ", "_")
+                : createTitle(comicData);
+
+        download(context, uri, md5, comicData.getCbid(), title + "",
+                archiveFormat, downloadManager);//TODO: PDF?
     }
+
+    private static String createTitle(ComicData comicData) {
+        return comicData.getTitle().replace(" ", "_");
+    }
+
+    private static String createTitle(ComicBookDto comicBookDto) {
+        return comicBookDto.getStoryTitle() + " Vol."
+                + comicBookDto.getVolume() + " #" + comicBookDto.getIssueNumber();
+    }
+
+
+
 }

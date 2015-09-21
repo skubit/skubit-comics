@@ -33,4 +33,6 @@ public final class LoaderId {
 
     public static final int SERIES_LOADER = 107;
 
+    public static final int ELECTRICOMIC_LOADER = 108;
+
 }

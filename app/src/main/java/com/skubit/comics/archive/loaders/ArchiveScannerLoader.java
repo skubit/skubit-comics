@@ -52,9 +52,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerResponse> {
+public class ArchiveScannerLoader extends BaseLoader<ArchiveScannerResponse> {
 
-    private static final String[] ACCEPTS = new String[]{"cbz", "cbr"};
+    private static final String[] ACCEPTS = new String[]{"cbz", "cbr", "elcx"};
 
     private final File mRoot;
 
@@ -135,10 +135,10 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             final File archive = new File(info.archiveFile);
             File destDir = new File(Constants.SKUBIT_UNARCHIVES, archive.getName());
             File coverArt = loadCoverArtAndUnarchiveFile(destDir, archive, info.archiveType);
-            if(coverArt == null) {
-                continue;
+            if(coverArt != null) {
+                putCoverAsFirstPage(archive, coverArt);
             }
-            putCoverAsFirstPage(archive, coverArt);
+
             //TODO: Load up first page of viewer
 
             ComicSelection ks = new ComicSelection();
@@ -147,7 +147,10 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             ComicContentValues ccv = new ComicContentValues();
             ccv.putArchiveFile(info.archiveFile);
             ccv.putStoryTitle(info.storyTitle);
-            ccv.putCoverArt(coverArt.getAbsolutePath());
+            if(coverArt != null) {
+                ccv.putCoverArt(coverArt.getAbsolutePath());
+            }
+
             ccv.putAccessDate(new Date());
             ccv.putDownloadDate(new Date());
 
@@ -161,6 +164,10 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
                 ccv.putArchiveFormat(ArchiveFormat.CBZ.name());
             } else if (fileName.endsWith(".cbr")) {
                 ccv.putArchiveFormat(ArchiveFormat.CBR.name());
+            } else if (fileName.endsWith(".elcx")) {
+                ccv.putArchiveFormat(ArchiveFormat.ELCX.name());
+            } else if (fileName.endsWith(".mp3")) {
+                ccv.putArchiveFormat(ArchiveFormat.VOICE.name());
             }
 
             String cbid;
@@ -223,6 +230,15 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
         collectionMappingCursor.close();
     }
 
+    /**
+     * Loads cover art and unarchives file if needed
+     *
+     * @param destDir - unarchive directory
+     * @param archiveFile - archive file
+     * @param archiveType - archive type (CBZ, CBR, ELCX, MP3)
+     *
+     * @return cover art file
+     */
     public File loadCoverArtAndUnarchiveFile(File destDir, File archiveFile,
             ArchiveType archiveType) {
         if (!destDir.exists()) {
@@ -240,6 +256,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
             if(orderedEntries.isEmpty()) {
                 return null;
             }
+
             ArchiveManager zm = ArchiveManager.getInstance();
             zm.unzip(zipFile, compressionEntries.get(orderedEntries.get(0)), destDir);
 
@@ -249,7 +266,7 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
                     100);
             Archive archive = ArchiveUtils.readFileHeaders(archiveFile, compressionEntries);
 
-            List<String> orderedEntries = new ArrayList<String>();
+            List<String> orderedEntries = new ArrayList<>();
             orderedEntries.addAll(compressionEntries.keySet());
             Collections.sort(orderedEntries, new AlphanumComparator());
             if(orderedEntries.isEmpty()) {
@@ -258,9 +275,87 @@ public final class ArchiveScannerLoader extends BaseLoader<ArchiveScannerRespons
 
             ArchiveManager zm = ArchiveManager.getInstance();
             return zm.unrar(archive, compressionEntries.get(orderedEntries.get(0)), destDir);
+        } else if (ArchiveType.ELCX.equals(archiveType)) {
+            final HashMap<String, ZipEntry> compressionEntries = new HashMap<>(
+                    100);
+            ZipFile zipFile = ArchiveUtils.readZipEntriesForElectric(archiveFile,
+                    compressionEntries);
+
+            List<String> orderedEntries = new ArrayList<>();
+            orderedEntries.addAll(compressionEntries.keySet());
+            Collections.sort(orderedEntries, new AlphanumComparator());
+            if(orderedEntries.isEmpty()) {
+                return null;
+            }
+
+            ArchiveManager zm = ArchiveManager.getInstance();
+            for(ZipEntry ze : compressionEntries.values()) {
+                zm.unzip(zipFile, ze, destDir, false);
+            }
+            return cover(destDir, orderedEntries);
+
+       /*
+            File index = index(destDir);
+            if(index != null) {
+                File cover = cover(index.getParentFile());
+                if(cover != null) {
+                    return cover;
+                }
+
+                File images = new File(index.getParentFile(), "images");
+                if(images.exists()) {
+                    File[] imageFiles =  images.listFiles();
+                    if(imageFiles.length > 0) {
+                        return imageFiles[0];
+                    }
+                }
+            }
+            */
+
+        } else if (ArchiveType.MP3.equals(archiveType)) {
+
         }
 
         return null;//should never happen
+    }
+
+    private File cover(File destDir, List<String> orderedEntries)  {
+        for(String entry : orderedEntries) {
+            if(entry.toLowerCase().contains("cover.")) {
+              return new File(destDir, entry);
+            }
+        }
+        for(String entry : orderedEntries) {
+            if(entry.contains("images") && !entry.endsWith("images") && !entry.endsWith("images/")
+                    && !entry.endsWith("elcxlogosmall.png")) {
+                return new File(destDir, entry);
+            }
+        }
+        return null;
+    }
+
+    private File cover(File root) {
+        for(File file : root.listFiles()) {
+            if(file.getName().toLowerCase().startsWith("cover.")) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    private File index(File root) {
+        File[] files = root.listFiles();
+        for(File file : files) {
+            if(file.isFile() && file.getName().toLowerCase().startsWith("index.")) {
+                return file;
+            } else if(file.isDirectory()) {
+                File f = index(file);
+                if(f != null) {
+                    return f;
+                }
+            }
+        }
+        return null;
     }
 
 }
